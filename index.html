@@ -43,6 +43,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .med-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0ece7;}
 .med-row:last-child{border-bottom:none;}
 .med-emoji{font-size:28px;width:48px;text-align:center;flex-shrink:0;}
+.med-img{width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0;}
 .med-info .med-name{font-size:15px;font-weight:600;}
 .med-info .med-dose{font-size:12px;color:#666;margin-top:2px;}
 .med-info .med-freq{font-size:12px;color:#8B4513;margin-top:2px;font-weight:500;}
@@ -52,6 +53,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tap-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .tap-card.sel{border:2.5px solid #8B4513;background:#FDF5F0;}
 .tap-card .pill-placeholder{font-size:28px;margin-bottom:6px;}
+.tap-card .pill-img{width:56px;height:56px;object-fit:cover;border-radius:8px;margin:0 auto 6px;display:block;}
 .tap-card .lbl{font-size:13px;font-weight:600;color:#1a1a1a;}
 .tap-card .sub{font-size:10px;color:#888;margin-top:2px;}
 .chip-row{display:flex;gap:8px;flex-wrap:wrap;}
@@ -227,24 +229,24 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
 <script>
 const SHEETS_URL='https://script.google.com/macros/s/AKfycbxGKSFKeQHmHeXfYb657ouD42SB3Yv9dAY2m3objuwro5_jxkPgZRPOuwfOWE6S7WTL/exec';
 const MEDS=[
-  {name:'Tylenol',generic:'Acetaminophen',dose:'500mg (1 tab)',freq:'As needed',prn:true,note:'Pain',e:'💊'},
-  {name:'Neurontin',generic:'Gabapentin',dose:'300mg (2 caps)',freq:'Evening',prn:false,e:'💊'},
-  {name:'Prilosec',generic:'Omeprazole',dose:'40mg',freq:'Daily',prn:false,e:'💊'},
-  {name:'Eye Drops',generic:'Dorzolamide/Timolol',dose:'2 drops each eye',freq:'Evening',prn:false,e:'👁️'},
-  {name:'Lexapro',generic:'Escitalopram',dose:'15mg',freq:'Daily',prn:false,e:'💊'},
-  {name:'Docusate',generic:'Docusate Sodium',dose:'100mg',freq:'Twice daily',prn:false,e:'💊'},
-  {name:'Celebrex',generic:'Celecoxib',dose:'200mg',freq:'Bedtime',prn:false,e:'💊'},
-  {name:'Lipitor',generic:'Atorvastatin',dose:'20mg',freq:'Bedtime',prn:false,e:'💊'},
-  {name:'Remeron',generic:'Mirtazapine',dose:'30mg',freq:'Bedtime',prn:false,e:'💊'},
-  {name:'Pepcid',generic:'Famotidine',dose:'20mg',freq:'Bedtime',prn:false,e:'💊'},
-  {name:'MiraLAX',generic:'Polyethylene glycol',dose:'1 cap',freq:'Bedtime',prn:false,e:'💊'},
-  {name:'Ativan',generic:'Lorazepam',dose:'0.5mg',freq:'Bedtime',prn:false,e:'💊'},
-  {name:'Estring',generic:'Estradiol ring implant',dose:'1 ring',freq:'Every 3 months',prn:false,e:'💍'},
-  {name:'Zofran',generic:'Ondansetron',dose:'4mg',freq:'As needed',prn:true,note:'Nausea',e:'💊'},
-  {name:'Pyridium',generic:'Phenazopyridine',dose:'100mg',freq:'Twice daily',prn:false,note:'UTI',e:'💊'},
-  {name:'Folic Acid',generic:'Folate',dose:'1mg',freq:'Daily',prn:false,e:'💊'},
-  {name:'Vitamin D',generic:'Cholecalciferol',dose:'2000 IU',freq:'Daily',prn:false,e:'☀️'},
-  {name:'Nexabiotic',generic:'Probiotic',dose:'1 cap',freq:'Evening',prn:false,e:'🌿'},
+  {name:'Tylenol',generic:'Acetaminophen',dose:'500mg (1 tab)',freq:'As needed',prn:true,note:'Pain',e:'💊',img:null},
+  {name:'Neurontin',generic:'Gabapentin',dose:'300mg (2 caps)',freq:'Evening',prn:false,e:'💊',img:'GABAPENTIN.3.jpg'},
+  {name:'Prilosec',generic:'Omeprazole',dose:'40mg',freq:'Daily',prn:false,e:'💊',img:'OMEPRAZOLE.PRILOSEC.jpg'},
+  {name:'Eye Drops',generic:'Dorzolamide/Timolol',dose:'2 drops each eye',freq:'Evening',prn:false,e:'👁️',img:null},
+  {name:'Lexapro',generic:'Escitalopram',dose:'15mg',freq:'Daily',prn:false,e:'💊',img:'ESCITALOPRAM.LEXAPRO.2.jpg'},
+  {name:'Docusate',generic:'Docusate Sodium',dose:'100mg',freq:'Twice daily',prn:false,e:'💊',img:null},
+  {name:'Celebrex',generic:'Celecoxib',dose:'200mg',freq:'Bedtime',prn:false,e:'💊',img:'CELEBREX_200_MG.jpg'},
+  {name:'Lipitor',generic:'Atorvastatin',dose:'20mg',freq:'Bedtime',prn:false,e:'💊',img:'ATORVASTATIN.LIPITOR.1.jpg'},
+  {name:'Remeron',generic:'Mirtazapine',dose:'30mg',freq:'Bedtime',prn:false,e:'💊',img:'REMERON.MIRTAZAPINE.2.jpg'},
+  {name:'Pepcid',generic:'Famotidine',dose:'20mg',freq:'Bedtime',prn:false,e:'💊',img:null},
+  {name:'MiraLAX',generic:'Polyethylene glycol',dose:'1 cap',freq:'Bedtime',prn:false,e:'💊',img:'miralax.jpg'},
+  {name:'Ativan',generic:'Lorazepam',dose:'0.5mg',freq:'Bedtime',prn:false,e:'💊',img:null},
+  {name:'Estring',generic:'Estradiol ring implant',dose:'1 ring',freq:'Every 3 months',prn:false,e:'💍',img:null},
+  {name:'Zofran',generic:'Ondansetron',dose:'4mg',freq:'As needed',prn:true,note:'Nausea',e:'💊',img:null},
+  {name:'Pyridium',generic:'Phenazopyridine',dose:'100mg',freq:'Twice daily',prn:false,note:'UTI',e:'💊',img:null},
+  {name:'Folic Acid',generic:'Folate',dose:'1mg',freq:'Daily',prn:false,e:'💊',img:null},
+  {name:'Vitamin D',generic:'Cholecalciferol',dose:'2000 IU',freq:'Daily',prn:false,e:'☀️',img:'vitamin_d.jpg'},
+  {name:'Nexabiotic',generic:'Probiotic',dose:'1 cap',freq:'Evening',prn:false,e:'🌿',img:null},
 ];
 const PEOPLE={
   caregivers:[
@@ -329,10 +331,20 @@ function setLogTab(tab){
 }
 function showLogView(v){if(v==='log-view')renderLog();setLogTab(v);}
 function renderMedGrid(){
-  document.getElementById('med-grid').innerHTML=MEDS.map(m=>`<div class="tap-card" onclick="selMed(this,'${m.name} (${m.generic})','${m.dose}')"><div class="pill-placeholder">${m.e}</div><div class="lbl">${m.name}</div><div class="sub">${m.dose}</div></div>`).join('');
+  document.getElementById('med-grid').innerHTML=MEDS.map(m=>{
+    const visual=m.img
+      ?`<img class="pill-img" src="${m.img}" alt="${m.name}" onerror="this.style.display='none';this.nextSibling.style.display='block'"><span style="display:none;font-size:28px;">${m.e}</span>`
+      :`<div class="pill-placeholder">${m.e}</div>`;
+    return`<div class="tap-card" onclick="selMed(this,'${m.name} (${m.generic})','${m.dose}')">${visual}<div class="lbl">${m.name}</div><div class="sub">${m.dose}</div></div>`;
+  }).join('');
 }
 function renderMedRef(){
-  document.getElementById('med-reference-list').innerHTML=MEDS.map(m=>`<div class="med-row"><div class="med-emoji">${m.e}</div><div class="med-info"><div class="med-name">${m.name} <span style="font-weight:400;color:#666;font-size:12px;">(${m.generic})</span>${m.prn?'<span class="prn-badge">PRN</span>':''}</div><div class="med-dose">${m.dose}</div><div class="med-freq">${m.freq}${m.note?' · '+m.note:''}</div></div></div>`).join('');
+  document.getElementById('med-reference-list').innerHTML=MEDS.map(m=>{
+    const visual=m.img
+      ?`<img class="med-img" src="${m.img}" alt="${m.name}" onerror="this.outerHTML='<div class=\\'med-emoji\\'>${m.e}</div>'">`
+      :`<div class="med-emoji">${m.e}</div>`;
+    return`<div class="med-row">${visual}<div class="med-info"><div class="med-name">${m.name} <span style="font-weight:400;color:#666;font-size:12px;">(${m.generic})</span>${m.prn?'<span class="prn-badge">PRN</span>':''}</div><div class="med-dose">${m.dose}</div><div class="med-freq">${m.freq}${m.note?' · '+m.note:''}</div></div></div>`;
+  }).join('');
 }
 function ts(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
 async function sendToSheets(data,indId){
