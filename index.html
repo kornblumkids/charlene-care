@@ -26,12 +26,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .welcome-banner{background:linear-gradient(135deg,#8B4513,#A0522D);color:white;padding:20px 16px;}
 .welcome-banner h1{font-size:22px;font-weight:700;}
 .welcome-banner p{font-size:14px;opacity:0.9;margin-top:4px;}
+.today-card{background:#fff;border-radius:14px;margin:12px 12px 0;box-shadow:0 1px 3px rgba(0,0,0,0.06);overflow:hidden;}
+.today-card-header{background:#2C5F2E;color:white;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.today-card-header h2{font-size:15px;font-weight:700;letter-spacing:0.02em;}
+.today-card-header span{font-size:12px;opacity:0.85;}
+.today-frame{width:100%;height:380px;border:none;display:block;}
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 12px 0;}
-.qa-btn{background:#fff;border-radius:14px;padding:16px;text-align:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;}
-.qa-btn i{font-size:28px;color:#8B4513;display:block;margin-bottom:6px;}
-.qa-btn span{font-size:14px;font-weight:600;color:#1a1a1a;}
-.qa-btn.emergency{background:#A32D2D;}
-.qa-btn.emergency i,.qa-btn.emergency span{color:white;}
+.qa-btn{background:#fff;border-radius:14px;padding:20px 16px;text-align:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;}
+.qa-btn i{font-size:32px;color:#8B4513;display:block;margin-bottom:8px;}
+.qa-btn span{font-size:15px;font-weight:600;color:#1a1a1a;}
+.qa-btn.placeholder{background:#f7f3ee;border:2px dashed #d4c4b8;}
+.qa-btn.placeholder i{color:#c4a898;}
+.qa-btn.placeholder span{color:#a08878;}
 .calendar-frame{width:100%;height:420px;border:none;border-radius:10px;display:block;}
 .contact-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #f0ece7;}
 .contact-row:last-child{border-bottom:none;}
@@ -61,10 +67,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .chip.sel{border:2px solid #8B4513;color:#8B4513;background:#FDF5F0;font-weight:600;}
 .big-btn{width:100%;padding:16px;border-radius:14px;border:none;font-size:17px;font-weight:600;cursor:pointer;margin-top:12px;}
 .btn-brown{background:#8B4513;color:white;}
+.btn-green{background:#2C5F2E;color:white;}
 .btn-red{background:#A32D2D;color:white;}
 .btn-gray{background:#f0f0f0;color:#1a1a1a;border:1px solid #e5e5e5;}
 textarea,input[type=text]{width:100%;padding:12px;border-radius:10px;border:1.5px solid #e5e5e5;background:#fff;font-size:16px;color:#1a1a1a;font-family:inherit;margin-top:4px;resize:none;}
 textarea:focus,input:focus{outline:2px solid #8B4513;}
+select{width:100%;padding:14px 12px;border-radius:10px;border:1.5px solid #e5e5e5;background:#fff;font-size:16px;color:#1a1a1a;font-family:inherit;margin-top:4px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+select:focus{outline:2px solid #8B4513;}
 .status-toggle{display:flex;border-radius:12px;overflow:hidden;border:1.5px solid #e5e5e5;margin-top:4px;}
 .status-opt{flex:1;padding:13px 8px;text-align:center;cursor:pointer;font-size:15px;font-weight:600;background:#f5f5f5;color:#999;border:none;}
 .status-opt.given-sel{background:#EAF3DE;color:#27500A;}
@@ -80,116 +89,199 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
 .success-icon{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
 .saving-pill{display:inline-block;font-size:13px;margin-top:10px;padding:6px 14px;border-radius:999px;background:#f0f0f0;color:#666;}
 .saving-pill.saved{background:#EAF3DE;color:#27500A;}
-.name-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.name-btn{padding:14px 8px;border-radius:14px;border:1.5px solid #e5e5e5;background:#fff;cursor:pointer;text-align:center;}
-.name-btn .initials{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin:0 auto 6px;}
-.name-btn .nm{font-size:13px;font-weight:600;color:#1a1a1a;}
-.name-btn .role-tag{font-size:10px;color:#888;margin-top:2px;}
-.name-btn.sel{border:2.5px solid #8B4513;background:#FDF5F0;}
-.shift-bar{background:#FDF5F0;border:1px solid #D2916A;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-top:12px;}
+.ref-link{display:block;text-align:center;padding:14px;color:#8B4513;font-size:14px;font-weight:600;cursor:pointer;border-top:1px solid #f0ece7;margin-top:4px;}
+/* Splash screen */
+.splash{position:fixed;top:0;left:0;width:100%;height:100%;background:#f7f3ee;z-index:999;display:flex;flex-direction:column;max-width:700px;left:50%;transform:translateX(-50%);}
+.splash-header{background:linear-gradient(135deg,#2C5F2E,#3B7A3E);color:white;padding:24px 20px 20px;}
+.splash-header h1{font-size:22px;font-weight:700;}
+.splash-header p{font-size:14px;opacity:0.9;margin-top:4px;}
+.splash-cal{flex:1;overflow:hidden;}
+.splash-cal iframe{width:100%;height:100%;border:none;display:block;}
+.splash-footer{padding:16px;background:#fff;border-top:1px solid #e5e5e5;}
 </style>
 </head>
 <body>
+
+<!-- SCHEDULE SPLASH (shown 7am-11am, once per day) -->
+<div class="splash" id="splash" style="display:none;">
+  <div class="splash-header">
+    <h1>📅 Good morning!</h1>
+    <p>Please review today's schedule before continuing.</p>
+  </div>
+  <div class="splash-cal">
+    <iframe src="https://calendar.google.com/calendar/embed?src=90b97ea6420501e6bb8980e9b03d574a6a29068dd4225bf269fe6ee274d20e32%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=DAY&showTitle=0&showNav=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Today's Schedule"></iframe>
+  </div>
+  <div class="splash-footer">
+    <button class="big-btn btn-green" style="margin-top:0;" onclick="dismissSplash()">✓ I've checked today's schedule — continue</button>
+  </div>
+</div>
+
 <div id="s-home" class="screen active">
   <div class="welcome-banner">
     <h1>🌸 Charlene's Hub</h1>
     <p id="home-date"></p>
   </div>
+  <div class="today-card">
+    <div class="today-card-header" onclick="toggleToday()">
+      <h2>📅 TODAY'S SCHEDULE</h2>
+      <span id="today-toggle-label">tap to expand</span>
+    </div>
+    <div id="today-cal" style="display:none;">
+      <iframe class="today-frame" src="https://calendar.google.com/calendar/embed?src=90b97ea6420501e6bb8980e9b03d574a6a29068dd4225bf269fe6ee274d20e32%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=DAY&showTitle=0&showNav=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Today's Schedule"></iframe>
+    </div>
+  </div>
   <div class="quick-actions">
-    <div class="qa-btn" onclick="goTo('s-log')"><i class="ti ti-pill"></i><span>Log medication</span></div>
-    <div class="qa-btn" onclick="goTo('s-log');setTimeout(()=>setLogTab('tab-notes'),200)"><i class="ti ti-notes"></i><span>Add a note</span></div>
+    <div class="qa-btn" onclick="goTo('s-meds')"><i class="ti ti-pill"></i><span>Medications</span></div>
+    <div class="qa-btn" onclick="goTo('s-carenotes')"><i class="ti ti-notes"></i><span>Care Notes</span></div>
     <div class="qa-btn" onclick="goTo('s-contacts')"><i class="ti ti-phone"></i><span>Contacts</span></div>
-    <div class="qa-btn emergency" onclick="goTo('s-contacts')"><i class="ti ti-alert-triangle"></i><span>Emergency</span></div>
-  </div>
-  <div class="card">
-    <div class="card-title">📅 Charlene's Calendar</div>
-    <iframe class="calendar-frame" src="https://calendar.google.com/calendar/embed?src=90b97ea6420501e6bb8980e9b03d574a6a29068dd4225bf269fe6ee274d20e32%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=WEEK&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Charlene's Calendar"></iframe>
+    <div class="qa-btn placeholder"><i class="ti ti-stars"></i><span>Coming soon</span></div>
   </div>
 </div>
-<div id="s-log" class="screen">
+
+<!-- MEDICATIONS SCREEN -->
+<div id="s-meds" class="screen">
   <div class="page-header">
-    <div><h1>Care Log</h1><div class="date" id="log-caregiver-name">Select a caregiver below</div></div>
-    <button class="header-btn" onclick="showLogView('log-view')">View log</button>
+    <div><h1>💊 Medications</h1></div>
+    <button class="header-btn" onclick="showMedView('med-log-view')">View log</button>
   </div>
-  <div id="log-select-person" style="padding:12px;">
-    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;font-weight:600;">Caregivers</div>
-    <div class="name-grid" id="caregiver-grid"></div>
-    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin:14px 0 8px;font-weight:600;">Family</div>
-    <div class="name-grid" id="family-grid"></div>
-    <div id="shift-bar-log" class="shift-bar" style="display:none;">
-      <div style="font-size:14px;color:#8B4513;">Shift started <span id="shift-time-display" style="font-weight:600;"></span></div>
-      <button onclick="endShift()" style="background:#A32D2D;color:white;border:none;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">End shift</button>
+  <div id="med-main" style="padding:12px;">
+    <div class="sec-label" style="margin-top:0;">Select medication</div>
+    <div class="card-grid" id="med-grid"></div>
+    <div class="sec-label">Was it taken?</div>
+    <div class="status-toggle">
+      <div class="status-opt given-sel" id="opt-given" onclick="setMedStatus('given')">✓ Given</div>
+      <div class="status-opt" id="opt-refused" onclick="setMedStatus('refused')">✕ Refused</div>
     </div>
-    <button class="big-btn btn-brown" id="start-shift-btn" onclick="startShift()" style="opacity:0.4;" disabled>Start shift &amp; continue</button>
-    <button class="big-btn btn-gray" id="continue-btn" onclick="continueLog()" style="margin-top:8px;opacity:0.4;" disabled>Continue without logging shift</button>
+    <div class="refused-banner" id="refused-banner">Will be flagged as refused. Add a note below.</div>
+    <div class="sec-label">When?</div>
+    <div class="chip-row" id="time-chips">
+      <div class="chip sel" onclick="selChip(this,'time-chips','Now')">Now</div>
+      <div class="chip" onclick="selChip(this,'time-chips','5 min ago')">5 min ago</div>
+      <div class="chip" onclick="selChip(this,'time-chips','15 min ago')">15 min ago</div>
+      <div class="chip" onclick="selChip(this,'time-chips','Other')">Other</div>
+    </div>
+    <div class="sec-label">Notes (optional)</div>
+    <textarea id="med-notes" rows="2" placeholder="e.g. took with food, spat it out..."></textarea>
+    <div class="sec-label">Who are you?</div>
+    <select id="med-person">
+      <option value="">— Select your name —</option>
+      <optgroup label="Caregivers">
+        <option>Chancelvie</option>
+        <option>Diana</option>
+        <option>Mirna</option>
+        <option>Ramonita</option>
+      </optgroup>
+      <optgroup label="Family">
+        <option>Candyce</option>
+        <option>Lori</option>
+        <option>Harley</option>
+        <option>Janet</option>
+        <option>David</option>
+      </optgroup>
+    </select>
+    <button class="big-btn btn-brown" id="med-submit-btn" onclick="logMed()">Record medication</button>
+    <div style="text-align:center;"><span class="saving-pill" id="med-saving" style="display:none;"></span></div>
+    <div class="ref-link" onclick="showMedView('med-ref-view')">📋 View full medication reference</div>
   </div>
-  <div id="log-main" style="display:none;">
-    <div style="display:flex;gap:0;margin:12px 12px 0;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
-      <div id="tab-meds-btn" onclick="setLogTab('tab-meds')" style="flex:1;padding:11px;text-align:center;cursor:pointer;background:#8B4513;color:white;font-size:14px;font-weight:600;">💊 Meds</div>
-      <div id="tab-care-btn" onclick="setLogTab('tab-care')" style="flex:1;padding:11px;text-align:center;cursor:pointer;background:#f5f5f5;color:#666;font-size:14px;font-weight:600;">🤝 Care</div>
-      <div id="tab-notes-btn" onclick="setLogTab('tab-notes')" style="flex:1;padding:11px;text-align:center;cursor:pointer;background:#f5f5f5;color:#666;font-size:14px;font-weight:600;">📝 Note</div>
-    </div>
-    <div id="tab-meds" style="padding:12px;">
-      <div class="sec-label" style="margin-top:0;">Select medication</div>
-      <div class="card-grid" id="med-grid"></div>
-      <div class="sec-label">Was it taken?</div>
-      <div class="status-toggle">
-        <div class="status-opt given-sel" id="opt-given" onclick="setMedStatus('given')">✓ Given</div>
-        <div class="status-opt" id="opt-refused" onclick="setMedStatus('refused')">✕ Refused</div>
-      </div>
-      <div class="refused-banner" id="refused-banner">Will be flagged as refused. Add a note below.</div>
-      <div class="sec-label">When?</div>
-      <div class="chip-row" id="time-chips">
-        <div class="chip sel" onclick="selChip(this,'time-chips','Now')">Now</div>
-        <div class="chip" onclick="selChip(this,'time-chips','5 min ago')">5 min ago</div>
-        <div class="chip" onclick="selChip(this,'time-chips','15 min ago')">15 min ago</div>
-        <div class="chip" onclick="selChip(this,'time-chips','Other')">Other</div>
-      </div>
-      <div class="sec-label">Notes (optional)</div>
-      <textarea id="med-notes" rows="2" placeholder="e.g. took with food, spat it out..."></textarea>
-      <button class="big-btn btn-brown" id="med-submit-btn" onclick="logMed()">Record medication</button>
-      <div style="text-align:center;"><span class="saving-pill" id="med-saving" style="display:none;"></span></div>
-    </div>
-    <div id="tab-care" style="display:none;padding:12px;">
-      <div class="sec-label" style="margin-top:0;">What happened?</div>
-      <div class="card-grid">
-        <div class="tap-card" onclick="selCare(this,'Meals and fluids')"><div class="pill-placeholder">🍽️</div><div class="lbl">Meals &amp; fluids</div></div>
-        <div class="tap-card" onclick="selCare(this,'Repositioned')"><div class="pill-placeholder">🔄</div><div class="lbl">Repositioned</div></div>
-        <div class="tap-card" onclick="selCare(this,'Bathroom')"><div class="pill-placeholder">🚿</div><div class="lbl">Bathroom</div></div>
-        <div class="tap-card" onclick="selCare(this,'Hygiene care')"><div class="pill-placeholder">🧼</div><div class="lbl">Hygiene</div></div>
-        <div class="tap-card" onclick="selCare(this,'Sleep / rest')"><div class="pill-placeholder">😴</div><div class="lbl">Sleep / rest</div></div>
-        <div class="tap-card" onclick="selCare(this,'Wound check')"><div class="pill-placeholder">🩹</div><div class="lbl">Wound check</div></div>
-        <div class="tap-card" onclick="selCare(this,'Visitor')"><div class="pill-placeholder">👋</div><div class="lbl">Visitor</div></div>
-        <div class="tap-card" onclick="selCare(this,'Mood / behavior')"><div class="pill-placeholder">😊</div><div class="lbl">Mood</div></div>
-      </div>
-      <div class="sec-label">Notes (optional)</div>
-      <textarea id="care-notes" rows="2" placeholder="Any details..."></textarea>
-      <button class="big-btn btn-brown" id="care-btn" onclick="logCare()" style="opacity:0.4;" disabled>Record</button>
-      <div style="text-align:center;"><span class="saving-pill" id="care-saving" style="display:none;"></span></div>
-    </div>
-    <div id="tab-notes" style="display:none;padding:12px;">
-      <div class="sec-label" style="margin-top:0;">Note or observation</div>
-      <textarea id="gen-notes" rows="6" placeholder="Anything about Charlene's condition, mood, or your visit..."></textarea>
-      <button class="big-btn btn-brown" onclick="logNote()">Save note</button>
-      <div style="text-align:center;"><span class="saving-pill" id="notes-saving" style="display:none;"></span></div>
-    </div>
-    <div id="log-view" style="display:none;padding:12px;">
-      <div class="sec-label" style="margin-top:0;">Today's entries</div>
-      <div id="log-list"><div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div></div>
-      <button class="big-btn btn-gray" onclick="setLogTab('tab-meds')">Back to logging</button>
-    </div>
+  <div id="med-log-view" style="display:none;padding:12px;">
+    <div class="sec-label" style="margin-top:0;">Today's medication entries</div>
+    <div id="med-log-list"><div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div></div>
+    <button class="big-btn btn-gray" onclick="showMedView('med-main')">Back to medications</button>
+  </div>
+  <div id="med-ref-view" style="display:none;padding:12px;">
+    <div class="sec-label" style="margin-top:0;">All medications</div>
+    <div class="card"><div id="med-reference-list"></div></div>
+    <button class="big-btn btn-gray" style="margin:12px 0;" onclick="showMedView('med-main')">Back to medications</button>
   </div>
 </div>
+
+<!-- CARE NOTES SCREEN -->
+<div id="s-carenotes" class="screen">
+  <div class="page-header">
+    <div><h1>📝 Care Notes</h1></div>
+    <button class="header-btn" onclick="showCareView('care-log-view')">View log</button>
+  </div>
+  <div style="display:flex;gap:0;margin:12px 12px 0;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+    <div id="tab-care-btn" onclick="setCareTab('tab-care')" style="flex:1;padding:11px;text-align:center;cursor:pointer;background:#8B4513;color:white;font-size:14px;font-weight:600;">🤝 Care</div>
+    <div id="tab-notes-btn" onclick="setCareTab('tab-notes')" style="flex:1;padding:11px;text-align:center;cursor:pointer;background:#f5f5f5;color:#666;font-size:14px;font-weight:600;">📝 Note</div>
+  </div>
+  <div id="tab-care" style="padding:12px;">
+    <div class="sec-label" style="margin-top:0;">What happened?</div>
+    <div class="card-grid">
+      <div class="tap-card" onclick="selCare(this,'Meals and fluids')"><div class="pill-placeholder">🍽️</div><div class="lbl">Meals &amp; fluids</div></div>
+      <div class="tap-card" onclick="selCare(this,'Repositioned')"><div class="pill-placeholder">🔄</div><div class="lbl">Repositioned</div></div>
+      <div class="tap-card" onclick="selCare(this,'Bathroom')"><div class="pill-placeholder">🚿</div><div class="lbl">Bathroom</div></div>
+      <div class="tap-card" onclick="selCare(this,'Hygiene care')"><div class="pill-placeholder">🧼</div><div class="lbl">Hygiene</div></div>
+      <div class="tap-card" onclick="selCare(this,'Sleep / rest')"><div class="pill-placeholder">😴</div><div class="lbl">Sleep / rest</div></div>
+      <div class="tap-card" onclick="selCare(this,'Wound check')"><div class="pill-placeholder">🩹</div><div class="lbl">Wound check</div></div>
+      <div class="tap-card" onclick="selCare(this,'Visitor')"><div class="pill-placeholder">👋</div><div class="lbl">Visitor</div></div>
+      <div class="tap-card" onclick="selCare(this,'Mood / behavior')"><div class="pill-placeholder">😊</div><div class="lbl">Mood</div></div>
+    </div>
+    <div class="sec-label">Notes (optional)</div>
+    <textarea id="care-notes" rows="2" placeholder="Any details..."></textarea>
+    <div class="sec-label">Who are you?</div>
+    <select id="care-person">
+      <option value="">— Select your name —</option>
+      <optgroup label="Caregivers">
+        <option>Chancelvie</option>
+        <option>Diana</option>
+        <option>Mirna</option>
+        <option>Ramonita</option>
+      </optgroup>
+      <optgroup label="Family">
+        <option>Candyce</option>
+        <option>Lori</option>
+        <option>Harley</option>
+        <option>Janet</option>
+        <option>David</option>
+      </optgroup>
+    </select>
+    <button class="big-btn btn-brown" id="care-btn" onclick="logCare()">Record</button>
+    <div style="text-align:center;"><span class="saving-pill" id="care-saving" style="display:none;"></span></div>
+  </div>
+  <div id="tab-notes" style="display:none;padding:12px;">
+    <div class="sec-label" style="margin-top:0;">Note or observation</div>
+    <textarea id="gen-notes" rows="6" placeholder="Anything about Charlene's condition, mood, or your visit..."></textarea>
+    <div class="sec-label">Who are you?</div>
+    <select id="notes-person">
+      <option value="">— Select your name —</option>
+      <optgroup label="Caregivers">
+        <option>Chancelvie</option>
+        <option>Diana</option>
+        <option>Mirna</option>
+        <option>Ramonita</option>
+      </optgroup>
+      <optgroup label="Family">
+        <option>Candyce</option>
+        <option>Lori</option>
+        <option>Harley</option>
+        <option>Janet</option>
+        <option>David</option>
+      </optgroup>
+    </select>
+    <button class="big-btn btn-brown" onclick="logNote()">Save note</button>
+    <div style="text-align:center;"><span class="saving-pill" id="notes-saving" style="display:none;"></span></div>
+  </div>
+  <div id="care-log-view" style="display:none;padding:12px;">
+    <div class="sec-label" style="margin-top:0;">Today's care entries</div>
+    <div id="care-log-list"><div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div></div>
+    <button class="big-btn btn-gray" onclick="showCareView('tab-care')">Back to care notes</button>
+  </div>
+</div>
+
+<!-- SUCCESS SCREEN -->
 <div id="s-success" class="screen">
   <div class="success-wrap">
     <div class="success-icon" id="succ-icon"></div>
     <div style="font-size:22px;font-weight:700;" id="succ-title">Recorded!</div>
     <div style="font-size:15px;color:#666;margin-top:8px;" id="succ-detail"></div>
     <div style="margin-top:8px;" id="succ-sheet"></div>
-    <button class="big-btn btn-brown" onclick="goTo('s-log');setLogTab('tab-meds')" style="margin-top:2rem;max-width:300px;margin-left:auto;margin-right:auto;display:block;">Log another</button>
-    <button class="big-btn btn-gray" onclick="goTo('s-log');showLogView('log-view')" style="margin-top:8px;max-width:300px;margin-left:auto;margin-right:auto;display:block;">View today's log</button>
+    <button class="big-btn btn-brown" id="succ-again-btn" style="margin-top:2rem;max-width:300px;margin-left:auto;margin-right:auto;display:block;">Log another</button>
+    <button class="big-btn btn-gray" onclick="goTo('s-home')" style="margin-top:8px;max-width:300px;margin-left:auto;margin-right:auto;display:block;">Go home</button>
   </div>
 </div>
+
+<!-- CONTACTS SCREEN -->
 <div id="s-contacts" class="screen">
   <div class="page-header"><div><h1>Contacts</h1><div class="date">Call 911 first in emergencies</div></div></div>
   <div class="card">
@@ -213,21 +305,20 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
     <div class="contact-row"><div class="contact-info"><div class="name">Mayela Tobar</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+12136196079" class="call-btn">Call</a></div>
   </div>
 </div>
-<div id="s-info" class="screen">
-  <div class="page-header"><div><h1>Medication Reference</h1></div></div>
-  <div class="card"><div id="med-reference-list"></div></div>
-</div>
+
 <div class="home-fab" id="home-fab">
   <button onclick="goTo('s-home')">🏠 &nbsp; CLICK HERE TO GO HOME</button>
 </div>
 <div class="bottom-nav">
   <div class="nav-item active" id="nav-home" onclick="goTo('s-home')"><i class="ti ti-home"></i>Home</div>
-  <div class="nav-item" id="nav-log" onclick="goTo('s-log')"><i class="ti ti-clipboard-plus"></i>Log</div>
+  <div class="nav-item" id="nav-meds" onclick="goTo('s-meds')"><i class="ti ti-pill"></i>Medications</div>
+  <div class="nav-item" id="nav-carenotes" onclick="goTo('s-carenotes')"><i class="ti ti-notes"></i>Care Notes</div>
   <div class="nav-item" id="nav-contacts" onclick="goTo('s-contacts')"><i class="ti ti-phone"></i>Contacts</div>
-  <div class="nav-item" id="nav-info" onclick="goTo('s-info')"><i class="ti ti-info-circle"></i>Info</div>
 </div>
+
 <script>
 const SHEETS_URL='https://script.google.com/macros/s/AKfycbxGKSFKeQHmHeXfYb657ouD42SB3Yv9dAY2m3objuwro5_jxkPgZRPOuwfOWE6S7WTL/exec';
+const FAMILY_NAMES=['Candyce','Lori','Harley','Janet','David'];
 const MEDS=[
   {name:'Tylenol',generic:'Acetaminophen',dose:'500mg (1 tab)',freq:'As needed',prn:true,note:'Pain',e:'💊',img:null},
   {name:'Neurontin',generic:'Gabapentin',dose:'300mg (2 caps)',freq:'Evening',prn:false,e:'💊',img:'GABAPENTIN.3.jpg'},
@@ -248,88 +339,69 @@ const MEDS=[
   {name:'Vitamin D',generic:'Cholecalciferol',dose:'2000 IU',freq:'Daily',prn:false,e:'☀️',img:'vitamin_d.jpg'},
   {name:'Nexabiotic',generic:'Probiotic',dose:'1 cap',freq:'Evening',prn:false,e:'🌿',img:null},
 ];
-const PEOPLE={
-  caregivers:[
-    {name:'Chancelvie',initials:'CH',bg:'#E1F5EE',fg:'#085041'},
-    {name:'Diana',initials:'DI',bg:'#E6F1FB',fg:'#0C447C'},
-    {name:'Eli',initials:'EL',bg:'#FAEEDA',fg:'#633806'},
-    {name:'Mayela',initials:'MA',bg:'#FBEAF0',fg:'#72243E'},
-    {name:'Mirna',initials:'MI',bg:'#EEEDFE',fg:'#3C3489'},
-    {name:'Ramonita',initials:'RA',bg:'#FAECE7',fg:'#712B13'}
-  ],
-  family:[
-    {name:'Candyce',initials:'CA',bg:'#E1F5EE',fg:'#085041'},
-    {name:'Lori',initials:'LO',bg:'#E6F1FB',fg:'#0C447C'},
-    {name:'Harley',initials:'HA',bg:'#FAEEDA',fg:'#633806'},
-    {name:'Janet',initials:'JA',bg:'#FBEAF0',fg:'#72243E'},
-    {name:'David',initials:'DA',bg:'#EEEDFE',fg:'#3C3489'}
-  ]
-};
-let caregiver='',caregiverRole='caregiver',shiftStart=null;
+
 let selMedName=null,selMedDose=null,selTimeVal='Now',selCareVal=null,medStatus='given';
-let logEntries=[];
+let medLogEntries=[],careLogEntries=[];
+
+// Date display
 document.getElementById('home-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+// Splash screen logic
+function checkSplash(){
+  const hour=new Date().getHours();
+  if(hour>=7&&hour<11){
+    const today=new Date().toDateString();
+    const lastSeen=localStorage.getItem('scheduleChecked');
+    if(lastSeen!==today){
+      document.getElementById('splash').style.display='flex';
+    }
+  }
+}
+function dismissSplash(){
+  localStorage.setItem('scheduleChecked',new Date().toDateString());
+  document.getElementById('splash').style.display='none';
+}
+checkSplash();
+
+// Today card toggle
+let todayOpen=false;
+function toggleToday(){
+  todayOpen=!todayOpen;
+  document.getElementById('today-cal').style.display=todayOpen?'block':'none';
+  document.getElementById('today-toggle-label').textContent=todayOpen?'tap to collapse':'tap to expand';
+}
+
+// Navigation
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const m={'s-home':'nav-home','s-log':'nav-log','s-contacts':'nav-contacts','s-info':'nav-info'};
+  const m={'s-home':'nav-home','s-meds':'nav-meds','s-carenotes':'nav-carenotes','s-contacts':'nav-contacts'};
   if(m[id])document.getElementById(m[id]).classList.add('active');
   document.getElementById('home-fab').style.display=id==='s-home'?'none':'block';
   window.scrollTo(0,0);
-  if(id==='s-log'&&!caregiver){document.getElementById('log-select-person').style.display='block';document.getElementById('log-main').style.display='none';}
 }
-function renderGrids(){
-  document.getElementById('caregiver-grid').innerHTML=PEOPLE.caregivers.map(p=>`<div class="name-btn" onclick="selectPerson(this,'${p.name}','caregiver')"><div class="initials" style="background:${p.bg};color:${p.fg};">${p.initials}</div><div class="nm">${p.name}</div></div>`).join('');
-  document.getElementById('family-grid').innerHTML=PEOPLE.family.map(p=>`<div class="name-btn" onclick="selectPerson(this,'${p.name}','family')"><div class="initials" style="background:${p.bg};color:${p.fg};">${p.initials}</div><div class="nm">${p.name}</div><div class="role-tag">family</div></div>`).join('');
+
+// Med screen views
+function showMedView(v){
+  ['med-main','med-log-view','med-ref-view'].forEach(x=>document.getElementById(x).style.display=x===v?'block':'none');
+  if(v==='med-log-view')renderMedLog();
 }
-function selectPerson(el,name,role){
-  document.querySelectorAll('.name-btn').forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel');caregiver=name;caregiverRole=role;
-  const isFamily=role==='family';
-  document.getElementById('start-shift-btn').disabled=isFamily;
-  document.getElementById('start-shift-btn').style.opacity=isFamily?'0.3':'1';
-  document.getElementById('continue-btn').disabled=false;
-  document.getElementById('continue-btn').style.opacity='1';
-}
-function startShift(){
-  if(!caregiver||caregiverRole==='family')return;
-  shiftStart=new Date();const t=ts();
-  logEntries.unshift({type:'shift',action:'start',caregiver,time:t});
-  sendToSheets({Type:'Shift',Detail:'Shift started',Status:'Start',Caregiver:caregiver,Role:'caregiver',Notes:''});
-  document.getElementById('shift-bar-log').style.display='flex';
-  document.getElementById('shift-time-display').textContent=t;
-  showLogMain();
-}
-function continueLog(){if(!caregiver)return;showLogMain();}
-function showLogMain(){
-  document.getElementById('log-select-person').style.display='none';
-  document.getElementById('log-main').style.display='block';
-  document.getElementById('log-caregiver-name').textContent=caregiver+(caregiverRole==='family'?' (family)':'');
-  if(caregiverRole==='family')setLogTab('tab-notes');
-}
-function endShift(){
-  const dur=shiftStart?Math.round((new Date()-shiftStart)/60000):0;
-  logEntries.unshift({type:'shift',action:'end',caregiver,time:ts(),duration:dur});
-  sendToSheets({Type:'Shift',Detail:'Shift ended',Status:'End',Caregiver:caregiver,Role:'caregiver',Notes:dur+' min'});
-  document.getElementById('shift-bar-log').style.display='none';
-  shiftStart=null;caregiver='';caregiverRole='caregiver';
-  document.getElementById('log-select-person').style.display='block';
-  document.getElementById('log-main').style.display='none';
-  document.getElementById('log-caregiver-name').textContent='Select a caregiver below';
-  document.querySelectorAll('.name-btn').forEach(b=>b.classList.remove('sel'));
-  document.getElementById('start-shift-btn').disabled=true;
-  document.getElementById('start-shift-btn').style.opacity='0.4';
-  document.getElementById('continue-btn').disabled=true;
-  document.getElementById('continue-btn').style.opacity='0.4';
-}
-function setLogTab(tab){
-  ['tab-meds','tab-care','tab-notes','log-view'].forEach(t=>document.getElementById(t).style.display=t===tab?'block':'none');
-  ['tab-meds-btn','tab-care-btn','tab-notes-btn'].forEach(b=>{const el=document.getElementById(b);if(el){el.style.background='#f5f5f5';el.style.color='#666';}});
-  const m={'tab-meds':'tab-meds-btn','tab-care':'tab-care-btn','tab-notes':'tab-notes-btn'};
+
+// Care screen tabs and views
+function setCareTab(tab){
+  ['tab-care','tab-notes','care-log-view'].forEach(t=>document.getElementById(t).style.display=t===tab?'block':'none');
+  ['tab-care-btn','tab-notes-btn'].forEach(b=>{const el=document.getElementById(b);if(el){el.style.background='#f5f5f5';el.style.color='#666';}});
+  const m={'tab-care':'tab-care-btn','tab-notes':'tab-notes-btn'};
   if(m[tab]){const el=document.getElementById(m[tab]);if(el){el.style.background='#8B4513';el.style.color='white';}}
 }
-function showLogView(v){if(v==='log-view')renderLog();setLogTab(v);}
+function showCareView(v){
+  ['tab-care','tab-notes','care-log-view'].forEach(x=>document.getElementById(x).style.display=x===v?'block':'none');
+  if(v==='care-log-view')renderCareLog();
+  ['tab-care-btn','tab-notes-btn'].forEach(b=>{const el=document.getElementById(b);if(el){el.style.background='#f5f5f5';el.style.color='#666';}});
+}
+
+// Med grid
 function renderMedGrid(){
   document.getElementById('med-grid').innerHTML=MEDS.map(m=>{
     const visual=m.img
@@ -338,6 +410,8 @@ function renderMedGrid(){
     return`<div class="tap-card" onclick="selMed(this,'${m.name} (${m.generic})','${m.dose}')">${visual}<div class="lbl">${m.name}</div><div class="sub">${m.dose}</div></div>`;
   }).join('');
 }
+
+// Med reference
 function renderMedRef(){
   document.getElementById('med-reference-list').innerHTML=MEDS.map(m=>{
     const visual=m.img
@@ -346,7 +420,9 @@ function renderMedRef(){
     return`<div class="med-row">${visual}<div class="med-info"><div class="med-name">${m.name} <span style="font-weight:400;color:#666;font-size:12px;">(${m.generic})</span>${m.prn?'<span class="prn-badge">PRN</span>':''}</div><div class="med-dose">${m.dose}</div><div class="med-freq">${m.freq}${m.note?' · '+m.note:''}</div></div></div>`;
   }).join('');
 }
+
 function ts(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+
 async function sendToSheets(data,indId){
   const ind=indId?document.getElementById(indId):null;
   if(ind){ind.style.display='inline-block';ind.textContent='Saving...';ind.className='saving-pill';}
@@ -356,6 +432,7 @@ async function sendToSheets(data,indId){
     if(ind){ind.textContent='Saved to Google Sheets';ind.className='saving-pill saved';}
   }catch(e){if(ind){ind.textContent='Could not reach Google Sheets';ind.className='saving-pill';}}
 }
+
 function setMedStatus(s){
   medStatus=s;
   const g=document.getElementById('opt-given'),r=document.getElementById('opt-refused');
@@ -363,38 +440,70 @@ function setMedStatus(s){
   if(s==='given'){g.classList.add('given-sel');r.classList.remove('refused-sel');ban.style.display='none';btn.style.background='#8B4513';btn.textContent='Record medication';}
   else{r.classList.add('refused-sel');g.classList.remove('given-sel');ban.style.display='block';btn.style.background='#A32D2D';btn.textContent='Record as refused';}
 }
-function selMed(el,name,dose){document.querySelectorAll('#med-grid .tap-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');selMedName=name;selMedDose=dose;}
-function selChip(el,gId,val){document.querySelectorAll('#'+gId+' .chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');selTimeVal=val;}
-function selCare(el,name){document.querySelectorAll('#tab-care .tap-card').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');selCareVal=name;const btn=document.getElementById('care-btn');btn.disabled=false;btn.style.opacity='1';}
+
+function selMed(el,name,dose){
+  document.querySelectorAll('#med-grid .tap-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');selMedName=name;selMedDose=dose;
+}
+
+function selChip(el,gId,val){
+  document.querySelectorAll('#'+gId+' .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');selTimeVal=val;
+}
+
+function selCare(el,name){
+  document.querySelectorAll('#tab-care .tap-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');selCareVal=name;
+}
+
 function logMed(){
   if(!selMedName){alert('Please select a medication.');return;}
+  const person=document.getElementById('med-person').value;
+  if(!person){alert('Please select your name.');return;}
   const notes=document.getElementById('med-notes').value;
   const t=ts();const refused=medStatus==='refused';
-  logEntries.unshift({type:'med',pill:selMedName,dose:selMedDose,when:selTimeVal,time:t,caregiver,notes,refused});
-  sendToSheets({Type:'Medication',Detail:selMedName+' '+selMedDose,Status:refused?'Refused':'Given',Caregiver:caregiver,Role:caregiverRole,Notes:(selTimeVal!=='Now'?'Given: '+selTimeVal+'. ':'')+notes},'med-saving');
-  success(refused?selMedName+' refused':selMedName+' given',selMedDose+' · '+(selTimeVal==='Now'?t:selTimeVal)+' · '+caregiver,refused);
-  document.getElementById('med-notes').value='';selMedName=null;
+  const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
+  medLogEntries.unshift({type:'med',pill:selMedName,dose:selMedDose,when:selTimeVal,time:t,caregiver:person,notes,refused});
+  sendToSheets({Type:'Medication',Detail:selMedName+' '+selMedDose,Status:refused?'Refused':'Given',Caregiver:person,Role:role,Notes:(selTimeVal!=='Now'?'Given: '+selTimeVal+'. ':'')+notes},'med-saving');
+  document.getElementById('succ-again-btn').onclick=()=>goTo('s-meds');
+  success(refused?selMedName+' refused':selMedName+' given',selMedDose+' · '+(selTimeVal==='Now'?t:selTimeVal)+' · '+person,refused);
+  document.getElementById('med-notes').value='';
+  document.getElementById('med-person').value='';
+  selMedName=null;
   document.querySelectorAll('#med-grid .tap-card').forEach(c=>c.classList.remove('sel'));
   setMedStatus('given');
 }
+
 function logCare(){
-  if(!selCareVal)return;
+  if(!selCareVal){alert('Please select what happened.');return;}
+  const person=document.getElementById('care-person').value;
+  if(!person){alert('Please select your name.');return;}
   const notes=document.getElementById('care-notes').value;
-  logEntries.unshift({type:'care',task:selCareVal,time:ts(),caregiver,notes});
-  sendToSheets({Type:'Care',Detail:selCareVal,Status:'',Caregiver:caregiver,Role:caregiverRole,Notes:notes},'care-saving');
-  success(selCareVal+' recorded',ts()+' · '+caregiver,false);
-  document.getElementById('care-notes').value='';selCareVal=null;
+  const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
+  careLogEntries.unshift({type:'care',task:selCareVal,time:ts(),caregiver:person,notes});
+  sendToSheets({Type:'Care',Detail:selCareVal,Status:'',Caregiver:person,Role:role,Notes:notes},'care-saving');
+  document.getElementById('succ-again-btn').onclick=()=>goTo('s-carenotes');
+  success(selCareVal+' recorded',ts()+' · '+person,false);
+  document.getElementById('care-notes').value='';
+  document.getElementById('care-person').value='';
+  selCareVal=null;
   document.querySelectorAll('#tab-care .tap-card').forEach(c=>c.classList.remove('sel'));
-  const btn=document.getElementById('care-btn');btn.disabled=true;btn.style.opacity='0.4';
 }
+
 function logNote(){
   const notes=document.getElementById('gen-notes').value.trim();
   if(!notes){alert('Please enter a note.');return;}
-  logEntries.unshift({type:'note',notes,time:ts(),caregiver,role:caregiverRole});
-  sendToSheets({Type:'Note',Detail:notes,Status:'',Caregiver:caregiver,Role:caregiverRole,Notes:''},'notes-saving');
-  success('Note saved',ts()+' · '+caregiver+(caregiverRole==='family'?' (family)':''),false);
+  const person=document.getElementById('notes-person').value;
+  if(!person){alert('Please select your name.');return;}
+  const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
+  careLogEntries.unshift({type:'note',notes,time:ts(),caregiver:person,role});
+  sendToSheets({Type:'Note',Detail:notes,Status:'',Caregiver:person,Role:role,Notes:''},'notes-saving');
+  document.getElementById('succ-again-btn').onclick=()=>goTo('s-carenotes');
+  success('Note saved',ts()+' · '+person+(role==='family'?' (family)':''),false);
   document.getElementById('gen-notes').value='';
+  document.getElementById('notes-person').value='';
 }
+
 function success(title,detail,isRefusal){
   document.getElementById('succ-title').textContent=title;
   document.getElementById('succ-detail').textContent=detail;
@@ -406,22 +515,28 @@ function success(title,detail,isRefusal){
   icon.innerHTML=isRefusal?'<span style="font-size:36px;color:#791F1F;">X</span>':'<span style="font-size:36px;color:#3B6D11;">✓</span>';
   goTo('s-success');
 }
-function renderLog(){
-  const list=document.getElementById('log-list');
-  if(!logEntries.length){list.innerHTML='<div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div>';return;}
-  list.innerHTML=logEntries.map(e=>{
-    let title='',meta='',cls='';
-    if(e.type==='med'){
-      cls=e.refused?'refused':'given';
-      const badge=e.refused?'<span style="font-size:11px;background:#FCEBEB;color:#791F1F;padding:2px 7px;border-radius:999px;margin-left:6px;">refused</span>':'<span style="font-size:11px;background:#EAF3DE;color:#27500A;padding:2px 7px;border-radius:999px;margin-left:6px;">given</span>';
-      title=e.pill+badge;meta=e.dose+' · '+e.caregiver+(e.notes?' · '+e.notes:'');
-    }else if(e.type==='care'){title=e.task;meta=e.caregiver+(e.notes?' · '+e.notes:'');}
-    else if(e.type==='note'){title='Note'+(e.role==='family'?'<span style="font-size:11px;background:#FFF8E6;color:#7A5200;padding:2px 7px;border-radius:999px;margin-left:4px;">family</span>':'');meta=e.notes.substring(0,60)+(e.notes.length>60?'...':'')+' · '+e.caregiver;}
-    else if(e.type==='shift'){title=e.action==='start'?'Shift started':'Shift ended';meta=e.caregiver+(e.duration?' · '+e.duration+' min':'');}
-    return'<div class="log-row '+cls+'"><div style="flex:1;min-width:0;"><div class="log-title">'+title+'</div><div class="log-meta">'+meta+'</div></div><div class="time-badge">'+e.time+'</div></div>';
+
+function renderMedLog(){
+  const list=document.getElementById('med-log-list');
+  if(!medLogEntries.length){list.innerHTML='<div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div>';return;}
+  list.innerHTML=medLogEntries.map(e=>{
+    const badge=e.refused?'<span style="font-size:11px;background:#FCEBEB;color:#791F1F;padding:2px 7px;border-radius:999px;margin-left:6px;">refused</span>':'<span style="font-size:11px;background:#EAF3DE;color:#27500A;padding:2px 7px;border-radius:999px;margin-left:6px;">given</span>';
+    return`<div class="log-row ${e.refused?'refused':'given'}"><div style="flex:1;min-width:0;"><div class="log-title">${e.pill}${badge}</div><div class="log-meta">${e.dose} · ${e.caregiver}${e.notes?' · '+e.notes:''}</div></div><div class="time-badge">${e.time}</div></div>`;
   }).join('');
 }
-renderGrids();renderMedGrid();renderMedRef();
+
+function renderCareLog(){
+  const list=document.getElementById('care-log-list');
+  if(!careLogEntries.length){list.innerHTML='<div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div>';return;}
+  list.innerHTML=careLogEntries.map(e=>{
+    let title='',meta='';
+    if(e.type==='care'){title=e.task;meta=e.caregiver+(e.notes?' · '+e.notes:'');}
+    else if(e.type==='note'){title='Note'+(e.role==='family'?'<span style="font-size:11px;background:#FFF8E6;color:#7A5200;padding:2px 7px;border-radius:999px;margin-left:4px;">family</span>':'');meta=e.notes.substring(0,60)+(e.notes.length>60?'...':'')+' · '+e.caregiver;}
+    return`<div class="log-row"><div style="flex:1;min-width:0;"><div class="log-title">${title}</div><div class="log-meta">${meta}</div></div><div class="time-badge">${e.time}</div></div>`;
+  }).join('');
+}
+
+renderMedGrid();renderMedRef();
 </script>
 </body>
 </html>
