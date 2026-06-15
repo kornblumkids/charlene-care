@@ -8,15 +8,19 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f3ee;color:#1a1a1a;max-width:700px;margin:0 auto;min-height:100vh;}
-.screen{display:none;padding:0 0 80px;}
+.screen{display:none;padding:0 0 140px;}
 .screen.active{display:block;}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:700px;background:#fff;border-top:1px solid #e5e5e5;display:grid;grid-template-columns:repeat(4,1fr);z-index:100;}
 .nav-item{padding:10px 4px 12px;text-align:center;cursor:pointer;color:#999;font-size:11px;font-weight:500;-webkit-tap-highlight-color:transparent;}
 .nav-item i{font-size:22px;display:block;margin-bottom:2px;}
 .nav-item.active{color:#8B4513;}
+.home-fab{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:668px;z-index:99;display:none;}
+.home-fab button{width:100%;padding:16px;background:#1a56db;color:white;border:none;border-radius:14px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(26,86,219,0.4);-webkit-tap-highlight-color:transparent;letter-spacing:0.02em;}
+.home-fab button:active{opacity:0.9;}
 .page-header{background:#8B4513;color:white;padding:16px 16px 14px;display:flex;justify-content:space-between;align-items:center;}
 .page-header h1{font-size:18px;font-weight:600;}
 .page-header .date{font-size:13px;opacity:0.85;margin-top:2px;}
+.header-btn{background:rgba(255,255,255,0.2);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;}
 .card{background:#fff;border-radius:14px;padding:16px;margin:12px 12px 0;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
 .card-title{font-size:13px;font-weight:700;color:#8B4513;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;}
 .welcome-banner{background:linear-gradient(135deg,#8B4513,#A0522D);color:white;padding:20px 16px;}
@@ -28,7 +32,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .qa-btn span{font-size:14px;font-weight:600;color:#1a1a1a;}
 .qa-btn.emergency{background:#A32D2D;}
 .qa-btn.emergency i,.qa-btn.emergency span{color:white;}
-.calendar-frame{width:100%;height:400px;border:none;border-radius:10px;display:block;}
+.calendar-frame{width:100%;height:420px;border:none;border-radius:10px;display:block;}
 .contact-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #f0ece7;}
 .contact-row:last-child{border-bottom:none;}
 .contact-info .name{font-size:15px;font-weight:600;}
@@ -80,12 +84,10 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
 .name-btn .nm{font-size:13px;font-weight:600;color:#1a1a1a;}
 .name-btn .role-tag{font-size:10px;color:#888;margin-top:2px;}
 .name-btn.sel{border:2.5px solid #8B4513;background:#FDF5F0;}
-.section-div{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.06em;padding:8px 0 6px;border-top:1px solid #ece8e3;margin-top:8px;}
 .shift-bar{background:#FDF5F0;border:1px solid #D2916A;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-top:12px;}
 </style>
 </head>
 <body>
-
 <div id="s-home" class="screen active">
   <div class="welcome-banner">
     <h1>🌸 Charlene's Hub</h1>
@@ -102,11 +104,10 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
     <iframe class="calendar-frame" src="https://calendar.google.com/calendar/embed?src=90b97ea6420501e6bb8980e9b03d574a6a29068dd4225bf269fe6ee274d20e32%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=WEEK&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Charlene's Calendar"></iframe>
   </div>
 </div>
-
 <div id="s-log" class="screen">
   <div class="page-header">
     <div><h1>Care Log</h1><div class="date" id="log-caregiver-name">Select a caregiver below</div></div>
-    <div style="display:flex;gap:8px;"><button onclick="showLogView('log-view')" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:600;">View log</button><button onclick="goTo('s-home')" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:600;">🏠</button></div>
+    <button class="header-btn" onclick="showLogView('log-view')">View log</button>
   </div>
   <div id="log-select-person" style="padding:12px;">
     <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;font-weight:600;">Caregivers</div>
@@ -150,7 +151,7 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
     <div id="tab-care" style="display:none;padding:12px;">
       <div class="sec-label" style="margin-top:0;">What happened?</div>
       <div class="card-grid">
-        <div class="tap-card" onclick="selCare(this,'Meals and fluids')"><div class="pill-placeholder">🍽️</div><div class="lbl">Meals & fluids</div></div>
+        <div class="tap-card" onclick="selCare(this,'Meals and fluids')"><div class="pill-placeholder">🍽️</div><div class="lbl">Meals &amp; fluids</div></div>
         <div class="tap-card" onclick="selCare(this,'Repositioned')"><div class="pill-placeholder">🔄</div><div class="lbl">Repositioned</div></div>
         <div class="tap-card" onclick="selCare(this,'Bathroom')"><div class="pill-placeholder">🚿</div><div class="lbl">Bathroom</div></div>
         <div class="tap-card" onclick="selCare(this,'Hygiene care')"><div class="pill-placeholder">🧼</div><div class="lbl">Hygiene</div></div>
@@ -177,7 +178,6 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
     </div>
   </div>
 </div>
-
 <div id="s-success" class="screen">
   <div class="success-wrap">
     <div class="success-icon" id="succ-icon"></div>
@@ -186,19 +186,17 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
     <div style="margin-top:8px;" id="succ-sheet"></div>
     <button class="big-btn btn-brown" onclick="goTo('s-log');setLogTab('tab-meds')" style="margin-top:2rem;max-width:300px;margin-left:auto;margin-right:auto;display:block;">Log another</button>
     <button class="big-btn btn-gray" onclick="goTo('s-log');showLogView('log-view')" style="margin-top:8px;max-width:300px;margin-left:auto;margin-right:auto;display:block;">View today's log</button>
-    <button class="big-btn btn-gray" onclick="goTo('s-home')" style="margin-top:8px;max-width:300px;margin-left:auto;margin-right:auto;display:block;">Back to home</button>
   </div>
 </div>
-
 <div id="s-contacts" class="screen">
-  <div class="page-header"><div><h1>Contacts</h1><div class="date">Call 911 first in emergencies</div></div><button onclick="goTo('s-home')" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:600;">🏠 Home</button></div>
+  <div class="page-header"><div><h1>Contacts</h1><div class="date">Call 911 first in emergencies</div></div></div>
   <div class="card">
     <div class="card-title">Family</div>
-    <div class="contact-row"><div class="contact-info"><div class="name">Candy Kornblum</div><div class="role">Daughter</div><div class="note">CALL FIRST</div></div><a href="tel:+13107494987" class="call-btn urgent">Call</a></div>
-    <div class="contact-row"><div class="contact-info"><div class="name">Janet Kornblum</div><div class="role">Daughter &middot; Tech issues</div></div><a href="tel:+14153108444" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Candy Kornblum</div><div class="role">Daughter</div><div class="note">⭐ CALL FIRST</div></div><a href="tel:+13107494987" class="call-btn urgent">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Janet Kornblum</div><div class="role">Daughter · Tech issues</div></div><a href="tel:+14153108444" class="call-btn">Call</a></div>
     <div class="contact-row"><div class="contact-info"><div class="name">Lori Kornblum</div><div class="role">Daughter</div></div><a href="tel:+14142189245" class="call-btn">Call</a></div>
     <div class="contact-row"><div class="contact-info"><div class="name">Harley Kornblum</div><div class="role">Son</div></div><a href="tel:+13102833161" class="call-btn">Call</a></div>
-    <div class="contact-row"><div class="contact-info"><div class="name">David Kornblum</div><div class="role">Son &middot; House issues</div></div><a href="tel:+13109684667" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">David Kornblum</div><div class="role">Son · House issues</div></div><a href="tel:+13109684667" class="call-btn">Call</a></div>
     <div class="contact-row"><div class="contact-info"><div class="name">Adam Rosenstein</div><div class="role">Candy's husband</div></div><a href="tel:+13107495194" class="call-btn">Call</a></div>
     <div class="contact-row"><div class="contact-info"><div class="name">Rhys Pedersen</div><div class="role">Janet's husband</div></div><a href="tel:+14158307683" class="call-btn">Call</a></div>
   </div>
@@ -213,19 +211,19 @@ textarea:focus,input:focus{outline:2px solid #8B4513;}
     <div class="contact-row"><div class="contact-info"><div class="name">Mayela Tobar</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+12136196079" class="call-btn">Call</a></div>
   </div>
 </div>
-
 <div id="s-info" class="screen">
-  <div class="page-header"><div><h1>Medication Reference</h1></div><button onclick="goTo('s-home')" style="background:rgba(255,255,255,0.2);border:none;color:white;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:600;">🏠 Home</button></div>
+  <div class="page-header"><div><h1>Medication Reference</h1></div></div>
   <div class="card"><div id="med-reference-list"></div></div>
 </div>
-
+<div class="home-fab" id="home-fab">
+  <button onclick="goTo('s-home')">🏠 &nbsp; HOME</button>
+</div>
 <div class="bottom-nav">
   <div class="nav-item active" id="nav-home" onclick="goTo('s-home')"><i class="ti ti-home"></i>Home</div>
   <div class="nav-item" id="nav-log" onclick="goTo('s-log')"><i class="ti ti-clipboard-plus"></i>Log</div>
   <div class="nav-item" id="nav-contacts" onclick="goTo('s-contacts')"><i class="ti ti-phone"></i>Contacts</div>
   <div class="nav-item" id="nav-info" onclick="goTo('s-info')"><i class="ti ti-info-circle"></i>Info</div>
 </div>
-
 <script>
 const SHEETS_URL='https://script.google.com/macros/s/AKfycbxGKSFKeQHmHeXfYb657ouD42SB3Yv9dAY2m3objuwro5_jxkPgZRPOuwfOWE6S7WTL/exec';
 const MEDS=[
@@ -275,6 +273,7 @@ function goTo(id){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const m={'s-home':'nav-home','s-log':'nav-log','s-contacts':'nav-contacts','s-info':'nav-info'};
   if(m[id])document.getElementById(m[id]).classList.add('active');
+  document.getElementById('home-fab').style.display=id==='s-home'?'none':'block';
   window.scrollTo(0,0);
   if(id==='s-log'&&!caregiver){document.getElementById('log-select-person').style.display='block';document.getElementById('log-main').style.display='none';}
 }
