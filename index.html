@@ -14,9 +14,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .nav-item{padding:10px 4px 12px;text-align:center;cursor:pointer;color:rgba(255,255,255,0.7);font-size:11px;font-weight:500;-webkit-tap-highlight-color:transparent;}
 .nav-item i{font-size:22px;display:block;margin-bottom:2px;}
 .nav-item.active{color:#ffffff;}
-.home-fab{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:1008px;z-index:99;display:none;}
-.home-fab button{width:100%;padding:16px;background:#CC0000;color:white;border:4px solid #FF0000;border-radius:14px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(204,0,0,0.5);-webkit-tap-highlight-color:transparent;letter-spacing:0.02em;}
-.home-fab button:active{opacity:0.9;}
 .page-header{background:#8B4513;color:white;padding:16px 16px 14px;display:flex;justify-content:space-between;align-items:center;}
 .page-header h1{font-size:18px;font-weight:600;}
 .page-header .date{font-size:13px;opacity:0.85;margin-top:2px;}
@@ -26,11 +23,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .welcome-banner{background:linear-gradient(135deg,#8B4513,#A0522D);color:white;padding:20px 16px;}
 .welcome-banner h1{font-size:22px;font-weight:700;}
 .welcome-banner p{font-size:14px;opacity:0.9;margin-top:4px;}
-.today-card{background:#fff;border-radius:14px;margin:12px 12px 0;box-shadow:0 1px 3px rgba(0,0,0,0.06);overflow:hidden;}
-.today-card-header{background:#2C5F2E;color:white;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
-.today-card-header h2{font-size:15px;font-weight:700;letter-spacing:0.02em;}
-.today-card-header span{font-size:12px;opacity:0.85;}
-.today-frame{width:100%;height:380px;border:none;display:block;}
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 12px 0;}
 .qa-btn{background:#fff;border-radius:14px;padding:20px 16px;text-align:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;}
 .qa-btn i{font-size:32px;color:#8B4513;display:block;margin-bottom:8px;}
@@ -55,11 +47,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .med-info .med-freq{font-size:12px;color:#8B4513;margin-top:2px;font-weight:500;}
 .prn-badge{font-size:10px;background:#FFF3CD;color:#856404;padding:2px 6px;border-radius:999px;font-weight:600;margin-left:4px;}
 .sec-label{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;margin-top:16px;}
+/* New multi-select med cards */
+.med-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;}
+.med-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;transition:border-color 0.15s;}
+.med-card .pill-placeholder{font-size:26px;margin-bottom:4px;}
+.med-card .pill-img{width:52px;height:52px;object-fit:cover;border-radius:8px;margin:0 auto 4px;display:block;}
+.med-card .lbl{font-size:12px;font-weight:600;color:#1a1a1a;line-height:1.2;}
+.med-card .sub{font-size:10px;color:#888;margin-top:2px;}
+.med-card.selected{border:2.5px solid #8B4513;background:#FDF5F0;}
+.med-card.given{border:2.5px solid #3B6D11;background:#EAF3DE;}
+.med-card.refused{border:2.5px solid #A32D2D;background:#FCEBEB;}
+.med-card .status-mini{display:none;margin-top:6px;}
+.med-card.selected .status-mini{display:flex;gap:4px;justify-content:center;}
+.status-mini-btn{flex:1;padding:4px 2px;border-radius:6px;border:1.5px solid #e5e5e5;background:#f5f5f5;cursor:pointer;font-size:10px;font-weight:700;color:#999;}
+.status-mini-btn.given-active{background:#EAF3DE;color:#27500A;border-color:#3B6D11;}
+.status-mini-btn.refused-active{background:#FCEBEB;color:#791F1F;border-color:#A32D2D;}
+.med-card .check-badge{position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.med-card.given .check-badge{display:flex;background:#3B6D11;color:white;}
+.med-card.refused .check-badge{display:flex;background:#A32D2D;color:white;}
+/* Care tab cards */
 .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;}
 .tap-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .tap-card.sel{border:2.5px solid #8B4513;background:#FDF5F0;}
 .tap-card .pill-placeholder{font-size:28px;margin-bottom:6px;}
-.tap-card .pill-img{width:56px;height:56px;object-fit:cover;border-radius:8px;margin:0 auto 6px;display:block;}
 .tap-card .lbl{font-size:13px;font-weight:600;color:#1a1a1a;}
 .tap-card .sub{font-size:10px;color:#888;margin-top:2px;}
 .chip-row{display:flex;gap:8px;flex-wrap:wrap;}
@@ -74,11 +84,6 @@ textarea,input[type=text]{width:100%;padding:12px;border-radius:10px;border:1.5p
 textarea:focus,input:focus{outline:2px solid #8B4513;}
 select{width:100%;padding:14px 12px;border-radius:10px;border:1.5px solid #e5e5e5;background:#fff;font-size:16px;color:#1a1a1a;font-family:inherit;margin-top:4px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
 select:focus{outline:2px solid #8B4513;}
-.status-toggle{display:flex;border-radius:12px;overflow:hidden;border:1.5px solid #e5e5e5;margin-top:4px;}
-.status-opt{flex:1;padding:13px 8px;text-align:center;cursor:pointer;font-size:15px;font-weight:600;background:#f5f5f5;color:#999;border:none;}
-.status-opt.given-sel{background:#EAF3DE;color:#27500A;}
-.status-opt.refused-sel{background:#FCEBEB;color:#791F1F;}
-.refused-banner{background:#FCEBEB;border-radius:10px;padding:10px 14px;margin-top:8px;font-size:14px;color:#791F1F;display:none;}
 .log-row{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
 .log-row.refused{border-left:4px solid #A32D2D;}
 .log-row.given{border-left:4px solid #3B6D11;}
@@ -90,8 +95,9 @@ select:focus{outline:2px solid #8B4513;}
 .saving-pill{display:inline-block;font-size:13px;margin-top:10px;padding:6px 14px;border-radius:999px;background:#f0f0f0;color:#666;}
 .saving-pill.saved{background:#EAF3DE;color:#27500A;}
 .ref-link{display:block;text-align:center;padding:14px;color:#8B4513;font-size:14px;font-weight:600;cursor:pointer;border-top:1px solid #f0ece7;margin-top:4px;}
+.selected-summary{background:#f7f3ee;border-radius:10px;padding:10px 14px;margin-top:8px;font-size:13px;color:#555;display:none;}
 /* Splash screen */
-.splash{position:fixed;top:0;left:0;width:100%;height:100%;background:#f7f3ee;z-index:999;display:flex;flex-direction:column;max-width:700px;left:50%;transform:translateX(-50%);}
+.splash{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:1024px;height:100%;background:#f7f3ee;z-index:999;display:flex;flex-direction:column;}
 .splash-header{background:linear-gradient(135deg,#2C5F2E,#3B7A3E);color:white;padding:24px 20px 20px;}
 .splash-header h1{font-size:22px;font-weight:700;}
 .splash-header p{font-size:14px;opacity:0.9;margin-top:4px;}
@@ -116,6 +122,7 @@ select:focus{outline:2px solid #8B4513;}
   </div>
 </div>
 
+<!-- HOME -->
 <div id="s-home" class="screen active">
   <div class="welcome-banner">
     <h1>🌸 Charlene's Hub</h1>
@@ -123,7 +130,7 @@ select:focus{outline:2px solid #8B4513;}
   </div>
   <div class="card">
     <div class="card-title">📅 TODAY'S SCHEDULE</div>
-    <iframe class="calendar-frame" src="https://calendar.google.com/calendar/u/0/newembed?src=70a0be31a4a53486e1f0fd2674e1d4ccaf9f087fb3244662492f92c52b5130a2%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=MONTH&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Today's Schedule"></iframe>
+    <iframe allow="same-origin" class="calendar-frame" src="https://calendar.google.com/calendar/u/0/newembed?src=70a0be31a4a53486e1f0fd2674e1d4ccaf9f087fb3244662492f92c52b5130a2%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=MONTH&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Today's Schedule"></iframe>
     <a href="https://calendar.google.com/calendar/u/0/newembed?src=70a0be31a4a53486e1f0fd2674e1d4ccaf9f087fb3244662492f92c52b5130a2%40group.calendar.google.com&ctz=America%2FLos_Angeles" target="_blank" style="display:block;text-align:center;padding:14px;background:#2C5F2E;color:white;border-radius:10px;margin-top:10px;font-size:15px;font-weight:600;text-decoration:none;">📅 Open full calendar</a>
   </div>
   <div class="quick-actions">
@@ -134,21 +141,16 @@ select:focus{outline:2px solid #8B4513;}
   </div>
 </div>
 
-<!-- MEDICATIONS SCREEN -->
+<!-- MEDICATIONS -->
 <div id="s-meds" class="screen">
   <div class="page-header">
     <div><h1>💊 Medications</h1></div>
     <button class="header-btn" onclick="showMedView('med-log-view')">View log</button>
   </div>
   <div id="med-main" style="padding:12px;">
-    <div class="sec-label" style="margin-top:0;">Select medication</div>
-    <div class="card-grid" id="med-grid"></div>
-    <div class="sec-label">Was it taken?</div>
-    <div class="status-toggle">
-      <div class="status-opt given-sel" id="opt-given" onclick="setMedStatus('given')">✓ Given</div>
-      <div class="status-opt" id="opt-refused" onclick="setMedStatus('refused')">✕ Refused</div>
-    </div>
-    <div class="refused-banner" id="refused-banner">Will be flagged as refused. Add a note below.</div>
+    <div class="sec-label" style="margin-top:0;">Tap each medication — then mark given or refused</div>
+    <div class="med-grid" id="med-grid"></div>
+    <div class="selected-summary" id="selected-summary"></div>
     <div class="sec-label">When?</div>
     <div class="chip-row" id="time-chips">
       <div class="chip sel" onclick="selChip(this,'time-chips','Now')">Now</div>
@@ -175,7 +177,7 @@ select:focus{outline:2px solid #8B4513;}
         <option>David</option>
       </optgroup>
     </select>
-    <button class="big-btn btn-brown" id="med-submit-btn" onclick="logMed()">Record medication</button>
+    <button class="big-btn btn-brown" onclick="logAllMeds()">Record all selected medications</button>
     <div style="text-align:center;"><span class="saving-pill" id="med-saving" style="display:none;"></span></div>
     <div class="ref-link" onclick="showMedView('med-ref-view')">📋 View full medication reference</div>
   </div>
@@ -191,7 +193,7 @@ select:focus{outline:2px solid #8B4513;}
   </div>
 </div>
 
-<!-- CARE NOTES SCREEN -->
+<!-- CARE NOTES -->
 <div id="s-carenotes" class="screen">
   <div class="page-header">
     <div><h1>📝 Care Notes</h1></div>
@@ -265,7 +267,7 @@ select:focus{outline:2px solid #8B4513;}
   </div>
 </div>
 
-<!-- SUCCESS SCREEN -->
+<!-- SUCCESS -->
 <div id="s-success" class="screen">
   <div class="success-wrap">
     <div class="success-icon" id="succ-icon"></div>
@@ -277,7 +279,7 @@ select:focus{outline:2px solid #8B4513;}
   </div>
 </div>
 
-<!-- CONTACTS SCREEN -->
+<!-- CONTACTS -->
 <div id="s-contacts" class="screen">
   <div class="page-header"><div><h1>Contacts</h1><div class="date">Call 911 first in emergencies</div></div></div>
   <div class="card">
@@ -297,8 +299,10 @@ select:focus{outline:2px solid #8B4513;}
   </div>
   <div class="card">
     <div class="card-title">Household Staff</div>
-    <div class="contact-row"><div class="contact-info"><div class="name">Eli</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+13233041492" class="call-btn">Call</a></div>
-    <div class="contact-row"><div class="contact-info"><div class="name">Mayela</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+12136196079" class="call-btn">Call</a></div>     <div class="contact-row"><div class="contact-info"><div class="name">Oneida</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+13235718665" class="call-btn">Call</a></div>     <div class="contact-row"><div class="contact-info"><div class="name">Eloisa</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+12136400870" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Eli Umana</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+13233041492" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Mayela Tobar</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+12136196079" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Oneida</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+13235718665" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Eloisa</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+12136400870" class="call-btn">Call</a></div>
   </div>
 </div>
 
@@ -333,19 +337,19 @@ const MEDS=[
   {name:'Nexabiotic',generic:'Probiotic',dose:'1 cap',freq:'Evening',prn:false,e:'🌿',img:null},
 ];
 
-let selMedName=null,selMedDose=null,selTimeVal='Now',selCareVal=null,medStatus='given';
+// med selection state: {medName: 'given'|'refused'}
+let medSelections={};
+let selTimeVal='Now',selCareVal=null;
 let medLogEntries=[],careLogEntries=[];
 
-// Date display
 document.getElementById('home-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
 
-// Splash screen logic
+// Splash
 function checkSplash(){
   const hour=new Date().getHours();
   if(hour>=7&&hour<11){
     const today=new Date().toDateString();
-    const lastSeen=localStorage.getItem('scheduleChecked');
-    if(lastSeen!==today){
+    if(localStorage.getItem('scheduleChecked')!==today){
       document.getElementById('splash').style.display='flex';
     }
   }
@@ -355,14 +359,6 @@ function dismissSplash(){
   document.getElementById('splash').style.display='none';
 }
 checkSplash();
-
-// Today card toggle
-let todayOpen=false;
-function toggleToday(){
-  todayOpen=!todayOpen;
-  document.getElementById('today-cal').style.display=todayOpen?'block':'none';
-  document.getElementById('today-toggle-label').textContent=todayOpen?'tap to collapse':'tap to expand';
-}
 
 // Navigation
 function goTo(id){
@@ -374,36 +370,96 @@ function goTo(id){
   window.scrollTo(0,0);
 }
 
-// Med screen views
 function showMedView(v){
   ['med-main','med-log-view','med-ref-view'].forEach(x=>document.getElementById(x).style.display=x===v?'block':'none');
   if(v==='med-log-view')renderMedLog();
 }
 
-// Care screen tabs and views
 function setCareTab(tab){
   ['tab-care','tab-notes','care-log-view'].forEach(t=>document.getElementById(t).style.display=t===tab?'block':'none');
   ['tab-care-btn','tab-notes-btn'].forEach(b=>{const el=document.getElementById(b);if(el){el.style.background='#f5f5f5';el.style.color='#666';}});
   const m={'tab-care':'tab-care-btn','tab-notes':'tab-notes-btn'};
   if(m[tab]){const el=document.getElementById(m[tab]);if(el){el.style.background='#8B4513';el.style.color='white';}}
 }
+
 function showCareView(v){
   ['tab-care','tab-notes','care-log-view'].forEach(x=>document.getElementById(x).style.display=x===v?'block':'none');
   if(v==='care-log-view')renderCareLog();
   ['tab-care-btn','tab-notes-btn'].forEach(b=>{const el=document.getElementById(b);if(el){el.style.background='#f5f5f5';el.style.color='#666';}});
 }
 
-// Med grid
+// Med grid - multi select
 function renderMedGrid(){
-  document.getElementById('med-grid').innerHTML=MEDS.map(m=>{
+  document.getElementById('med-grid').innerHTML=MEDS.map((m,i)=>{
     const visual=m.img
-      ?`<img class="pill-img" src="${m.img}" alt="${m.name}" onerror="this.style.display='none';this.nextSibling.style.display='block'"><span style="display:none;font-size:28px;">${m.e}</span>`
+      ?`<img class="pill-img" src="${m.img}" alt="${m.name}" onerror="this.style.display='none';this.nextSibling.style.display='block'"><span style="display:none;font-size:26px;">${m.e}</span>`
       :`<div class="pill-placeholder">${m.e}</div>`;
-    return`<div class="tap-card" onclick="selMed(this,'${m.name} (${m.generic})','${m.dose}')">${visual}<div class="lbl">${m.name}</div><div class="sub">${m.dose}</div></div>`;
+    return`<div class="med-card" id="medcard-${i}" onclick="toggleMed(${i})">
+      <div class="check-badge" id="badge-${i}"></div>
+      ${visual}
+      <div class="lbl">${m.name}</div>
+      <div class="sub">${m.dose}</div>
+      <div class="status-mini" id="mini-${i}">
+        <div class="status-mini-btn" id="given-${i}" onclick="event.stopPropagation();setMedStatus(${i},'given')">✓</div>
+        <div class="status-mini-btn" id="refused-${i}" onclick="event.stopPropagation();setMedStatus(${i},'refused')">✕</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// Med reference
+function toggleMed(i){
+  const name=MEDS[i].name;
+  const card=document.getElementById('medcard-'+i);
+  if(medSelections[name]){
+    // deselect
+    delete medSelections[name];
+    card.className='med-card';
+    document.getElementById('badge-'+i).textContent='';
+  } else {
+    // select, default to given
+    medSelections[name]='given';
+    card.className='med-card selected given';
+    document.getElementById('badge-'+i).textContent='✓';
+    document.getElementById('given-'+i).classList.add('given-active');
+    document.getElementById('refused-'+i).classList.remove('refused-active');
+  }
+  updateSummary();
+}
+
+function setMedStatus(i,status){
+  const name=MEDS[i].name;
+  if(!medSelections[name])return;
+  medSelections[name]=status;
+  const card=document.getElementById('medcard-'+i);
+  const badge=document.getElementById('badge-'+i);
+  if(status==='given'){
+    card.className='med-card selected given';
+    badge.textContent='✓';
+    document.getElementById('given-'+i).classList.add('given-active');
+    document.getElementById('refused-'+i).classList.remove('refused-active');
+  } else {
+    card.className='med-card selected refused';
+    badge.textContent='✕';
+    document.getElementById('refused-'+i).classList.add('refused-active');
+    document.getElementById('given-'+i).classList.remove('given-active');
+  }
+  updateSummary();
+}
+
+function updateSummary(){
+  const keys=Object.keys(medSelections);
+  const summary=document.getElementById('selected-summary');
+  if(!keys.length){summary.style.display='none';return;}
+  const given=keys.filter(k=>medSelections[k]==='given');
+  const refused=keys.filter(k=>medSelections[k]==='refused');
+  let html='';
+  if(given.length)html+=`<span style="color:#27500A;font-weight:600;">✓ Given:</span> ${given.join(', ')}`;
+  if(given.length&&refused.length)html+='<br>';
+  if(refused.length)html+=`<span style="color:#791F1F;font-weight:600;">✕ Refused:</span> ${refused.join(', ')}`;
+  summary.innerHTML=html;
+  summary.style.display='block';
+}
+
 function renderMedRef(){
   document.getElementById('med-reference-list').innerHTML=MEDS.map(m=>{
     const visual=m.img
@@ -415,27 +471,11 @@ function renderMedRef(){
 
 function ts(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
 
-async function sendToSheets(data,indId){
-  const ind=indId?document.getElementById(indId):null;
-  if(ind){ind.style.display='inline-block';ind.textContent='Saving...';ind.className='saving-pill';}
+async function sendToSheets(data){
   try{
     data.Date=new Date().toLocaleDateString();data.Time=ts();
     await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-    if(ind){ind.textContent='Saved to Google Sheets';ind.className='saving-pill saved';}
-  }catch(e){if(ind){ind.textContent='Could not reach Google Sheets';ind.className='saving-pill';}}
-}
-
-function setMedStatus(s){
-  medStatus=s;
-  const g=document.getElementById('opt-given'),r=document.getElementById('opt-refused');
-  const ban=document.getElementById('refused-banner'),btn=document.getElementById('med-submit-btn');
-  if(s==='given'){g.classList.add('given-sel');r.classList.remove('refused-sel');ban.style.display='none';btn.style.background='#8B4513';btn.textContent='Record medication';}
-  else{r.classList.add('refused-sel');g.classList.remove('given-sel');ban.style.display='block';btn.style.background='#A32D2D';btn.textContent='Record as refused';}
-}
-
-function selMed(el,name,dose){
-  document.querySelectorAll('#med-grid .tap-card').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel');selMedName=name;selMedDose=dose;
+  }catch(e){}
 }
 
 function selChip(el,gId,val){
@@ -448,22 +488,52 @@ function selCare(el,name){
   el.classList.add('sel');selCareVal=name;
 }
 
-function logMed(){
-  if(!selMedName){alert('Please select a medication.');return;}
+async function logAllMeds(){
+  const keys=Object.keys(medSelections);
+  if(!keys.length){alert('Please select at least one medication.');return;}
   const person=document.getElementById('med-person').value;
   if(!person){alert('Please select your name.');return;}
   const notes=document.getElementById('med-notes').value;
-  const t=ts();const refused=medStatus==='refused';
   const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
-  medLogEntries.unshift({type:'med',pill:selMedName,dose:selMedDose,when:selTimeVal,time:t,caregiver:person,notes,refused});
-  sendToSheets({Type:'Medication',Detail:selMedName+' '+selMedDose,Status:refused?'Refused':'Given',Caregiver:person,Role:role,Notes:(selTimeVal!=='Now'?'Given: '+selTimeVal+'. ':'')+notes},'med-saving');
-  document.getElementById('succ-again-btn').onclick=()=>goTo('s-meds');
-  success(refused?selMedName+' refused':selMedName+' given',selMedDose+' · '+(selTimeVal==='Now'?t:selTimeVal)+' · '+person,refused);
+  const t=ts();
+  const ind=document.getElementById('med-saving');
+  ind.style.display='inline-block';ind.textContent='Saving...';ind.className='saving-pill';
+
+  // log each med separately to sheets
+  for(const name of keys){
+    const med=MEDS.find(m=>m.name===name);
+    const status=medSelections[name];
+    const entry={type:'med',pill:name+' ('+med.generic+')',dose:med.dose,when:selTimeVal,time:t,caregiver:person,notes,refused:status==='refused'};
+    medLogEntries.unshift(entry);
+    await sendToSheets({Type:'Medication',Detail:name+' '+med.dose,Status:status==='refused'?'Refused':'Given',Caregiver:person,Role:role,Notes:(selTimeVal!=='Now'?'Given: '+selTimeVal+'. ':'')+notes});
+  }
+
+  ind.textContent='Saved to Google Sheets';ind.className='saving-pill saved';
+
+  const given=keys.filter(k=>medSelections[k]==='given');
+  const refused=keys.filter(k=>medSelections[k]==='refused');
+  let detail='';
+  if(given.length)detail+=given.join(', ')+' given';
+  if(given.length&&refused.length)detail+=' · ';
+  if(refused.length)detail+=refused.join(', ')+' refused';
+
+  const hasRefusal=refused.length>0;
+  document.getElementById('succ-again-btn').onclick=()=>{goTo('s-meds');resetMeds();};
+  success(keys.length+' medication'+(keys.length>1?'s':'')+' recorded',detail+' · '+person,hasRefusal);
+  resetMeds();
+}
+
+function resetMeds(){
+  medSelections={};
+  document.querySelectorAll('.med-card').forEach(c=>c.className='med-card');
+  document.querySelectorAll('.check-badge').forEach(b=>b.textContent='');
+  document.querySelectorAll('.status-mini-btn').forEach(b=>b.className='status-mini-btn');
+  document.getElementById('selected-summary').style.display='none';
   document.getElementById('med-notes').value='';
   document.getElementById('med-person').value='';
-  selMedName=null;
-  document.querySelectorAll('#med-grid .tap-card').forEach(c=>c.classList.remove('sel'));
-  setMedStatus('given');
+  document.querySelectorAll('#time-chips .chip').forEach(c=>c.classList.remove('sel'));
+  document.querySelector('#time-chips .chip').classList.add('sel');
+  selTimeVal='Now';
 }
 
 function logCare(){
@@ -473,7 +543,7 @@ function logCare(){
   const notes=document.getElementById('care-notes').value;
   const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
   careLogEntries.unshift({type:'care',task:selCareVal,time:ts(),caregiver:person,notes});
-  sendToSheets({Type:'Care',Detail:selCareVal,Status:'',Caregiver:person,Role:role,Notes:notes},'care-saving');
+  sendToSheets({Type:'Care',Detail:selCareVal,Status:'',Caregiver:person,Role:role,Notes:notes});
   document.getElementById('succ-again-btn').onclick=()=>goTo('s-carenotes');
   success(selCareVal+' recorded',ts()+' · '+person,false);
   document.getElementById('care-notes').value='';
@@ -489,22 +559,21 @@ function logNote(){
   if(!person){alert('Please select your name.');return;}
   const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
   careLogEntries.unshift({type:'note',notes,time:ts(),caregiver:person,role});
-  sendToSheets({Type:'Note',Detail:notes,Status:'',Caregiver:person,Role:role,Notes:''},'notes-saving');
+  sendToSheets({Type:'Note',Detail:notes,Status:'',Caregiver:person,Role:role,Notes:''});
   document.getElementById('succ-again-btn').onclick=()=>goTo('s-carenotes');
   success('Note saved',ts()+' · '+person+(role==='family'?' (family)':''),false);
   document.getElementById('gen-notes').value='';
   document.getElementById('notes-person').value='';
 }
 
-function success(title,detail,isRefusal){
+function success(title,detail,hasRefusal){
   document.getElementById('succ-title').textContent=title;
   document.getElementById('succ-detail').textContent=detail;
   const icon=document.getElementById('succ-icon');
   const sheet=document.getElementById('succ-sheet');
-  sheet.innerHTML='<span class="saving-pill">Saving to Google Sheets...</span>';
-  setTimeout(()=>{sheet.innerHTML='<span class="saving-pill saved">Saved to Google Sheets</span>';},2500);
-  icon.style.background=isRefusal?'#FCEBEB':'#EAF3DE';
-  icon.innerHTML=isRefusal?'<span style="font-size:36px;color:#791F1F;">X</span>':'<span style="font-size:36px;color:#3B6D11;">✓</span>';
+  sheet.innerHTML='<span class="saving-pill saved">Saved to Google Sheets ✓</span>';
+  icon.style.background=hasRefusal?'#FCEBEB':'#EAF3DE';
+  icon.innerHTML=hasRefusal?'<span style="font-size:36px;color:#791F1F;">!</span>':'<span style="font-size:36px;color:#3B6D11;">✓</span>';
   goTo('s-success');
 }
 
