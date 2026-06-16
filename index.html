@@ -370,7 +370,6 @@ function goTo(id){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const m={'s-home':'nav-home','s-meds':'nav-meds','s-carenotes':'nav-carenotes','s-contacts':'nav-contacts'};
   if(m[id])document.getElementById(m[id]).classList.add('active');
-  document.getElementById('home-fab').style.display=id==='s-home'?'none':'block';
   window.scrollTo(0,0);
 }
 
