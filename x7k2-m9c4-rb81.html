@@ -286,7 +286,7 @@ function renderCards() {
     ? todayStaff.map(s => cardHTML(s, today, true)).join('')
     : '<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments due today.</div>';
   document.getElementById('week-cards').innerHTML = upcoming.length
-    ? upcoming.map(({s,date}) => cardHTML(s, date, false)).join('')
+    ? upcoming.map(({s,date}) => cardHTML(s,date,false)).join('')
     : '<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No upcoming payments in the next 3 weeks.</div>';
 }
 
@@ -296,6 +296,7 @@ function cardHTML(s, date, isToday) {
   const amtFmt = '$' + calc.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   const origFmt = calc.adjusted ? '$' + calc.original.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : '';
   const dw = daysWorked[s.id], dp = s.daysPerPeriod;
+  const noteId = 'note-' + s.id + (isToday ? '-today' : '-early');
   return `<div class="pay-card ${paid?'paid':isToday?'due-today':''}" id="card-${s.id}">
     <div class="card-top">
       <div class="person-info">
@@ -310,8 +311,15 @@ function cardHTML(s, date, isToday) {
       </div>
     </div>
     ${dp>1?`<div class="days-row"><div class="days-label">Days worked <span style="color:#999;font-size:11px;">(of ${dp} expected)</span></div><div class="days-ctrl"><button class="days-btn" onclick="adjustDays('${s.id}',-1)">−</button><div class="days-val" id="dw-${s.id}">${dw}</div><button class="days-btn" onclick="adjustDays('${s.id}',1)">+</button></div></div>`:''}
-    <div class="pay-btn-row">${isToday?(paid?`<button class="pay-btn undo-pay" onclick="undoPay('${s.id}')">Undo payment</button>`:`<button class="pay-btn do-pay" onclick="markPaid('${s.id}')">✓ Mark ${amtFmt} paid</button>`):''}</div>
-    ${isToday&&!paid?`<div class="note-row"><textarea class="note-input" id="note-${s.id}" rows="1" placeholder="Add a note (optional)…"></textarea></div>`:''}
+    <div class="note-row" style="margin-top:10px;"><textarea class="note-input" id="${noteId}" rows="1" placeholder="Add a note (optional — e.g. gave cash to Diana to pass along)…"></textarea></div>
+    <div class="pay-btn-row">
+      ${paid
+        ? `<button class="pay-btn undo-pay" onclick="undoPay('${s.id}')">Undo payment</button>`
+        : isToday
+          ? `<button class="pay-btn do-pay" onclick="markPaid('${s.id}','${noteId}')">✓ Mark ${amtFmt} paid</button>`
+          : `<button class="pay-btn" style="background:#f0e8e0;color:#8B4513;border:1.5px solid #c4a898;font-size:14px;padding:11px;" onclick="markPaidEarly('${s.id}','${noteId}','${amtFmt}')">Pay early — ${amtFmt}</button>`
+      }
+    </div>
   </div>`;
 }
 
@@ -321,13 +329,26 @@ function adjustDays(id, delta) {
   renderCards(); renderTrafficLight();
 }
 
-function markPaid(id) {
+function markPaid(id, noteId) {
   const s = STAFF.find(x=>x.id===id);
   const calc = calcAmount(s);
-  const note = document.getElementById('note-'+id)?.value||'';
+  const note = document.getElementById(noteId)?.value||'';
   paidToday.add(id);
   cashOnHand = Math.max(0, cashOnHand - calc.amount);
   const entry = {name:s.name,role:s.role,amount:calc.amount,daysWorked:daysWorked[id],daysExpected:s.daysPerPeriod,adjusted:calc.adjusted,note,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})};
+  payLog.unshift(entry);
+  sendToSheets(entry);
+  renderCards(); renderTrafficLight(); renderLog();
+}
+
+function markPaidEarly(id, noteId, amtFmt) {
+  const s = STAFF.find(x=>x.id===id);
+  const calc = calcAmount(s);
+  const note = document.getElementById(noteId)?.value||'';
+  if (!confirm('Pay ' + s.name + ' ' + amtFmt + ' early?\n\nThis will log the payment and deduct from cash on hand.')) return;
+  paidToday.add(id);
+  cashOnHand = Math.max(0, cashOnHand - calc.amount);
+  const entry = {name:s.name,role:s.role,amount:calc.amount,daysWorked:daysWorked[id],daysExpected:s.daysPerPeriod,adjusted:calc.adjusted,note:'PAID EARLY'+(note?' · '+note:''),time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})};
   payLog.unshift(entry);
   sendToSheets(entry);
   renderCards(); renderTrafficLight(); renderLog();
