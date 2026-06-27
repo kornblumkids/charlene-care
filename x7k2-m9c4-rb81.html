@@ -13,8 +13,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .pin-header .lock{font-size:48px;margin-bottom:12px;}
 .pin-header h1{font-size:22px;font-weight:700;color:#8B4513;}
 .pin-header p{font-size:14px;color:#888;margin-top:6px;}
-.pin-dots{display:flex;gap:12px;justify-content:center;margin-bottom:2rem;}
-.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #c4a898;background:transparent;transition:background 0.15s;}
+.pin-dots{display:flex;gap:16px;justify-content:center;margin-bottom:2rem;}
+.pin-dot{width:18px;height:18px;border-radius:50%;border:2px solid #c4a898;background:transparent;transition:background 0.15s;}
 .pin-dot.filled{background:#8B4513;border-color:#8B4513;}
 .pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:280px;}
 .pin-key{background:#fff;border:1.5px solid #e5e5e5;border-radius:16px;padding:18px;font-size:22px;font-weight:600;text-align:center;cursor:pointer;color:#1a1a1a;-webkit-tap-highlight-color:transparent;transition:background 0.1s;}
@@ -88,13 +88,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="pin-header">
     <div class="lock">🔒</div>
     <h1>Pay Dashboard</h1>
-    <p>Enter your 8-digit PIN to continue</p>
+    <p>Enter your 4-digit PIN to continue</p>
   </div>
   <div class="pin-dots">
-    <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
-    <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
-    <div class="pin-dot" id="d4"></div><div class="pin-dot" id="d5"></div>
-    <div class="pin-dot" id="d6"></div><div class="pin-dot" id="d7"></div>
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
   </div>
   <div class="pin-keypad">
     <div class="pin-key" onclick="pinKey('1')">1</div>
@@ -141,8 +141,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 <script>
-const CORRECT_PIN = '47291836';
-const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbyssOGuGBCKaGothDM0EppRMpSDFSIWk9_vdAaHR2WnqIrTMP5eYW5tryNZmlXdssDP/exec';
+const CORRECT_PIN = '1110';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyssOGuGBCKaGothDM0EppRMpSDFSIWk9_vdAaHR2WnqIrTMP5eYW5tryNZmlXdssDP/exec';
 
 const STAFF = [
   { id:'eli',        name:'Eli',        role:'Household Staff',     type:'semimonthly', payDays:[1,15], amount:1150, daysPerPeriod:13 },
@@ -156,93 +156,146 @@ const STAFF = [
 let pinEntry='', cashOnHand=9000, daysWorked={}, paidToday=new Set(), payLog=[];
 STAFF.forEach(s => { daysWorked[s.id] = s.daysPerPeriod; });
 
-function pinKey(k){if(pinEntry.length>=8)return;pinEntry+=k;updateDots();if(pinEntry.length===8)checkPin();}
-function pinDel(){pinEntry=pinEntry.slice(0,-1);updateDots();document.getElementById('pin-error').textContent='';}
-function updateDots(){for(let i=0;i<8;i++)document.getElementById('d'+i).classList.toggle('filled',i<pinEntry.length);}
-function checkPin(){
-  if(pinEntry===CORRECT_PIN){
-    document.getElementById('pin-screen').style.display='none';
-    document.getElementById('app').style.display='block';
+function pinKey(k) {
+  if (pinEntry.length >= 4) return;
+  pinEntry += k;
+  updateDots();
+  if (pinEntry.length === 4) checkPin();
+}
+function pinDel() {
+  pinEntry = pinEntry.slice(0,-1);
+  updateDots();
+  document.getElementById('pin-error').textContent = '';
+}
+function updateDots() {
+  for (let i=0; i<4; i++) {
+    document.getElementById('d'+i).classList.toggle('filled', i < pinEntry.length);
+  }
+}
+function checkPin() {
+  if (pinEntry === CORRECT_PIN) {
+    document.getElementById('pin-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
     init();
   } else {
-    document.getElementById('pin-error').textContent='Incorrect PIN. Try again.';
-    pinEntry='';updateDots();
+    document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
+    pinEntry = ''; updateDots();
   }
 }
 
-const today=new Date();
-const todayDOM=today.getDate();
-const todayDOW=today.getDay();
+const today = new Date();
+const todayDOM = today.getDate();
+const todayDOW = today.getDay();
 
-function getWeekNumber(d){const date=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const dayNum=date.getUTCDay()||7;date.setUTCDate(date.getUTCDate()+4-dayNum);const yearStart=new Date(Date.UTC(date.getUTCFullYear(),0,1));return Math.ceil((((date-yearStart)/86400000)+1)/7);}
-const weekNum=getWeekNumber(today);
+function getWeekNumber(d) {
+  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayNum = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
+  return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+}
+const weekNum = getWeekNumber(today);
 
-function getNextPayDate(s,fromDate){
-  const d=fromDate||new Date();
-  if(s.type==='semimonthly'){const dom=d.getDate();if(dom<15)return new Date(d.getFullYear(),d.getMonth(),15);return new Date(d.getFullYear(),d.getMonth()+1,1);}
-  if(s.type==='weekly'){const diff=(s.payDay-d.getDay()+7)%7||7;const next=new Date(d);next.setDate(d.getDate()+diff);return next;}
-  if(s.type==='biweekly'){const last=new Date(s.lastPaid);const next=new Date(last);next.setDate(last.getDate()+14);while(next<=d)next.setDate(next.getDate()+14);return next;}
+function getNextPayDate(s, fromDate) {
+  const d = fromDate || new Date();
+  if (s.type === 'semimonthly') {
+    const dom = d.getDate();
+    if (dom < 15) return new Date(d.getFullYear(), d.getMonth(), 15);
+    return new Date(d.getFullYear(), d.getMonth() + 1, 1);
+  }
+  if (s.type === 'weekly') {
+    const diff = (s.payDay - d.getDay() + 7) % 7 || 7;
+    const next = new Date(d); next.setDate(d.getDate() + diff); return next;
+  }
+  if (s.type === 'biweekly') {
+    const last = new Date(s.lastPaid);
+    const next = new Date(last); next.setDate(last.getDate() + 14);
+    while (next <= d) next.setDate(next.getDate() + 14);
+    return next;
+  }
   return null;
 }
 
-function fmtDate(d){return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});}
-function fmtShort(d){return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+function fmtDate(d) { return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); }
+function fmtShort(d) { return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
 
-function isDueToday(s){
-  if(s.type==='semimonthly')return s.payDays.includes(todayDOM);
-  if(s.type==='weekly')return s.payDay===todayDOW;
-  if(s.type==='biweekly'){const next=getNextPayDate(s,new Date(today.getFullYear(),today.getMonth(),today.getDate()-1));return next.toDateString()===today.toDateString();}
+function isDueToday(s) {
+  if (s.type === 'semimonthly') return s.payDays.includes(todayDOM);
+  if (s.type === 'weekly') return s.payDay === todayDOW;
+  if (s.type === 'biweekly') {
+    const next = getNextPayDate(s, new Date(today.getFullYear(), today.getMonth(), today.getDate()-1));
+    return next.toDateString() === today.toDateString();
+  }
   return false;
 }
 
-function calcAmount(s){const worked=daysWorked[s.id];const expected=s.daysPerPeriod;if(worked===expected)return{amount:s.amount,adjusted:false};const daily=s.amount/expected;return{amount:Math.round(daily*worked*100)/100,adjusted:true,original:s.amount};}
-
-function getUpcoming(days){
-  const future=new Date(today);future.setDate(today.getDate()+days);
-  const list=[];
-  STAFF.forEach(s=>{
-    if(isDueToday(s))return;
-    let check=new Date(today);
-    for(let i=0;i<4;i++){const next=getNextPayDate(s,check);if(!next||next>future)break;list.push({s,date:next});check=new Date(next);check.setDate(check.getDate()+1);}
-  });
-  return list.sort((a,b)=>a.date-b.date);
+function calcAmount(s) {
+  const worked = daysWorked[s.id], expected = s.daysPerPeriod;
+  if (worked === expected) return { amount: s.amount, adjusted: false };
+  return { amount: Math.round((s.amount / expected) * worked * 100) / 100, adjusted: true, original: s.amount };
 }
 
-function cashNeeded14(){
-  const todayStaff=STAFF.filter(s=>isDueToday(s));
-  const upStaff=getUpcoming(14);
-  let total=0;
-  todayStaff.forEach(s=>{if(!paidToday.has(s.id))total+=calcAmount(s).amount;});
-  upStaff.forEach(({s})=>total+=s.amount);
+function getUpcoming(days) {
+  const future = new Date(today); future.setDate(today.getDate() + days);
+  const list = [];
+  STAFF.forEach(s => {
+    if (isDueToday(s)) return;
+    let check = new Date(today);
+    for (let i=0; i<4; i++) {
+      const next = getNextPayDate(s, check);
+      if (!next || next > future) break;
+      list.push({ s, date: next });
+      check = new Date(next); check.setDate(check.getDate() + 1);
+    }
+  });
+  return list.sort((a,b) => a.date - b.date);
+}
+
+function cashNeeded14() {
+  let total = 0;
+  STAFF.filter(s => isDueToday(s)).forEach(s => { if (!paidToday.has(s.id)) total += calcAmount(s).amount; });
+  getUpcoming(14).forEach(({s}) => total += s.amount);
   return total;
 }
 
-function renderTrafficLight(){
-  const needed=cashNeeded14();
-  const remaining=cashOnHand-needed;
-  const el=document.getElementById('traffic-light-area');
-  let cls,icon,title,msg;
-  if(cashOnHand<=0){cls='red';icon='🔴';title='No cash on hand!';msg='Update your cash balance after a bank trip.';}
-  else if(remaining<0){cls='red';icon='🔴';title='Bank trip needed now!';msg=`Upcoming payments total $${needed.toLocaleString('en-US',{minimumFractionDigits:2})} but you only have $${cashOnHand.toLocaleString('en-US',{minimumFractionDigits:2})}. Plan a bank trip ASAP.`;}
-  else if(remaining<2000){cls='yellow';icon='🟡';title='Plan a bank trip soon';msg=`After upcoming payments you'll have ~$${remaining.toLocaleString('en-US',{minimumFractionDigits:2})} left. Schedule a bank trip within the next 2 weeks.`;}
-  else{cls='green';icon='🟢';title="You're good";msg=`Enough cash for upcoming payments. ~$${remaining.toLocaleString('en-US',{minimumFractionDigits:2})} remaining after this week.`;}
-  el.innerHTML=`<div class="traffic-wrap ${cls}"><div class="traffic-light">${icon}</div><div class="traffic-text"><h2>${title}</h2><p>${msg}</p></div></div>`;
+function renderTrafficLight() {
+  const needed = cashNeeded14();
+  const remaining = cashOnHand - needed;
+  let cls, icon, title, msg;
+  if (cashOnHand <= 0) {
+    cls='red'; icon='🔴'; title='No cash on hand!'; msg='Update your cash balance after a bank trip.';
+  } else if (remaining < 0) {
+    cls='red'; icon='🔴'; title='Bank trip needed now!';
+    msg=`Upcoming payments total $${needed.toLocaleString('en-US',{minimumFractionDigits:2})} but you only have $${cashOnHand.toLocaleString('en-US',{minimumFractionDigits:2})}. Plan a bank trip ASAP.`;
+  } else if (remaining < 2000) {
+    cls='yellow'; icon='🟡'; title='Plan a bank trip soon';
+    msg=`After upcoming payments you'll have ~$${remaining.toLocaleString('en-US',{minimumFractionDigits:2})} left. Schedule a bank trip within the next 2 weeks.`;
+  } else {
+    cls='green'; icon='🟢'; title="You're good";
+    msg=`Enough cash for upcoming payments. ~$${remaining.toLocaleString('en-US',{minimumFractionDigits:2})} remaining after this week.`;
+  }
+  document.getElementById('traffic-light-area').innerHTML =
+    `<div class="traffic-wrap ${cls}"><div class="traffic-light">${icon}</div><div class="traffic-text"><h2>${title}</h2><p>${msg}</p></div></div>`;
 }
 
-function renderCards(){
-  const todayStaff=STAFF.filter(s=>isDueToday(s));
-  const upcoming=getUpcoming(21);
-  document.getElementById('today-head').textContent='TODAY — '+today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-  document.getElementById('today-cards').innerHTML=todayStaff.length?todayStaff.map(s=>cardHTML(s,today,true)).join(''):'<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments due today.</div>';
-  document.getElementById('week-cards').innerHTML=upcoming.length?upcoming.map(({s,date})=>cardHTML(s,date,false)).join(''):'<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No upcoming payments in the next 3 weeks.</div>';
+function renderCards() {
+  const todayStaff = STAFF.filter(s => isDueToday(s));
+  const upcoming = getUpcoming(21);
+  document.getElementById('today-head').textContent = 'TODAY — ' + fmtDate(today);
+  document.getElementById('today-cards').innerHTML = todayStaff.length
+    ? todayStaff.map(s => cardHTML(s, today, true)).join('')
+    : '<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments due today.</div>';
+  document.getElementById('week-cards').innerHTML = upcoming.length
+    ? upcoming.map(({s,date}) => cardHTML(s, date, false)).join('')
+    : '<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No upcoming payments in the next 3 weeks.</div>';
 }
 
-function cardHTML(s,date,isToday){
-  const calc=calcAmount(s);const paid=paidToday.has(s.id);
-  const amtFmt='$'+calc.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const origFmt=calc.adjusted?'$'+calc.original.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'';
-  const dw=daysWorked[s.id];const dp=s.daysPerPeriod;
-  const dateLabel=isToday?'Due today':'Due '+fmtShort(date);
+function cardHTML(s, date, isToday) {
+  const calc = calcAmount(s);
+  const paid = paidToday.has(s.id);
+  const amtFmt = '$' + calc.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const origFmt = calc.adjusted ? '$' + calc.original.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : '';
+  const dw = daysWorked[s.id], dp = s.daysPerPeriod;
   return `<div class="pay-card ${paid?'paid':isToday?'due-today':''}" id="card-${s.id}">
     <div class="card-top">
       <div class="person-info">
@@ -253,7 +306,7 @@ function cardHTML(s,date,isToday){
       <div class="amount-area">
         <div class="pay-amt ${calc.adjusted?'adjusted':''}">${amtFmt}</div>
         ${calc.adjusted?`<div class="orig-amt">${origFmt}</div>`:''}
-        <span class="status-badge ${paid?'badge-paid':isToday?'badge-today':'badge-upcoming'}">${paid?'✓ Paid':dateLabel}</span>
+        <span class="status-badge ${paid?'badge-paid':isToday?'badge-today':'badge-upcoming'}">${paid?'✓ Paid':isToday?'Due today':'Due '+fmtShort(date)}</span>
       </div>
     </div>
     ${dp>1?`<div class="days-row"><div class="days-label">Days worked <span style="color:#999;font-size:11px;">(of ${dp} expected)</span></div><div class="days-ctrl"><button class="days-btn" onclick="adjustDays('${s.id}',-1)">−</button><div class="days-val" id="dw-${s.id}">${dw}</div><button class="days-btn" onclick="adjustDays('${s.id}',1)">+</button></div></div>`:''}
@@ -262,33 +315,60 @@ function cardHTML(s,date,isToday){
   </div>`;
 }
 
-function adjustDays(id,delta){const s=STAFF.find(x=>x.id===id);daysWorked[id]=Math.max(0,Math.min(s.daysPerPeriod,daysWorked[id]+delta));renderCards();renderTrafficLight();}
-
-function markPaid(id){
-  const s=STAFF.find(x=>x.id===id);const calc=calcAmount(s);
-  const note=document.getElementById('note-'+id)?.value||'';
-  paidToday.add(id);cashOnHand=Math.max(0,cashOnHand-calc.amount);
-  const entry={name:s.name,role:s.role,amount:calc.amount,daysWorked:daysWorked[id],daysExpected:s.daysPerPeriod,adjusted:calc.adjusted,note,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})};
-  payLog.unshift(entry);sendToSheets(entry);renderCards();renderTrafficLight();renderLog();
+function adjustDays(id, delta) {
+  const s = STAFF.find(x=>x.id===id);
+  daysWorked[id] = Math.max(0, Math.min(s.daysPerPeriod, daysWorked[id]+delta));
+  renderCards(); renderTrafficLight();
 }
 
-function undoPay(id){const s=STAFF.find(x=>x.id===id);const calc=calcAmount(s);paidToday.delete(id);cashOnHand+=calc.amount;payLog=payLog.filter(e=>e.name!==s.name);renderCards();renderTrafficLight();renderLog();}
-
-function renderLog(){
-  const el=document.getElementById('log-list');
-  if(!payLog.length){el.innerHTML='<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments recorded yet.</div>';return;}
-  el.innerHTML=payLog.map(e=>`<div class="log-row"><div><div class="log-title">${e.name} <span style="font-size:12px;font-weight:400;color:#888;">— ${e.role}</span></div><div class="log-meta">${e.daysWorked} of ${e.daysExpected} days${e.note?' · '+e.note:''} · ${e.time}</div></div><div class="log-amt">$${e.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>`).join('');
+function markPaid(id) {
+  const s = STAFF.find(x=>x.id===id);
+  const calc = calcAmount(s);
+  const note = document.getElementById('note-'+id)?.value||'';
+  paidToday.add(id);
+  cashOnHand = Math.max(0, cashOnHand - calc.amount);
+  const entry = {name:s.name,role:s.role,amount:calc.amount,daysWorked:daysWorked[id],daysExpected:s.daysPerPeriod,adjusted:calc.adjusted,note,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})};
+  payLog.unshift(entry);
+  sendToSheets(entry);
+  renderCards(); renderTrafficLight(); renderLog();
 }
 
-function openCashModal(){document.getElementById('cash-input').value=cashOnHand||'';document.getElementById('modal').style.display='flex';setTimeout(()=>document.getElementById('cash-input').focus(),100);}
-function closeModal(){document.getElementById('modal').style.display='none';}
-function saveCash(){const amt=parseFloat(document.getElementById('cash-input').value)||0;cashOnHand=amt;sendToSheets({type:'refresh',amount:amt,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});closeModal();renderTrafficLight();}
+function undoPay(id) {
+  const s = STAFF.find(x=>x.id===id);
+  const calc = calcAmount(s);
+  paidToday.delete(id);
+  cashOnHand += calc.amount;
+  payLog = payLog.filter(e=>e.name!==s.name);
+  renderCards(); renderTrafficLight(); renderLog();
+}
 
-async function sendToSheets(data){try{await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'cashmoney',...data,date:new Date().toLocaleDateString()})});}catch(e){}}
+function renderLog() {
+  const el = document.getElementById('log-list');
+  if (!payLog.length) { el.innerHTML='<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments recorded yet.</div>'; return; }
+  el.innerHTML = payLog.map(e=>`<div class="log-row"><div><div class="log-title">${e.name} <span style="font-size:12px;font-weight:400;color:#888;">— ${e.role}</span></div><div class="log-meta">${e.daysWorked} of ${e.daysExpected} days${e.note?' · '+e.note:''} · ${e.time}</div></div><div class="log-amt">$${e.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>`).join('');
+}
 
-function init(){
-  document.getElementById('top-date').textContent=today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-  renderTrafficLight();renderCards();renderLog();
+function openCashModal() {
+  document.getElementById('cash-input').value = cashOnHand||'';
+  document.getElementById('modal').style.display='flex';
+  setTimeout(()=>document.getElementById('cash-input').focus(),100);
+}
+function closeModal() { document.getElementById('modal').style.display='none'; }
+function saveCash() {
+  cashOnHand = parseFloat(document.getElementById('cash-input').value)||0;
+  sendToSheets({type:'refresh',amount:cashOnHand,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
+  closeModal(); renderTrafficLight();
+}
+
+async function sendToSheets(data) {
+  try {
+    await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'cashmoney',...data,date:new Date().toLocaleDateString()})});
+  } catch(e) {}
+}
+
+function init() {
+  document.getElementById('top-date').textContent = fmtDate(today);
+  renderTrafficLight(); renderCards(); renderLog();
 }
 </script>
 </body>
