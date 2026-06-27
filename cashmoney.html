@@ -8,8 +8,6 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f3ee;color:#1a1a1a;max-width:1024px;margin:0 auto;min-height:100vh;}
-
-/* ── PIN SCREEN ── */
 #pin-screen{position:fixed;inset:0;background:#f7f3ee;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
 .pin-header{text-align:center;margin-bottom:2rem;}
 .pin-header .lock{font-size:48px;margin-bottom:12px;}
@@ -23,104 +21,80 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .pin-key:active{background:#f0e8e0;}
 .pin-key.del{font-size:18px;color:#888;}
 .pin-error{color:#A32D2D;font-size:14px;text-align:center;margin-top:1rem;min-height:20px;}
-
-/* ── MAIN APP ── */
-#app{display:none;padding-bottom:20px;}
+#app{display:none;padding-bottom:30px;}
 .top-bar{background:linear-gradient(135deg,#8B4513,#A0522D);color:white;padding:20px 16px 16px;}
 .top-bar h1{font-size:20px;font-weight:700;}
 .top-bar .sub{font-size:13px;opacity:0.85;margin-top:3px;}
-
-/* Cash banner */
-.cash-banner{margin:12px 12px 0;border-radius:16px;padding:16px;display:flex;justify-content:space-between;align-items:center;}
-.cash-banner.ok{background:#EAF3DE;border:1.5px solid #B8DDB0;}
-.cash-banner.warn{background:#FCEBEB;border:1.5px solid #E8AAAA;}
-.cash-banner.low{background:#FFF3CD;border:1.5px solid #E8D48A;}
-.cash-left h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;}
-.cash-left .amount{font-size:28px;font-weight:700;margin-top:2px;}
-.cash-left .note{font-size:12px;margin-top:2px;opacity:0.8;}
-.cash-right{text-align:right;}
-.cash-right .needed{font-size:13px;font-weight:600;}
-.cash-right .needed-amt{font-size:20px;font-weight:700;margin-top:2px;}
-.refresh-btn{background:rgba(255,255,255,0.7);border:1.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;width:100%;-webkit-tap-highlight-color:transparent;}
-
-/* Section headers */
-.sec-head{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.06em;padding:16px 16px 6px;}
-
-/* Pay cards */
+.traffic-wrap{margin:12px 12px 0;border-radius:16px;padding:18px;display:flex;align-items:center;gap:16px;}
+.traffic-wrap.green{background:#EAF3DE;border:1.5px solid #B8DDB0;}
+.traffic-wrap.yellow{background:#FFF3CD;border:1.5px solid #E8D48A;}
+.traffic-wrap.red{background:#FCEBEB;border:1.5px solid #E8AAAA;}
+.traffic-light{font-size:36px;flex-shrink:0;}
+.traffic-text h2{font-size:15px;font-weight:700;margin-bottom:3px;}
+.traffic-text p{font-size:13px;opacity:0.85;line-height:1.4;}
+.traffic-wrap.green .traffic-text h2{color:#27500A;}
+.traffic-wrap.yellow .traffic-text h2{color:#856404;}
+.traffic-wrap.red .traffic-text h2{color:#A32D2D;}
+.update-cash-btn{margin:8px 12px 0;width:calc(100% - 24px);background:rgba(139,69,19,0.08);border:1.5px solid #c4a898;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;color:#8B4513;-webkit-tap-highlight-color:transparent;text-align:left;}
+.sec-head{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.06em;padding:18px 16px 6px;}
 .pay-card{background:#fff;border-radius:16px;margin:0 12px 10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06);border:1.5px solid #e5e5e5;}
 .pay-card.due-today{border-color:#8B4513;border-width:2px;}
-.pay-card.overdue{border-color:#A32D2D;border-width:2px;}
 .pay-card.paid{opacity:0.5;}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
 .person-info .name{font-size:17px;font-weight:700;}
 .person-info .role{font-size:12px;color:#888;margin-top:2px;}
-.person-info .schedule{font-size:12px;color:#8B4513;font-weight:600;margin-top:2px;}
-.amount-area{text-align:right;}
-.amount-area .pay-amt{font-size:22px;font-weight:700;color:#8B4513;}
-.amount-area .pay-amt.adjusted{color:#A32D2D;}
-.amount-area .orig-amt{font-size:11px;color:#999;text-decoration:line-through;}
+.person-info .due-date{font-size:12px;color:#8B4513;font-weight:600;margin-top:4px;}
+.amount-area{text-align:right;flex-shrink:0;}
+.pay-amt{font-size:22px;font-weight:700;color:#8B4513;}
+.pay-amt.adjusted{color:#A32D2D;}
+.orig-amt{font-size:11px;color:#999;text-decoration:line-through;}
 .status-badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;margin-top:4px;}
 .badge-today{background:#FFF3CD;color:#856404;}
-.badge-overdue{background:#FCEBEB;color:#A32D2D;}
 .badge-upcoming{background:#f0f0f0;color:#666;}
 .badge-paid{background:#EAF3DE;color:#27500A;}
-
-/* Days adjuster */
 .days-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid #f0ece7;}
 .days-label{font-size:13px;color:#666;}
 .days-ctrl{display:flex;align-items:center;gap:10px;}
-.days-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid #e5e5e5;background:#f5f5f5;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;font-weight:600;color:#1a1a1a;}
+.days-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid #e5e5e5;background:#f5f5f5;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;font-weight:600;}
 .days-btn:active{background:#e5e5e5;}
 .days-val{font-size:17px;font-weight:700;min-width:24px;text-align:center;}
-
-/* Pay button */
 .pay-btn-row{margin-top:12px;}
 .pay-btn{width:100%;padding:14px;border-radius:12px;border:none;font-size:16px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .pay-btn.do-pay{background:#2C5F2E;color:white;}
 .pay-btn.do-pay:active{background:#1e4520;}
 .pay-btn.undo-pay{background:#f0f0f0;color:#666;border:1px solid #e5e5e5;}
-
-/* Notes */
 .note-row{margin-top:10px;}
 .note-input{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid #e5e5e5;background:#f9f9f9;font-size:14px;color:#1a1a1a;font-family:inherit;resize:none;}
 .note-input:focus{outline:2px solid #8B4513;background:#fff;}
-
-/* Petty cash modal */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:flex-end;justify-content:center;}
 .modal{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 40px;width:100%;max-width:1024px;}
-.modal h2{font-size:18px;font-weight:700;margin-bottom:16px;}
-.modal-input{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e5e5;font-size:20px;font-weight:600;text-align:center;font-family:inherit;margin-bottom:12px;}
+.modal h2{font-size:18px;font-weight:700;margin-bottom:8px;}
+.modal p{font-size:13px;color:#888;margin-bottom:16px;}
+.modal-input{width:100%;padding:14px;border-radius:12px;border:1.5px solid #e5e5e5;font-size:24px;font-weight:600;text-align:center;font-family:inherit;margin-bottom:12px;}
 .modal-input:focus{outline:2px solid #8B4513;}
 .modal-btns{display:flex;gap:10px;}
 .modal-btns button{flex:1;padding:14px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;}
 .modal-cancel{background:#f0f0f0;color:#666;}
 .modal-save{background:#8B4513;color:white;}
-
-/* Log section */
 .log-row{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:12px 14px;margin:0 12px 8px;display:flex;justify-content:space-between;align-items:flex-start;}
 .log-title{font-size:14px;font-weight:600;}
 .log-meta{font-size:12px;color:#666;margin-top:2px;}
-.log-amt{font-size:14px;font-weight:700;color:#2C5F2E;}
+.log-amt{font-size:14px;font-weight:700;color:#2C5F2E;flex-shrink:0;}
 </style>
 </head>
 <body>
 
-<!-- ── PIN SCREEN ── -->
 <div id="pin-screen">
   <div class="pin-header">
     <div class="lock">🔒</div>
     <h1>Pay Dashboard</h1>
     <p>Enter your 8-digit PIN to continue</p>
   </div>
-  <div class="pin-dots" id="pin-dots">
-    <div class="pin-dot" id="d0"></div>
-    <div class="pin-dot" id="d1"></div>
-    <div class="pin-dot" id="d2"></div>
-    <div class="pin-dot" id="d3"></div>
-    <div class="pin-dot" id="d4"></div>
-    <div class="pin-dot" id="d5"></div>
-    <div class="pin-dot" id="d6"></div>
-    <div class="pin-dot" id="d7"></div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
+    <div class="pin-dot" id="d4"></div><div class="pin-dot" id="d5"></div>
+    <div class="pin-dot" id="d6"></div><div class="pin-dot" id="d7"></div>
   </div>
   <div class="pin-keypad">
     <div class="pin-key" onclick="pinKey('1')">1</div>
@@ -132,336 +106,189 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="pin-key" onclick="pinKey('7')">7</div>
     <div class="pin-key" onclick="pinKey('8')">8</div>
     <div class="pin-key" onclick="pinKey('9')">9</div>
-    <div class="pin-key" style="visibility:hidden;"></div>
+    <div class="pin-key" style="visibility:hidden"></div>
     <div class="pin-key" onclick="pinKey('0')">0</div>
     <div class="pin-key del" onclick="pinDel()">⌫</div>
   </div>
   <div class="pin-error" id="pin-error"></div>
 </div>
 
-<!-- ── MAIN APP ── -->
 <div id="app">
   <div class="top-bar">
     <h1>💵 Pay Dashboard</h1>
     <p class="sub" id="top-date"></p>
   </div>
-
-  <!-- Cash on hand banner -->
-  <div class="cash-banner ok" id="cash-banner">
-    <div class="cash-left">
-      <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#27500A;">Cash on hand</div>
-      <div id="cash-amount" style="font-size:28px;font-weight:700;color:#27500A;">$500</div>
-      <div id="cash-note" style="font-size:12px;color:#555;">Refresh every Monday</div>
-    </div>
-    <div class="cash-right">
-      <div style="font-size:13px;font-weight:600;color:#555;">Needed this week</div>
-      <div id="cash-needed" style="font-size:20px;font-weight:700;color:#1a1a1a;margin-top:2px;">—</div>
-    </div>
-  </div>
-  <button class="refresh-btn" style="margin:6px 12px 0;width:calc(100% - 24px);" onclick="openRefreshModal()">+ Refresh petty cash</button>
-
-  <!-- Today -->
+  <div id="traffic-light-area"></div>
+  <button class="update-cash-btn" onclick="openCashModal()">💰 Update cash on hand after bank trip</button>
   <div class="sec-head" id="today-head">TODAY</div>
   <div id="today-cards"></div>
-
-  <!-- This week -->
-  <div class="sec-head">THIS WEEK</div>
+  <div class="sec-head">COMING UP</div>
   <div id="week-cards"></div>
-
-  <!-- Payment log -->
   <div class="sec-head">PAID TODAY</div>
   <div id="log-list"><div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments recorded yet.</div></div>
 </div>
 
-<!-- Petty cash refresh modal -->
-<div class="modal-bg" id="modal" style="display:none;" onclick="closeModal(event)">
+<div class="modal-bg" id="modal" style="display:none;" onclick="if(event.target.id==='modal')closeModal()">
   <div class="modal">
-    <h2>Refresh petty cash</h2>
-    <input type="number" class="modal-input" id="refresh-amt" placeholder="500" value="500">
-    <div style="font-size:13px;color:#888;margin-bottom:16px;text-align:center;">Enter the amount you're adding to the envelope</div>
+    <h2>Update cash on hand</h2>
+    <p>Enter the total cash you have available right now after your bank trip.</p>
+    <input type="number" class="modal-input" id="cash-input" placeholder="9000">
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="modal-save" onclick="doRefresh()">Add cash</button>
+      <button class="modal-save" onclick="saveCash()">Save</button>
     </div>
   </div>
 </div>
 
 <script>
 const CORRECT_PIN = '47291836';
-const SHEETS_URL = 'PASTE_YOUR_PAY_TRACKER_APPS_SCRIPT_URL_HERE';
+const SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbyssOGuGBCKaGothDM0EppRMpSDFSIWk9_vdAaHR2WnqIrTMP5eYW5tryNZmlXdssDP/exec';
 
 const STAFF = [
   { id:'eli',        name:'Eli',        role:'Household Staff',     type:'semimonthly', payDays:[1,15], amount:1150, daysPerPeriod:13 },
   { id:'mayela',     name:'Mayela',     role:'Household Staff',     type:'semimonthly', payDays:[1,15], amount:2500, daysPerPeriod:13 },
   { id:'oneida',     name:'Oneida',     role:'Housekeeper',         type:'weekly',      payDay:4,       amount:320,  daysPerPeriod:1  },
   { id:'eloisa',     name:'Eloisa',     role:'Housekeeper',         type:'weekly',      payDay:5,       amount:240,  daysPerPeriod:1  },
-  { id:'chancelvie', name:'Chancelvie', role:'Overnight Caregiver', type:'biweekly',    payDay:5,       amount:2500, daysPerPeriod:10 },
+  { id:'chancelvie', name:'Chancelvie', role:'Overnight Caregiver', type:'biweekly',    payDay:5,       amount:2500, daysPerPeriod:10, lastPaid:'2026-06-26' },
   { id:'diana',      name:'Diana',      role:'Daytime Caregiver',   type:'weekly',      payDay:5,       amount:500,  daysPerPeriod:5  },
 ];
 
-let pinEntry = '';
-let cashOnHand = 500;
-let payLog = [];
-let daysWorked = {};
-let paidToday = new Set();
-
+let pinEntry='', cashOnHand=9000, daysWorked={}, paidToday=new Set(), payLog=[];
 STAFF.forEach(s => { daysWorked[s.id] = s.daysPerPeriod; });
 
-function pinKey(k) {
-  if (pinEntry.length >= 8) return;
-  pinEntry += k;
-  updateDots();
-  if (pinEntry.length === 8) checkPin();
-}
-function pinDel() {
-  pinEntry = pinEntry.slice(0,-1);
-  updateDots();
-  document.getElementById('pin-error').textContent = '';
-}
-function updateDots() {
-  for (let i=0;i<8;i++) {
-    document.getElementById('d'+i).classList.toggle('filled', i < pinEntry.length);
-  }
-}
-function checkPin() {
-  if (pinEntry === CORRECT_PIN) {
-    document.getElementById('pin-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
+function pinKey(k){if(pinEntry.length>=8)return;pinEntry+=k;updateDots();if(pinEntry.length===8)checkPin();}
+function pinDel(){pinEntry=pinEntry.slice(0,-1);updateDots();document.getElementById('pin-error').textContent='';}
+function updateDots(){for(let i=0;i<8;i++)document.getElementById('d'+i).classList.toggle('filled',i<pinEntry.length);}
+function checkPin(){
+  if(pinEntry===CORRECT_PIN){
+    document.getElementById('pin-screen').style.display='none';
+    document.getElementById('app').style.display='block';
     init();
   } else {
-    document.getElementById('pin-error').textContent = 'Incorrect PIN. Try again.';
-    pinEntry = '';
-    updateDots();
+    document.getElementById('pin-error').textContent='Incorrect PIN. Try again.';
+    pinEntry='';updateDots();
   }
 }
 
-const today = new Date();
-const todayDOM = today.getDate();
-const todayDOW = today.getDay();
-const todayStr = today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+const today=new Date();
+const todayDOM=today.getDate();
+const todayDOW=today.getDay();
 
-function getWeekNumber(d) {
-  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  const dayNum = date.getUTCDay() || 7;
-  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
-  return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+function getWeekNumber(d){const date=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const dayNum=date.getUTCDay()||7;date.setUTCDate(date.getUTCDate()+4-dayNum);const yearStart=new Date(Date.UTC(date.getUTCFullYear(),0,1));return Math.ceil((((date-yearStart)/86400000)+1)/7);}
+const weekNum=getWeekNumber(today);
+
+function getNextPayDate(s,fromDate){
+  const d=fromDate||new Date();
+  if(s.type==='semimonthly'){const dom=d.getDate();if(dom<15)return new Date(d.getFullYear(),d.getMonth(),15);return new Date(d.getFullYear(),d.getMonth()+1,1);}
+  if(s.type==='weekly'){const diff=(s.payDay-d.getDay()+7)%7||7;const next=new Date(d);next.setDate(d.getDate()+diff);return next;}
+  if(s.type==='biweekly'){const last=new Date(s.lastPaid);const next=new Date(last);next.setDate(last.getDate()+14);while(next<=d)next.setDate(next.getDate()+14);return next;}
+  return null;
 }
-const weekNum = getWeekNumber(today);
 
-function isDueToday(s) {
-  if (s.type === 'semimonthly') return s.payDays.includes(todayDOM);
-  if (s.type === 'weekly') return s.payDay === todayDOW;
-  if (s.type === 'biweekly') return s.payDay === todayDOW && weekNum % 2 === 0;
+function fmtDate(d){return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});}
+function fmtShort(d){return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+
+function isDueToday(s){
+  if(s.type==='semimonthly')return s.payDays.includes(todayDOM);
+  if(s.type==='weekly')return s.payDay===todayDOW;
+  if(s.type==='biweekly'){const next=getNextPayDate(s,new Date(today.getFullYear(),today.getMonth(),today.getDate()-1));return next.toDateString()===today.toDateString();}
   return false;
 }
 
-function isDueThisWeek(s) {
-  if (isDueToday(s)) return false;
-  if (s.type === 'semimonthly') {
-    const mon = new Date(today); mon.setDate(today.getDate() - todayDOW + 1);
-    const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
-    return s.payDays.some(d => {
-      const pd = new Date(today.getFullYear(), today.getMonth(), d);
-      return pd >= mon && pd <= sun;
-    });
-  }
-  if (s.type === 'weekly') return true;
-  if (s.type === 'biweekly') return weekNum % 2 === 0;
-  return false;
+function calcAmount(s){const worked=daysWorked[s.id];const expected=s.daysPerPeriod;if(worked===expected)return{amount:s.amount,adjusted:false};const daily=s.amount/expected;return{amount:Math.round(daily*worked*100)/100,adjusted:true,original:s.amount};}
+
+function getUpcoming(days){
+  const future=new Date(today);future.setDate(today.getDate()+days);
+  const list=[];
+  STAFF.forEach(s=>{
+    if(isDueToday(s))return;
+    let check=new Date(today);
+    for(let i=0;i<4;i++){const next=getNextPayDate(s,check);if(!next||next>future)break;list.push({s,date:next});check=new Date(next);check.setDate(check.getDate()+1);}
+  });
+  return list.sort((a,b)=>a.date-b.date);
 }
 
-function getDayLabel(s) {
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  if (s.type === 'semimonthly') return '1st & 15th of month';
-  if (s.type === 'weekly' || s.type === 'biweekly') return days[s.payDay];
-  return '';
+function cashNeeded14(){
+  const todayStaff=STAFF.filter(s=>isDueToday(s));
+  const upStaff=getUpcoming(14);
+  let total=0;
+  todayStaff.forEach(s=>{if(!paidToday.has(s.id))total+=calcAmount(s).amount;});
+  upStaff.forEach(({s})=>total+=s.amount);
+  return total;
 }
 
-function calcAmount(s) {
-  const worked = daysWorked[s.id];
-  const expected = s.daysPerPeriod;
-  if (worked === expected) return { amount: s.amount, adjusted: false };
-  const daily = s.amount / expected;
-  return { amount: Math.round(daily * worked * 100) / 100, adjusted: true, original: s.amount };
+function renderTrafficLight(){
+  const needed=cashNeeded14();
+  const remaining=cashOnHand-needed;
+  const el=document.getElementById('traffic-light-area');
+  let cls,icon,title,msg;
+  if(cashOnHand<=0){cls='red';icon='🔴';title='No cash on hand!';msg='Update your cash balance after a bank trip.';}
+  else if(remaining<0){cls='red';icon='🔴';title='Bank trip needed now!';msg=`Upcoming payments total $${needed.toLocaleString('en-US',{minimumFractionDigits:2})} but you only have $${cashOnHand.toLocaleString('en-US',{minimumFractionDigits:2})}. Plan a bank trip ASAP.`;}
+  else if(remaining<2000){cls='yellow';icon='🟡';title='Plan a bank trip soon';msg=`After upcoming payments you'll have ~$${remaining.toLocaleString('en-US',{minimumFractionDigits:2})} left. Schedule a bank trip within the next 2 weeks.`;}
+  else{cls='green';icon='🟢';title="You're good";msg=`Enough cash for upcoming payments. ~$${remaining.toLocaleString('en-US',{minimumFractionDigits:2})} remaining after this week.`;}
+  el.innerHTML=`<div class="traffic-wrap ${cls}"><div class="traffic-light">${icon}</div><div class="traffic-text"><h2>${title}</h2><p>${msg}</p></div></div>`;
 }
 
-function calcWeekNeeded() {
-  return STAFF.filter(s => isDueToday(s) || isDueThisWeek(s))
-    .reduce((sum, s) => sum + calcAmount(s).amount, 0);
+function renderCards(){
+  const todayStaff=STAFF.filter(s=>isDueToday(s));
+  const upcoming=getUpcoming(21);
+  document.getElementById('today-head').textContent='TODAY — '+today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('today-cards').innerHTML=todayStaff.length?todayStaff.map(s=>cardHTML(s,today,true)).join(''):'<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments due today.</div>';
+  document.getElementById('week-cards').innerHTML=upcoming.length?upcoming.map(({s,date})=>cardHTML(s,date,false)).join(''):'<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No upcoming payments in the next 3 weeks.</div>';
 }
 
-function init() {
-  document.getElementById('top-date').textContent = todayStr;
-  renderCashBanner();
-  renderCards();
-  renderLog();
-}
-
-function renderCashBanner() {
-  const needed = calcWeekNeeded();
-  const banner = document.getElementById('cash-banner');
-  const amtEl = document.getElementById('cash-amount');
-  const noteEl = document.getElementById('cash-note');
-  const neededEl = document.getElementById('cash-needed');
-
-  amtEl.textContent = '$' + cashOnHand.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  neededEl.textContent = '$' + needed.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-
-  banner.className = 'cash-banner';
-  if (cashOnHand < 100) {
-    banner.classList.add('warn');
-    amtEl.style.color = '#A32D2D';
-    noteEl.textContent = '⚠️ Very low — get cash now!';
-    noteEl.style.color = '#A32D2D';
-  } else if (cashOnHand < needed) {
-    banner.classList.add('low');
-    amtEl.style.color = '#856404';
-    noteEl.textContent = '⚠️ Not enough for this week';
-    noteEl.style.color = '#856404';
-  } else {
-    banner.classList.add('ok');
-    amtEl.style.color = '#27500A';
-    noteEl.textContent = 'Refresh every Monday · Target $500';
-    noteEl.style.color = '#555';
-  }
-}
-
-function renderCards() {
-  const todayCards = STAFF.filter(s => isDueToday(s));
-  const weekCards = STAFF.filter(s => isDueThisWeek(s));
-
-  document.getElementById('today-head').textContent = 'TODAY — ' + today.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
-
-  document.getElementById('today-cards').innerHTML = todayCards.length
-    ? todayCards.map(s => cardHTML(s,'today')).join('')
-    : '<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments due today.</div>';
-
-  document.getElementById('week-cards').innerHTML = weekCards.length
-    ? weekCards.map(s => cardHTML(s,'week')).join('')
-    : '<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No other payments this week.</div>';
-}
-
-function cardHTML(s, section) {
-  const calc = calcAmount(s);
-  const paid = paidToday.has(s.id);
-  const amtFormatted = '$' + calc.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const origFormatted = calc.adjusted ? '$' + calc.original.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : '';
-  const dw = daysWorked[s.id];
-  const dp = s.daysPerPeriod;
-
-  return `<div class="pay-card ${paid ? 'paid' : section === 'today' ? 'due-today' : ''}" id="card-${s.id}">
-  <div class="card-top">
-    <div class="person-info">
-      <div class="name">${s.name}</div>
-      <div class="role">${s.role}</div>
-      <div class="schedule">${s.type === 'semimonthly' ? 'Paid 1st & 15th' : s.type === 'biweekly' ? 'Paid every other Friday' : 'Paid every ' + getDayLabel(s)}</div>
-    </div>
-    <div class="amount-area">
-      <div class="pay-amt ${calc.adjusted ? 'adjusted' : ''}">${amtFormatted}</div>
-      ${calc.adjusted ? `<div class="orig-amt">${origFormatted}</div>` : ''}
-      <div><span class="status-badge ${paid ? 'badge-paid' : section === 'today' ? 'badge-today' : 'badge-upcoming'}">${paid ? '✓ Paid' : section === 'today' ? 'Due today' : 'Due ' + getDayLabel(s)}</span></div>
-    </div>
-  </div>
-  ${dp > 1 ? `
-  <div class="days-row">
-    <div class="days-label">Days worked <span style="color:#999;font-size:12px;">(of ${dp} expected)</span></div>
-    <div class="days-ctrl">
-      <button class="days-btn" onclick="adjustDays('${s.id}',-1)">−</button>
-      <div class="days-val" id="dw-${s.id}">${dw}</div>
-      <button class="days-btn" onclick="adjustDays('${s.id}',1)">+</button>
-    </div>
-  </div>` : ''}
-  <div class="pay-btn-row">
-    ${paid
-      ? `<button class="pay-btn undo-pay" onclick="undoPay('${s.id}')">Undo payment</button>`
-      : `<button class="pay-btn do-pay" onclick="markPaid('${s.id}')">✓ Mark ${amtFormatted} paid</button>`
-    }
-  </div>
-  <div class="note-row">
-    <textarea class="note-input" id="note-${s.id}" rows="1" placeholder="Add a note (optional)…"></textarea>
-  </div>
-</div>`;
-}
-
-function adjustDays(id, delta) {
-  const s = STAFF.find(x => x.id === id);
-  daysWorked[id] = Math.max(0, Math.min(s.daysPerPeriod, daysWorked[id] + delta));
-  renderCards();
-  renderCashBanner();
-}
-
-function markPaid(id) {
-  const s = STAFF.find(x => x.id === id);
-  const calc = calcAmount(s);
-  paidToday.add(id);
-  cashOnHand = Math.max(0, cashOnHand - calc.amount);
-  const note = document.getElementById('note-' + id)?.value || '';
-  const entry = {
-    name: s.name, role: s.role, amount: calc.amount,
-    daysWorked: daysWorked[id], daysExpected: s.daysPerPeriod,
-    adjusted: calc.adjusted, note,
-    time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
-  };
-  payLog.unshift(entry);
-  sendToSheets(entry);
-  renderCards();
-  renderCashBanner();
-  renderLog();
-}
-
-function undoPay(id) {
-  const s = STAFF.find(x => x.id === id);
-  const calc = calcAmount(s);
-  paidToday.delete(id);
-  cashOnHand += calc.amount;
-  payLog = payLog.filter(e => e.name !== s.name);
-  renderCards();
-  renderCashBanner();
-  renderLog();
-}
-
-function renderLog() {
-  const el = document.getElementById('log-list');
-  if (!payLog.length) {
-    el.innerHTML = '<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments recorded yet.</div>';
-    return;
-  }
-  el.innerHTML = payLog.map(e => `
-    <div class="log-row">
-      <div>
-        <div class="log-title">${e.name} <span style="font-size:12px;font-weight:400;color:#888;">— ${e.role}</span></div>
-        <div class="log-meta">${e.daysWorked} of ${e.daysExpected} days${e.note ? ' · ' + e.note : ''} · ${e.time}</div>
+function cardHTML(s,date,isToday){
+  const calc=calcAmount(s);const paid=paidToday.has(s.id);
+  const amtFmt='$'+calc.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const origFmt=calc.adjusted?'$'+calc.original.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'';
+  const dw=daysWorked[s.id];const dp=s.daysPerPeriod;
+  const dateLabel=isToday?'Due today':'Due '+fmtShort(date);
+  return `<div class="pay-card ${paid?'paid':isToday?'due-today':''}" id="card-${s.id}">
+    <div class="card-top">
+      <div class="person-info">
+        <div class="name">${s.name}</div>
+        <div class="role">${s.role}</div>
+        <div class="due-date">📅 ${fmtDate(date)}</div>
       </div>
-      <div class="log-amt">$${e.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
-    </div>`).join('');
+      <div class="amount-area">
+        <div class="pay-amt ${calc.adjusted?'adjusted':''}">${amtFmt}</div>
+        ${calc.adjusted?`<div class="orig-amt">${origFmt}</div>`:''}
+        <span class="status-badge ${paid?'badge-paid':isToday?'badge-today':'badge-upcoming'}">${paid?'✓ Paid':dateLabel}</span>
+      </div>
+    </div>
+    ${dp>1?`<div class="days-row"><div class="days-label">Days worked <span style="color:#999;font-size:11px;">(of ${dp} expected)</span></div><div class="days-ctrl"><button class="days-btn" onclick="adjustDays('${s.id}',-1)">−</button><div class="days-val" id="dw-${s.id}">${dw}</div><button class="days-btn" onclick="adjustDays('${s.id}',1)">+</button></div></div>`:''}
+    <div class="pay-btn-row">${isToday?(paid?`<button class="pay-btn undo-pay" onclick="undoPay('${s.id}')">Undo payment</button>`:`<button class="pay-btn do-pay" onclick="markPaid('${s.id}')">✓ Mark ${amtFmt} paid</button>`):''}</div>
+    ${isToday&&!paid?`<div class="note-row"><textarea class="note-input" id="note-${s.id}" rows="1" placeholder="Add a note (optional)…"></textarea></div>`:''}
+  </div>`;
 }
 
-function openRefreshModal() {
-  document.getElementById('modal').style.display = 'flex';
-  document.getElementById('refresh-amt').value = '500';
-  setTimeout(() => document.getElementById('refresh-amt').focus(), 100);
-}
-function closeModal(e) {
-  if (!e || e.target.id === 'modal') document.getElementById('modal').style.display = 'none';
-}
-function doRefresh() {
-  const amt = parseFloat(document.getElementById('refresh-amt').value) || 0;
-  cashOnHand += amt;
-  sendToSheets({ type:'refresh', amount: amt, time: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) });
-  closeModal();
-  renderCashBanner();
+function adjustDays(id,delta){const s=STAFF.find(x=>x.id===id);daysWorked[id]=Math.max(0,Math.min(s.daysPerPeriod,daysWorked[id]+delta));renderCards();renderTrafficLight();}
+
+function markPaid(id){
+  const s=STAFF.find(x=>x.id===id);const calc=calcAmount(s);
+  const note=document.getElementById('note-'+id)?.value||'';
+  paidToday.add(id);cashOnHand=Math.max(0,cashOnHand-calc.amount);
+  const entry={name:s.name,role:s.role,amount:calc.amount,daysWorked:daysWorked[id],daysExpected:s.daysPerPeriod,adjusted:calc.adjusted,note,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})};
+  payLog.unshift(entry);sendToSheets(entry);renderCards();renderTrafficLight();renderLog();
 }
 
-async function sendToSheets(data) {
-  if (!SHEETS_URL || SHEETS_URL.includes('PASTE_YOUR')) return;
-  try {
-    await fetch(SHEETS_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ source: 'cashmoney', ...data, date: new Date().toLocaleDateString() })
-    });
-  } catch(e) {}
+function undoPay(id){const s=STAFF.find(x=>x.id===id);const calc=calcAmount(s);paidToday.delete(id);cashOnHand+=calc.amount;payLog=payLog.filter(e=>e.name!==s.name);renderCards();renderTrafficLight();renderLog();}
+
+function renderLog(){
+  const el=document.getElementById('log-list');
+  if(!payLog.length){el.innerHTML='<div style="text-align:center;color:#999;padding:1rem;font-size:14px;">No payments recorded yet.</div>';return;}
+  el.innerHTML=payLog.map(e=>`<div class="log-row"><div><div class="log-title">${e.name} <span style="font-size:12px;font-weight:400;color:#888;">— ${e.role}</span></div><div class="log-meta">${e.daysWorked} of ${e.daysExpected} days${e.note?' · '+e.note:''} · ${e.time}</div></div><div class="log-amt">$${e.amount.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>`).join('');
+}
+
+function openCashModal(){document.getElementById('cash-input').value=cashOnHand||'';document.getElementById('modal').style.display='flex';setTimeout(()=>document.getElementById('cash-input').focus(),100);}
+function closeModal(){document.getElementById('modal').style.display='none';}
+function saveCash(){const amt=parseFloat(document.getElementById('cash-input').value)||0;cashOnHand=amt;sendToSheets({type:'refresh',amount:amt,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});closeModal();renderTrafficLight();}
+
+async function sendToSheets(data){try{await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:'cashmoney',...data,date:new Date().toLocaleDateString()})});}catch(e){}}
+
+function init(){
+  document.getElementById('top-date').textContent=today.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  renderTrafficLight();renderCards();renderLog();
 }
 </script>
 </body>
