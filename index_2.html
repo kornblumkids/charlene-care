@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Charlene's Caregiving Hub</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f7f3ee;color:#1a1a1a;max-width:1024px;margin:0 auto;min-height:100vh;}
+.screen{display:none;padding:0 0 160px;}
+.screen.active{display:block;}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:1024px;background:#fffaf4;border-top:1px solid #e8dfd3;box-shadow:0 -4px 14px rgba(0,0,0,0.08);display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 10px calc(8px + env(safe-area-inset-bottom));z-index:100;}
+.nav-item{padding:14px 4px 12px;text-align:center;cursor:pointer;color:#fff;font-size:15px;font-weight:800;letter-spacing:0.02em;border-radius:16px;opacity:0.85;transition:opacity .15s,transform .15s,box-shadow .15s;-webkit-tap-highlight-color:transparent;}
+.nav-item i{font-size:32px;display:block;margin-bottom:4px;}
+.nav-item.active{opacity:1;transform:translateY(-3px);box-shadow:0 4px 10px rgba(0,0,0,0.22);outline:3px solid #fff;outline-offset:-6px;}
+#nav-home{background:#1E40C8;}
+#nav-meds{background:#FF5724;text-shadow:0 1px 2px rgba(0,0,0,0.35);}
+#nav-carenotes{background:#16873A;}
+#nav-contacts{background:#4A1C7C;}
+.page-header{background:#8B4513;color:white;padding:16px 16px 14px;display:flex;justify-content:space-between;align-items:center;}
+.page-header h1{font-size:18px;font-weight:600;}
+.page-header .date{font-size:13px;opacity:0.85;margin-top:2px;}
+.header-btn{background:rgba(255,255,255,0.2);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;}
+.card{background:#fff;border-radius:14px;padding:16px;margin:12px 12px 0;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+.card-title{font-size:13px;font-weight:700;color:#8B4513;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;}
+.welcome-banner{background:linear-gradient(135deg,#8B4513,#A0522D);color:white;padding:20px 16px;}
+.welcome-banner h1{font-size:22px;font-weight:700;}
+.welcome-banner p{font-size:14px;opacity:0.9;margin-top:4px;}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 12px 0;}
+.qa-btn{background:#fff;border-radius:14px;padding:20px 16px;text-align:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,0.06);-webkit-tap-highlight-color:transparent;}
+.qa-btn i{font-size:32px;color:#8B4513;display:block;margin-bottom:8px;}
+.qa-btn span{font-size:15px;font-weight:600;color:#1a1a1a;}
+.qa-btn.placeholder{background:#f7f3ee;border:2px dashed #d4c4b8;}
+.qa-btn.placeholder i{color:#c4a898;}
+.qa-btn.placeholder span{color:#a08878;}
+.calendar-frame{width:100%;height:420px;border:none;border-radius:10px;display:block;}
+.contact-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #f0ece7;}
+.contact-row:last-child{border-bottom:none;}
+.contact-info .name{font-size:15px;font-weight:600;}
+.contact-info .role{font-size:12px;color:#888;margin-top:2px;}
+.contact-info .note{font-size:11px;color:#8B4513;font-weight:600;margin-top:2px;}
+.call-btn{background:#3B6D11;color:white;border:none;border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;}
+.call-btn.urgent{background:#A32D2D;}
+.med-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0ece7;}
+.med-row:last-child{border-bottom:none;}
+.med-emoji{font-size:28px;width:48px;text-align:center;flex-shrink:0;}
+.med-img{width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0;}
+.med-info .med-name{font-size:15px;font-weight:600;}
+.med-info .med-dose{font-size:12px;color:#666;margin-top:2px;}
+.med-info .med-freq{font-size:12px;color:#8B4513;margin-top:2px;font-weight:500;}
+.prn-badge{font-size:10px;background:#FFF3CD;color:#856404;padding:2px 6px;border-radius:999px;font-weight:600;margin-left:4px;}
+.sec-label{font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;margin-top:16px;}
+/* New multi-select med cards */
+.med-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;}
+.med-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;transition:border-color 0.15s;}
+.med-card .pill-placeholder{font-size:26px;margin-bottom:4px;}
+.med-card .pill-img{width:52px;height:52px;object-fit:cover;border-radius:8px;margin:0 auto 4px;display:block;}
+.med-card .lbl{font-size:12px;font-weight:600;color:#1a1a1a;line-height:1.2;}
+.med-card .sub{font-size:10px;color:#888;margin-top:2px;}
+.med-card.selected{border:2.5px solid #8B4513;background:#FDF5F0;}
+.med-card.given{border:2.5px solid #3B6D11;background:#EAF3DE;}
+.med-card.refused{border:2.5px solid #A32D2D;background:#FCEBEB;}
+.med-card .status-mini{display:none;margin-top:6px;}
+.med-card.selected .status-mini{display:flex;gap:4px;justify-content:center;}
+.status-mini-btn{flex:1;padding:4px 2px;border-radius:6px;border:1.5px solid #e5e5e5;background:#f5f5f5;cursor:pointer;font-size:10px;font-weight:700;color:#999;}
+.status-mini-btn.given-active{background:#EAF3DE;color:#27500A;border-color:#3B6D11;}
+.status-mini-btn.refused-active{background:#FCEBEB;color:#791F1F;border-color:#A32D2D;}
+.med-card .check-badge{position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.med-card.given .check-badge{display:flex;background:#3B6D11;color:white;}
+.med-card.refused .check-badge{display:flex;background:#A32D2D;color:white;}
+/* Care tab cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;}
+.tap-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;padding:12px 8px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.tap-card.sel{border:2.5px solid #8B4513;background:#FDF5F0;}
+.tap-card .pill-placeholder{font-size:28px;margin-bottom:6px;}
+.tap-card .lbl{font-size:13px;font-weight:600;color:#1a1a1a;}
+.tap-card .sub{font-size:10px;color:#888;margin-top:2px;}
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{padding:10px 14px;border-radius:999px;border:1.5px solid #e5e5e5;background:#fff;cursor:pointer;font-size:14px;color:#1a1a1a;}
+.chip.sel{border:2px solid #8B4513;color:#8B4513;background:#FDF5F0;font-weight:600;}
+.big-btn{width:100%;padding:16px;border-radius:14px;border:none;font-size:17px;font-weight:600;cursor:pointer;margin-top:12px;}
+.btn-yellow{background:#FF5724;color:#1a1a1a;font-weight:800;font-size:18px;box-shadow:0 3px 0 #C23A10;}
+.btn-yellow:active{transform:translateY(2px);box-shadow:0 1px 0 #C23A10;}
+.btn-brown{background:#8B4513;color:white;}
+.btn-green{background:#2C5F2E;color:white;}
+.btn-red{background:#A32D2D;color:white;}
+.btn-gray{background:#f0f0f0;color:#1a1a1a;border:1px solid #e5e5e5;}
+textarea,input[type=text]{width:100%;padding:12px;border-radius:10px;border:1.5px solid #e5e5e5;background:#fff;font-size:16px;color:#1a1a1a;font-family:inherit;margin-top:4px;resize:none;}
+textarea:focus,input:focus{outline:2px solid #8B4513;}
+select{width:100%;padding:14px 12px;border-radius:10px;border:1.5px solid #e5e5e5;background:#fff;font-size:16px;color:#1a1a1a;font-family:inherit;margin-top:4px;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+select:focus{outline:2px solid #8B4513;}
+.log-row{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.log-row.refused{border-left:4px solid #A32D2D;}
+.log-row.given{border-left:4px solid #3B6D11;}
+.log-title{font-size:15px;font-weight:600;}
+.log-meta{font-size:12px;color:#666;margin-top:2px;}
+.time-badge{font-size:12px;background:#f0f0f0;color:#666;padding:4px 10px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
+.success-wrap{text-align:center;padding:3rem 1rem;}
+.success-icon{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
+.saving-pill{display:inline-block;font-size:13px;margin-top:10px;padding:6px 14px;border-radius:999px;background:#f0f0f0;color:#666;}
+.saving-pill.saved{background:#EAF3DE;color:#27500A;}
+.ref-link{display:block;text-align:center;padding:14px;color:#8B4513;font-size:14px;font-weight:600;cursor:pointer;border-top:1px solid #f0ece7;margin-top:4px;}
+.selected-summary{background:#f7f3ee;border-radius:10px;padding:10px 14px;margin-top:8px;font-size:13px;color:#555;display:none;}
+/* Splash screen */
+.splash{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:1024px;height:100%;background:#f7f3ee;z-index:999;display:flex;flex-direction:column;}
+.splash-header{background:linear-gradient(135deg,#2C5F2E,#3B7A3E);color:white;padding:24px 20px 20px;}
+.splash-header h1{font-size:22px;font-weight:700;}
+.splash-header p{font-size:14px;opacity:0.9;margin-top:4px;}
+.splash-cal{flex:1;overflow:hidden;}
+.splash-cal iframe{width:100%;height:100%;border:none;display:block;}
+.splash-footer{padding:16px;background:#fff;border-top:1px solid #e5e5e5;}
+/* SCHEDULE EDITOR */
+input[type=date],input[type=time]{width:100%;padding:12px;border-radius:10px;border:1.5px solid #e5e5e5;background:#fff;font-size:16px;color:#1a1a1a;font-family:inherit;margin-top:4px;min-height:48px;-webkit-appearance:none;appearance:none;}
+.sch-day{font-size:13px;font-weight:700;color:#8B4513;text-transform:uppercase;letter-spacing:0.05em;margin:18px 4px 8px;}
+.sch-ev{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.sch-ev:active{background:#f0e8e0;}
+.sch-time{flex:0 0 78px;font-size:14px;font-weight:600;color:#1a1a1a;}
+.sch-time small{display:block;font-weight:400;color:#888;font-size:12px;margin-top:2px;}
+.sch-body{flex:1;min-width:0;}
+.sch-title{font-size:16px;font-weight:600;}
+.sch-meta{font-size:13px;color:#666;margin-top:3px;overflow-wrap:anywhere;}
+.sch-edit{color:#c4a898;font-size:20px;align-self:center;}
+.sch-msg{text-align:center;color:#888;padding:40px 16px;font-size:15px;}
+.sch-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sch-check{display:flex;align-items:center;gap:10px;font-size:16px;margin-top:14px;cursor:pointer;}
+.sch-check input{width:22px;height:22px;accent-color:#8B4513;}
+.sch-note{background:#FFF8E6;color:#7A5200;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:14px;}
+.sch-error{color:#A32D2D;font-size:14px;min-height:20px;margin-top:10px;}
+.btn-delete{background:#fff;color:#A32D2D;border:1.5px solid #E8AAAA;}
+.btn-delete.confirm{background:#A32D2D;color:#fff;} .add-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;background:#E00000;color:#FFD60A;border:2px solid #FFD60A;font-family:inherit;font-size:26px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,0.25);-webkit-tap-highlight-color:transparent;}
+.add-btn span{font-size:32px;line-height:1;}
+.add-btn:active{transform:scale(0.96);}
+@media (max-width:500px){.add-btn{font-size:20px;padding:10px 14px;gap:6px;}.add-btn span{font-size:24px;}}
+.home-add-btn{display:flex;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px 16px;background:#E00000;color:#FFD60A;border:4px solid #FFD60A;border-radius:18px;margin-top:14px;font-size:26px;font-weight:800;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,0.25);-webkit-tap-highlight-color:transparent;}
+.home-add-btn span{font-size:40px;line-height:1;}
+@media (max-width:500px){.home-add-btn{font-size:18px;padding:20px 8px;gap:6px;white-space:nowrap;}.home-add-btn span{font-size:30px;}}
+.home-add-btn:active{transform:scale(0.98);}
+</style>
+<!-- PASSWORD GATE -->
+<style>
+html.locked body > *:not(#gate){display:none !important;}
+#gate{display:none;position:fixed;inset:0;background:#f7f3ee;z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;}
+html.locked #gate{display:flex;}
+#gate h1{font-size:22px;color:#8B4513;margin-bottom:6px;}
+#gate p{font-size:14px;color:#888;margin-bottom:20px;}
+#gate input{font-size:20px;padding:14px;border:1.5px solid #c4a898;border-radius:12px;width:100%;max-width:280px;text-align:center;}
+#gate button{margin-top:12px;font-size:17px;font-weight:600;padding:14px;width:100%;max-width:280px;border:none;border-radius:12px;background:#8B4513;color:#fff;}
+#gate-err{color:#A32D2D;font-size:14px;min-height:20px;margin-top:10px;}
+</style>
+<script>
+var SITE_PASSWORD = 'candy'; // change this to whatever you like
+try { if (localStorage.getItem('care4char-pw') !== SITE_PASSWORD) document.documentElement.classList.add('locked'); }
+catch (e) { document.documentElement.classList.add('locked'); }
+function tryGate(e) {
+  e.preventDefault();
+  var v = document.getElementById('gate-pw').value.trim().toLowerCase();
+  if (v === SITE_PASSWORD.toLowerCase()) {
+    try { localStorage.setItem('care4char-pw', SITE_PASSWORD); } catch (err) {}
+    document.documentElement.classList.remove('locked');
+  } else {
+    document.getElementById('gate-err').textContent = 'Wrong password. Try again.';
+  }
+}
+</script>
+</head>
+<body>
+<div id="gate">
+  <h1>Charlene's Caregiving Hub</h1>
+  <p>Enter the password</p>
+  <form onsubmit="tryGate(event)">
+    <input id="gate-pw" type="password" autocomplete="current-password" autofocus><br>
+    <button type="submit">Open</button>
+  </form>
+  <div id="gate-err"></div>
+</div>
+
+<!-- SCHEDULE SPLASH (shown 7am-11am, once per day) -->
+<div class="splash" id="splash" style="display:none;">
+  <div class="splash-header">
+    <h1>📅 Good morning!</h1>
+    <p>Please review today's schedule before continuing.</p>
+  </div>
+  <div class="splash-cal">
+    <iframe allow="same-origin" src="https://calendar.google.com/calendar/u/0/newembed?src=70a0be31a4a53486e1f0fd2674e1d4ccaf9f087fb3244662492f92c52b5130a2%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=DAY&showTitle=0&showNav=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Today's Schedule"></iframe>
+  </div>
+  <div class="splash-footer">
+    <button class="big-btn btn-green" style="margin-top:0;" onclick="dismissSplash()">✓ I've checked today's schedule — continue</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <div class="welcome-banner">
+    <h1>🌸 Charlene's Hub</h1>
+    <p id="home-date"></p>
+  </div>
+  <div class="card">
+    <div class="card-title">📅 TODAY'S SCHEDULE</div>
+    <iframe allow="same-origin" class="calendar-frame" src="https://calendar.google.com/calendar/u/0/newembed?src=70a0be31a4a53486e1f0fd2674e1d4ccaf9f087fb3244662492f92c52b5130a2%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=MONTH&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Today's Schedule"></iframe>
+    <a href="#" onclick="goTo('s-schedule');return false;" class="home-add-btn"><span>+</span> Add or change appointments</a>
+  </div>
+  <div class="quick-actions">
+    <div class="qa-btn" onclick="goTo('s-meds')"><i class="ti ti-pill"></i><span>Medications</span></div>
+    <div class="qa-btn" onclick="goTo('s-carenotes')"><i class="ti ti-notes"></i><span>Care Notes</span></div>
+    <div class="qa-btn" onclick="goTo('s-contacts')"><i class="ti ti-phone"></i><span>Contacts</span></div>
+    <div class="qa-btn" onclick="goTo('s-schedule')"><i class="ti ti-calendar-event"></i><span>Schedule</span></div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="s-schedule" class="screen">
+  <div class="page-header">
+    <div><h1>📅 Schedule</h1><div class="date">Appointments &amp; events, next 60 days</div></div>
+    <button class="add-btn" onclick="openEventForm()"><span>+</span>Add event</button>
+  </div>
+  <div id="sch-list-view" style="padding:0 12px;">
+    <div id="sch-list"><div class="sch-msg">Loading…</div></div>
+    <button class="big-btn btn-brown" onclick="openEventForm()">+ Add appointment or event</button>
+  </div>
+  <div id="sch-form-view" style="display:none;padding:12px;">
+    <div class="card" style="margin:0;">
+      <div class="card-title" id="ev-form-title">New appointment or event</div>
+      <div class="sec-label" style="margin-top:0;">What</div>
+      <input type="text" id="ev-title" placeholder="e.g. Dr. Patel – cardiology, Lunch with Ruth">
+      <div class="sec-label">Date</div>
+      <input type="date" id="ev-date">
+      <label class="sch-check"><input type="checkbox" id="ev-allday" onchange="toggleAllDay()"> All day</label>
+      <div id="ev-times" class="sch-row">
+        <div><div class="sec-label">Starts</div><select id="ev-start" onchange="startChanged()"></select></div>
+        <div><div class="sec-label">Ends</div><select id="ev-end"></select></div>
+      </div>
+      <div id="ev-enddate-wrap" style="display:none;"><div class="sec-label">Last day (if more than one day)</div><input type="date" id="ev-enddate"></div>
+      <div class="sec-label">Where (optional)</div>
+      <input type="text" id="ev-location" placeholder="Office name or address">
+      <div class="sec-label">Notes (optional)</div>
+      <textarea id="ev-notes" rows="3" placeholder="Who's taking her, what to bring, questions for the doctor…"></textarea>
+      <div id="ev-recurring-note" class="sch-note" style="display:none;">This event repeats. Changes here only affect this one day.</div>
+      <div id="ev-error" class="sch-error"></div>
+      <button class="big-btn btn-brown" id="ev-save" onclick="saveEvent()">Save</button>
+      <button class="big-btn btn-delete" id="ev-delete" onclick="deleteEvent()">Delete</button>
+      <button class="big-btn btn-gray" onclick="closeEventForm()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEDICATIONS -->
+<div id="s-meds" class="screen">
+  <div class="page-header">
+    <div><h1>💊 Medications</h1></div>
+    <button class="header-btn" onclick="showMedView('med-log-view')">View log</button>
+  </div>
+  <div id="med-main" style="padding:12px;">
+    <div class="sec-label" style="margin-top:0;">Tap each medication — then mark given or refused</div>
+    <div class="med-grid" id="med-grid"></div>
+    <div class="selected-summary" id="selected-summary"></div>
+    <div class="sec-label">When?</div>
+    <div class="chip-row" id="time-chips">
+      <div class="chip sel" onclick="selChip(this,'time-chips','Now')">Now</div>
+      <div class="chip" onclick="selChip(this,'time-chips','5 min ago')">5 min ago</div>
+      <div class="chip" onclick="selChip(this,'time-chips','15 min ago')">15 min ago</div>
+      <div class="chip" onclick="selChip(this,'time-chips','Other')">Other</div>
+    </div>
+    <div class="sec-label">Notes (optional)</div>
+    <textarea id="med-notes" rows="2" placeholder="e.g. took with food, spat it out..."></textarea>
+    <div class="sec-label">Who are you?</div>
+    <select id="med-person">
+      <option value="">— Select your name —</option>
+      <optgroup label="Caregivers">
+        <option>Chancelvie</option>
+        <option>Diana</option>
+        <option>Mirna</option>
+        <option>Ramonita</option>
+      </optgroup>
+      <optgroup label="Family">
+        <option>Candyce</option>
+        <option>Lori</option>
+        <option>Harley</option>
+        <option>Janet</option>
+        <option>David</option>
+      </optgroup>
+    </select>
+    <button class="big-btn btn-yellow" onclick="logAllMeds()">Record all selected medications</button>
+    <div style="text-align:center;"><span class="saving-pill" id="med-saving" style="display:none;"></span></div>
+    <div class="ref-link" onclick="showMedView('med-ref-view')">📋 View full medication reference</div>
+  </div>
+  <div id="med-log-view" style="display:none;padding:12px;">
+    <div class="sec-label" style="margin-top:0;">Today's medication entries</div>
+    <div id="med-log-list"><div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div></div>
+    <button class="big-btn btn-gray" onclick="showMedView('med-main')">Back to medications</button>
+  </div>
+  <div id="med-ref-view" style="display:none;padding:12px;">
+    <div class="sec-label" style="margin-top:0;">All medications</div>
+    <div class="card"><div id="med-reference-list"></div></div>
+    <button class="big-btn btn-gray" style="margin:12px 0;" onclick="showMedView('med-main')">Back to medications</button>
+  </div>
+</div>
+
+<!-- CARE NOTES -->
+<div id="s-carenotes" class="screen">
+  <div class="page-header">
+    <div><h1>📝 Care Notes</h1></div>
+    <button class="header-btn" onclick="showCareView('care-log-view')">View log</button>
+  </div>
+  <div style="display:flex;gap:0;margin:12px 12px 0;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+    <div id="tab-care-btn" onclick="setCareTab('tab-care')" style="flex:1;padding:11px;text-align:center;cursor:pointer;background:#8B4513;color:white;font-size:14px;font-weight:600;">🤝 Care</div>
+    <div id="tab-notes-btn" onclick="setCareTab('tab-notes')" style="flex:1;padding:11px;text-align:center;cursor:pointer;background:#f5f5f5;color:#666;font-size:14px;font-weight:600;">📝 Note</div>
+  </div>
+  <div id="tab-care" style="padding:12px;">
+    <div class="sec-label" style="margin-top:0;">What happened?</div>
+    <div class="card-grid">
+      <div class="tap-card" onclick="selCare(this,'Meals and fluids')"><div class="pill-placeholder">🍽️</div><div class="lbl">Meals &amp; fluids</div></div>
+      <div class="tap-card" onclick="selCare(this,'Repositioned')"><div class="pill-placeholder">🔄</div><div class="lbl">Repositioned</div></div>
+      <div class="tap-card" onclick="selCare(this,'Bathroom')"><div class="pill-placeholder">🚿</div><div class="lbl">Bathroom</div></div>
+      <div class="tap-card" onclick="selCare(this,'Hygiene care')"><div class="pill-placeholder">🧼</div><div class="lbl">Hygiene</div></div>
+      <div class="tap-card" onclick="selCare(this,'Sleep / rest')"><div class="pill-placeholder">😴</div><div class="lbl">Sleep / rest</div></div>
+      <div class="tap-card" onclick="selCare(this,'Wound check')"><div class="pill-placeholder">🩹</div><div class="lbl">Wound check</div></div>
+      <div class="tap-card" onclick="selCare(this,'Visitor')"><div class="pill-placeholder">👋</div><div class="lbl">Visitor</div></div>
+      <div class="tap-card" onclick="selCare(this,'Mood / behavior')"><div class="pill-placeholder">😊</div><div class="lbl">Mood</div></div>
+    </div>
+    <div class="sec-label">Notes (optional)</div>
+    <textarea id="care-notes" rows="2" placeholder="Any details..."></textarea>
+    <div class="sec-label">Who are you?</div>
+    <select id="care-person">
+      <option value="">— Select your name —</option>
+      <optgroup label="Caregivers">
+        <option>Chancelvie</option>
+        <option>Diana</option>
+        <option>Mirna</option>
+        <option>Ramonita</option>
+      </optgroup>
+      <optgroup label="Family">
+        <option>Candyce</option>
+        <option>Lori</option>
+        <option>Harley</option>
+        <option>Janet</option>
+        <option>David</option>
+      </optgroup>
+    </select>
+    <button class="big-btn btn-brown" id="care-btn" onclick="logCare()">Record</button>
+    <div style="text-align:center;"><span class="saving-pill" id="care-saving" style="display:none;"></span></div>
+  </div>
+  <div id="tab-notes" style="display:none;padding:12px;">
+    <div class="sec-label" style="margin-top:0;">Note or observation</div>
+    <textarea id="gen-notes" rows="6" placeholder="Anything about Charlene's condition, mood, or your visit..."></textarea>
+    <div class="sec-label">Who are you?</div>
+    <select id="notes-person">
+      <option value="">— Select your name —</option>
+      <optgroup label="Caregivers">
+        <option>Chancelvie</option>
+        <option>Diana</option>
+        <option>Mirna</option>
+        <option>Ramonita</option>
+      </optgroup>
+      <optgroup label="Family">
+        <option>Candyce</option>
+        <option>Lori</option>
+        <option>Harley</option>
+        <option>Janet</option>
+        <option>David</option>
+      </optgroup>
+    </select>
+    <button class="big-btn btn-brown" onclick="logNote()">Save note</button>
+    <div style="text-align:center;"><span class="saving-pill" id="notes-saving" style="display:none;"></span></div>
+  </div>
+  <div id="care-log-view" style="display:none;padding:12px;">
+    <div class="sec-label" style="margin-top:0;">Today's care entries</div>
+    <div id="care-log-list"><div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div></div>
+    <button class="big-btn btn-gray" onclick="showCareView('tab-care')">Back to care notes</button>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="s-success" class="screen">
+  <div class="success-wrap">
+    <div class="success-icon" id="succ-icon"></div>
+    <div style="font-size:22px;font-weight:700;" id="succ-title">Recorded!</div>
+    <div style="font-size:15px;color:#666;margin-top:8px;" id="succ-detail"></div>
+    <div style="margin-top:8px;" id="succ-sheet"></div>
+    <button class="big-btn btn-brown" id="succ-again-btn" style="margin-top:2rem;max-width:300px;margin-left:auto;margin-right:auto;display:block;">Log another</button>
+    <button class="big-btn btn-gray" onclick="goTo('s-home')" style="margin-top:8px;max-width:300px;margin-left:auto;margin-right:auto;display:block;">Go home</button>
+  </div>
+</div>
+
+<!-- CONTACTS -->
+<div id="s-contacts" class="screen">
+  <div class="page-header"><div><h1>Contacts</h1><div class="date">Call 911 first in emergencies</div></div></div>
+  <div class="card">
+    <div class="card-title">Family</div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Candy</div><div class="role">Daughter</div><div class="note">⭐ CALL FIRST</div></div><a href="tel:+13107494987" class="call-btn urgent">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Janet</div><div class="role">Daughter · Tech issues</div></div><a href="tel:+14153108444" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Lori</div><div class="role">Daughter</div></div><a href="tel:+14142189245" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Harley</div><div class="role">Son</div></div><a href="tel:+13102833161" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">David</div><div class="role">Son · House issues</div></div><a href="tel:+13109684667" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Adam</div><div class="role">Candy's husband</div></div><a href="tel:+13107495194" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Rhys</div><div class="role">Janet's husband</div></div><a href="tel:+14158307683" class="call-btn">Call</a></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Medical &amp; Agency</div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Dr. Rubencio Quintana</div><div class="role">Primary Care Physician</div></div><a href="tel:+13106595500" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Aftercare Professional Nurses Registry</div><div class="role">Agency</div></div><a href="tel:+13102716145" class="call-btn">Call</a></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Household Staff</div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Eli</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+13233041492" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Mayela</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+12136196079" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Oneida</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+13235718665" class="call-btn">Call</a></div>
+    <div class="contact-row"><div class="contact-info"><div class="name">Eloisa</div><div class="role">Cleaning, cooking, helping caregivers</div></div><a href="tel:+12136400870" class="call-btn">Call</a></div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="goTo('s-home')"><i class="ti ti-home"></i>Home</div>
+  <div class="nav-item" id="nav-meds" onclick="goTo('s-meds')"><i class="ti ti-pill"></i>Medications</div>
+  <div class="nav-item" id="nav-carenotes" onclick="goTo('s-carenotes')"><i class="ti ti-notes"></i>Care Notes</div>
+  <div class="nav-item" id="nav-contacts" onclick="goTo('s-contacts')"><i class="ti ti-phone"></i>Contacts</div>
+</div>
+
+<script>
+const SHEETS_URL='https://script.google.com/macros/s/AKfycbxGKSFKeQHmHeXfYb657ouD42SB3Yv9dAY2m3objuwro5_jxkPgZRPOuwfOWE6S7WTL/exec';
+const FAMILY_NAMES=['Candyce','Lori','Harley','Janet','David'];
+const MEDS=[
+  // active:true = shows in the logging grid. Change to active:false to move a med to "not currently taking".
+  {active:true, name:'Tylenol',generic:'Acetaminophen',dose:'500mg (1 gelcap)',freq:'As needed',prn:true,note:'Pain',e:'💊',img:'TYLENOL.jpg'},
+  {active:true, name:'Neurontin',generic:'Gabapentin',dose:'300mg · up to 2 caps a day',freq:'As needed',prn:true,note:'Anxiety or sleep',e:'💊',img:'GABAPENTIN.3.jpg'},
+  {active:true, name:'Prilosec',generic:'Omeprazole',dose:'40mg',freq:'With dinner',prn:false,e:'💊',img:'OMEPRAZOLE.PRILOSEC.jpg'},
+  {active:true, name:'Eye Drops',generic:'Dorzolamide/Timolol',dose:'2 drops each eye',freq:'Evening',prn:false,e:'👁️',img:null},
+  {active:true, name:'Lexapro',generic:'Escitalopram',dose:'15mg (1½ tablets)',freq:'Daily',prn:false,e:'💊',img:'ESCITALOPRAM.LEXAPRO.2.jpg'},
+  {active:true, name:'Docusate',generic:'Docusate Sodium',dose:'100mg',freq:'Twice daily',prn:false,e:'💊',img:'DOCUSATE.jpg'},
+  {active:true, name:'Celebrex',generic:'Celecoxib',dose:'200mg',freq:'With dinner',prn:false,note:'Take with food',e:'💊',img:'CELEBREX_200_MG.jpg'},
+  {active:true, name:'Lipitor',generic:'Atorvastatin',dose:'20mg',freq:'Bedtime',prn:false,e:'💊',img:'ATORVASTATIN.LIPITOR.1.jpg'},
+  {active:true, name:'Remeron',generic:'Mirtazapine',dose:'30mg',freq:'Bedtime',prn:false,e:'💊',img:'REMERON.MIRTAZAPINE.2.jpg'},
+  {active:true, name:'Pepcid',generic:'Famotidine',dose:'20mg',freq:'Bedtime, as needed',prn:true,e:'💊',img:'FAMOTIDINE.PEPCID.jpg'},
+  {active:true, name:'MiraLAX',generic:'Polyethylene glycol',dose:'1 cap',freq:'Bedtime',prn:false,e:'💊',img:'miralax.jpg'},
+  {active:true, name:'Ativan',generic:'Lorazepam',dose:'1mg',freq:'Bedtime, as needed',prn:true,note:'Sleep',e:'💊',img:'LORAZEPAM.ATIVAN.jpg'},
+  {active:true, name:'Estring',generic:'Estradiol ring implant',dose:'1 ring',freq:'Every 3 months',prn:false,e:'💍',img:null},
+  {active:true, name:'Zofran',generic:'Ondansetron',dose:'4mg',freq:'As needed',prn:true,note:'Nausea',e:'💊',img:null},
+  {active:true, name:'Pyridium',generic:'Phenazopyridine',dose:'99.5mg',freq:'As needed',prn:true,note:'UTI pain · max 2 days · turns urine orange',e:'💊',img:'PHENAZOPYRIDINE.PYRIDIUM.jpg'},
+  {active:true, name:'Folic Acid',generic:'Folate',dose:'1mg',freq:'Daily',prn:false,e:'💊',img:'FOLIC.ACID.jpg'},
+  {active:true, name:'Vitamin D',generic:'Cholecalciferol',dose:'2000 IU',freq:'Daily',prn:false,e:'☀️',img:'vitamin_d.jpg'},
+  {active:true, name:'Nexabiotic',generic:'Probiotic',dose:'1 cap',freq:'Evening',prn:false,e:'🌿',img:'PROBIOTIC.NEXABIOTIC.jpg'},
+  {active:true, name:'Lasix',generic:'Furosemide',dose:'20mg',freq:'Morning',prn:false,note:'Water pill',e:'💊',img:'FUROSEMIDE.LASIX.jpg'},
+  {active:true, name:'Motegrity',generic:'Prucalopride',dose:'2mg',freq:'Daily',prn:false,e:'💊',img:'PRUCALOPRIDE.MOTEGRITY.jpg'},
+  {active:true, name:'Myrbetriq',generic:'Mirabegron ER',dose:'25mg',freq:'Daily',prn:false,note:'Two pill looks, both OK',e:'💊',img:'MIRABEGRON.MYRBETRIQ.jpg'},
+  // Not currently in the logging grid: confirm, then change to active:true
+  {active:false, name:'Aricept',generic:'Donepezil',dose:'5mg',freq:'Confirming dose with pharmacy',prn:false,e:'💊',img:'DONEPEZIL.ARICEPT.jpg'},
+  {active:false, name:'Melatonin',generic:'Melatonin',dose:'5mg (dissolves in mouth)',freq:'Ask before giving',prn:false,e:'🌙',img:'MELATONIN.jpg'},
+  {active:false, name:'Lipo-Flavonoid',generic:'Ear supplement',dose:'1 caplet',freq:'Ask before giving',prn:false,e:'💊',img:'LIPOFLAVONOID.jpg'},
+  {active:false, name:'Benadryl',generic:'Diphenhydramine',dose:'25mg',freq:'Ask before giving',prn:false,note:'Check with doctor',e:'💊',img:'DIPHENHYDRAMINE.BENADRYL.jpg'},
+  {active:false, name:'Senna-S',generic:'Docusate + senna',dose:'50mg / 8.6mg',freq:'Ask before giving',prn:false,e:'💊',img:'DOCUSATE.SENNA.jpg'},
+];
+
+// med selection state: {medName: 'given'|'refused'}
+let medSelections={};
+let selTimeVal='Now',selCareVal=null;
+let medLogEntries=[],careLogEntries=[];
+
+document.getElementById('home-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+// Splash
+function checkSplash(){
+  const hour=new Date().getHours();
+  if(hour>=7&&hour<11){
+    const today=new Date().toDateString();
+    if(localStorage.getItem('scheduleChecked')!==today){
+      document.getElementById('splash').style.display='flex';
+    }
+  }
+}
+function dismissSplash(){
+  localStorage.setItem('scheduleChecked',new Date().toDateString());
+  document.getElementById('splash').style.display='none';
+}
+checkSplash();
+
+// Navigation
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const m={'s-home':'nav-home','s-meds':'nav-meds','s-carenotes':'nav-carenotes','s-contacts':'nav-contacts'};
+  if(m[id])document.getElementById(m[id]).classList.add('active');
+  if(id==='s-schedule'){closeEventForm();loadSchedule();}
+  window.scrollTo(0,0);
+}
+
+function showMedView(v){
+  ['med-main','med-log-view','med-ref-view'].forEach(x=>document.getElementById(x).style.display=x===v?'block':'none');
+  if(v==='med-log-view')renderMedLog();
+}
+
+function setCareTab(tab){
+  ['tab-care','tab-notes','care-log-view'].forEach(t=>document.getElementById(t).style.display=t===tab?'block':'none');
+  ['tab-care-btn','tab-notes-btn'].forEach(b=>{const el=document.getElementById(b);if(el){el.style.background='#f5f5f5';el.style.color='#666';}});
+  const m={'tab-care':'tab-care-btn','tab-notes':'tab-notes-btn'};
+  if(m[tab]){const el=document.getElementById(m[tab]);if(el){el.style.background='#8B4513';el.style.color='white';}}
+}
+
+function showCareView(v){
+  ['tab-care','tab-notes','care-log-view'].forEach(x=>document.getElementById(x).style.display=x===v?'block':'none');
+  if(v==='care-log-view')renderCareLog();
+  ['tab-care-btn','tab-notes-btn'].forEach(b=>{const el=document.getElementById(b);if(el){el.style.background='#f5f5f5';el.style.color='#666';}});
+}
+
+// Med grid - multi select
+function renderMedGrid(){
+  document.getElementById('med-grid').innerHTML=MEDS.map((m,i)=>{
+    if(m.active===false)return'';
+    const visual=m.img
+      ?`<img class="pill-img" src="${m.img}" alt="${m.name}" onerror="this.style.display='none';this.nextSibling.style.display='block'"><span style="display:none;font-size:26px;">${m.e}</span>`
+      :`<div class="pill-placeholder">${m.e}</div>`;
+    return`<div class="med-card" id="medcard-${i}" onclick="toggleMed(${i})">
+      <div class="check-badge" id="badge-${i}"></div>
+      ${visual}
+      <div class="lbl">${m.name}</div>
+      <div class="sub">${m.dose}</div>
+      <div class="status-mini" id="mini-${i}">
+        <div class="status-mini-btn" id="given-${i}" onclick="event.stopPropagation();setMedStatus(${i},'given')">✓</div>
+        <div class="status-mini-btn" id="refused-${i}" onclick="event.stopPropagation();setMedStatus(${i},'refused')">✕</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleMed(i){
+  const name=MEDS[i].name;
+  const card=document.getElementById('medcard-'+i);
+  if(medSelections[name]){
+    // deselect
+    delete medSelections[name];
+    card.className='med-card';
+    document.getElementById('badge-'+i).textContent='';
+  } else {
+    // select, default to given
+    medSelections[name]='given';
+    card.className='med-card selected given';
+    document.getElementById('badge-'+i).textContent='✓';
+    document.getElementById('given-'+i).classList.add('given-active');
+    document.getElementById('refused-'+i).classList.remove('refused-active');
+  }
+  updateSummary();
+}
+
+function setMedStatus(i,status){
+  const name=MEDS[i].name;
+  if(!medSelections[name])return;
+  medSelections[name]=status;
+  const card=document.getElementById('medcard-'+i);
+  const badge=document.getElementById('badge-'+i);
+  if(status==='given'){
+    card.className='med-card selected given';
+    badge.textContent='✓';
+    document.getElementById('given-'+i).classList.add('given-active');
+    document.getElementById('refused-'+i).classList.remove('refused-active');
+  } else {
+    card.className='med-card selected refused';
+    badge.textContent='✕';
+    document.getElementById('refused-'+i).classList.add('refused-active');
+    document.getElementById('given-'+i).classList.remove('given-active');
+  }
+  updateSummary();
+}
+
+function updateSummary(){
+  const keys=Object.keys(medSelections);
+  const summary=document.getElementById('selected-summary');
+  if(!keys.length){summary.style.display='none';return;}
+  const given=keys.filter(k=>medSelections[k]==='given');
+  const refused=keys.filter(k=>medSelections[k]==='refused');
+  let html='';
+  if(given.length)html+=`<span style="color:#27500A;font-weight:600;">✓ Given:</span> ${given.join(', ')}`;
+  if(given.length&&refused.length)html+='<br>';
+  if(refused.length)html+=`<span style="color:#791F1F;font-weight:600;">✕ Refused:</span> ${refused.join(', ')}`;
+  summary.innerHTML=html;
+  summary.style.display='block';
+}
+
+function renderMedRef(){
+  const row=m=>{
+    const visual=m.img
+      ?`<img class="med-img" src="${m.img}" alt="${m.name}" onerror="this.outerHTML='<div class=\\'med-emoji\\'>${m.e}</div>'">`
+      :`<div class="med-emoji">${m.e}</div>`;
+    return`<div class="med-row">${visual}<div class="med-info"><div class="med-name">${m.name} <span style="font-weight:400;color:#666;font-size:12px;">(${m.generic})</span>${m.prn?'<span class="prn-badge">PRN</span>':''}</div><div class="med-dose">${m.dose}</div><div class="med-freq">${m.freq}${m.note?' · '+m.note:''}</div></div></div>`;
+  };
+  const active=MEDS.filter(m=>m.active!==false), inactive=MEDS.filter(m=>m.active===false);
+  let html=active.map(row).join('');
+  if(inactive.length){
+    html+=`<details style="margin-top:14px;border-top:1px solid #e5e5e5;padding-top:10px;"><summary style="cursor:pointer;font-size:13px;font-weight:600;color:#666;">Other meds in the house — not currently taking (${inactive.length})</summary><div style="opacity:0.55;">${inactive.map(row).join('')}</div></details>`;
+  }
+  document.getElementById('med-reference-list').innerHTML=html;
+}
+
+function ts(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+
+async function sendToSheets(data){
+  try{
+    data.Date=new Date().toLocaleDateString();data.Time=ts();
+    await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  }catch(e){}
+}
+
+function selChip(el,gId,val){
+  document.querySelectorAll('#'+gId+' .chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');selTimeVal=val;
+}
+
+function selCare(el,name){
+  document.querySelectorAll('#tab-care .tap-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');selCareVal=name;
+}
+
+async function logAllMeds(){
+  const keys=Object.keys(medSelections);
+  if(!keys.length){alert('Please select at least one medication.');return;}
+  const person=document.getElementById('med-person').value;
+  if(!person){alert('Please select your name.');return;}
+  const notes=document.getElementById('med-notes').value;
+  const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
+  const t=ts();
+  const ind=document.getElementById('med-saving');
+  ind.style.display='inline-block';ind.textContent='Saving...';ind.className='saving-pill';
+
+  // log each med separately to sheets
+  for(const name of keys){
+    const med=MEDS.find(m=>m.name===name);
+    const status=medSelections[name];
+    const entry={type:'med',pill:name+' ('+med.generic+')',dose:med.dose,when:selTimeVal,time:t,caregiver:person,notes,refused:status==='refused'};
+    medLogEntries.unshift(entry);
+    await sendToSheets({Type:'Medication',Detail:name+' '+med.dose,Status:status==='refused'?'Refused':'Given',Caregiver:person,Role:role,Notes:(selTimeVal!=='Now'?'Given: '+selTimeVal+'. ':'')+notes});
+  }
+
+  ind.textContent='Saved to Google Sheets';ind.className='saving-pill saved';
+
+  const given=keys.filter(k=>medSelections[k]==='given');
+  const refused=keys.filter(k=>medSelections[k]==='refused');
+  let detail='';
+  if(given.length)detail+=given.join(', ')+' given';
+  if(given.length&&refused.length)detail+=' · ';
+  if(refused.length)detail+=refused.join(', ')+' refused';
+
+  const hasRefusal=refused.length>0;
+  document.getElementById('succ-again-btn').onclick=()=>{goTo('s-meds');resetMeds();};
+  success(keys.length+' medication'+(keys.length>1?'s':'')+' recorded',detail+' · '+person,hasRefusal);
+  resetMeds();
+}
+
+function resetMeds(){
+  medSelections={};
+  document.querySelectorAll('.med-card').forEach(c=>c.className='med-card');
+  document.querySelectorAll('.check-badge').forEach(b=>b.textContent='');
+  document.querySelectorAll('.status-mini-btn').forEach(b=>b.className='status-mini-btn');
+  document.getElementById('selected-summary').style.display='none';
+  document.getElementById('med-notes').value='';
+  document.getElementById('med-person').value='';
+  document.querySelectorAll('#time-chips .chip').forEach(c=>c.classList.remove('sel'));
+  document.querySelector('#time-chips .chip').classList.add('sel');
+  selTimeVal='Now';
+}
+
+function logCare(){
+  if(!selCareVal){alert('Please select what happened.');return;}
+  const person=document.getElementById('care-person').value;
+  if(!person){alert('Please select your name.');return;}
+  const notes=document.getElementById('care-notes').value;
+  const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
+  careLogEntries.unshift({type:'care',task:selCareVal,time:ts(),caregiver:person,notes});
+  sendToSheets({Type:'Care',Detail:selCareVal,Status:'',Caregiver:person,Role:role,Notes:notes});
+  document.getElementById('succ-again-btn').onclick=()=>goTo('s-carenotes');
+  success(selCareVal+' recorded',ts()+' · '+person,false);
+  document.getElementById('care-notes').value='';
+  document.getElementById('care-person').value='';
+  selCareVal=null;
+  document.querySelectorAll('#tab-care .tap-card').forEach(c=>c.classList.remove('sel'));
+}
+
+function logNote(){
+  const notes=document.getElementById('gen-notes').value.trim();
+  if(!notes){alert('Please enter a note.');return;}
+  const person=document.getElementById('notes-person').value;
+  if(!person){alert('Please select your name.');return;}
+  const role=FAMILY_NAMES.includes(person)?'family':'caregiver';
+  careLogEntries.unshift({type:'note',notes,time:ts(),caregiver:person,role});
+  sendToSheets({Type:'Note',Detail:notes,Status:'',Caregiver:person,Role:role,Notes:''});
+  document.getElementById('succ-again-btn').onclick=()=>goTo('s-carenotes');
+  success('Note saved',ts()+' · '+person+(role==='family'?' (family)':''),false);
+  document.getElementById('gen-notes').value='';
+  document.getElementById('notes-person').value='';
+}
+
+function success(title,detail,hasRefusal){
+  document.getElementById('succ-title').textContent=title;
+  document.getElementById('succ-detail').textContent=detail;
+  const icon=document.getElementById('succ-icon');
+  const sheet=document.getElementById('succ-sheet');
+  sheet.innerHTML='<span class="saving-pill saved">Saved to Google Sheets ✓</span>';
+  icon.style.background=hasRefusal?'#FCEBEB':'#EAF3DE';
+  icon.innerHTML=hasRefusal?'<span style="font-size:36px;color:#791F1F;">!</span>':'<span style="font-size:36px;color:#3B6D11;">✓</span>';
+  goTo('s-success');
+}
+
+function renderMedLog(){
+  const list=document.getElementById('med-log-list');
+  if(!medLogEntries.length){list.innerHTML='<div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div>';return;}
+  list.innerHTML=medLogEntries.map(e=>{
+    const badge=e.refused?'<span style="font-size:11px;background:#FCEBEB;color:#791F1F;padding:2px 7px;border-radius:999px;margin-left:6px;">refused</span>':'<span style="font-size:11px;background:#EAF3DE;color:#27500A;padding:2px 7px;border-radius:999px;margin-left:6px;">given</span>';
+    return`<div class="log-row ${e.refused?'refused':'given'}"><div style="flex:1;min-width:0;"><div class="log-title">${e.pill}${badge}</div><div class="log-meta">${e.dose} · ${e.caregiver}${e.notes?' · '+e.notes:''}</div></div><div class="time-badge">${e.time}</div></div>`;
+  }).join('');
+}
+
+function renderCareLog(){
+  const list=document.getElementById('care-log-list');
+  if(!careLogEntries.length){list.innerHTML='<div style="text-align:center;color:#999;padding:2rem 0;">No entries yet.</div>';return;}
+  list.innerHTML=careLogEntries.map(e=>{
+    let title='',meta='';
+    if(e.type==='care'){title=e.task;meta=e.caregiver+(e.notes?' · '+e.notes:'');}
+    else if(e.type==='note'){title='Note'+(e.role==='family'?'<span style="font-size:11px;background:#FFF8E6;color:#7A5200;padding:2px 7px;border-radius:999px;margin-left:4px;">family</span>':'');meta=e.notes.substring(0,60)+(e.notes.length>60?'...':'')+' · '+e.caregiver;}
+    return`<div class="log-row"><div style="flex:1;min-width:0;"><div class="log-title">${title}</div><div class="log-meta">${meta}</div></div><div class="time-badge">${e.time}</div></div>`;
+  }).join('');
+}
+
+renderMedGrid();renderMedRef();
+
+// ── SCHEDULE EDITOR (reads/writes the CARE4CHAR Google Calendar via apps-script/calendar-api.gs) ──
+const CAL_API_URL='https://script.google.com/macros/s/AKfycbzewEIMeozeE7qzjm63K5yYciPrZC2LQ8Z7feXwWMf33iGueynM_8zaRZXL88darIELcw/exec';            // paste the Apps Script web app URL (ends in /exec) here
+const CAL_API_KEY='c4c-cal-2026'; // must match KEY in the Apps Script
+let schEvents=[],schEditing=null,schDeleteArmed=false;
+
+function esc(t){return String(t||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtTime(hm){if(!hm)return'';let[h,m]=hm.split(':').map(Number);const ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+String(m).padStart(2,'0')+' '+ap;}
+function localYMD(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function dayLabel(ymd){
+  const today=new Date(),tom=new Date();tom.setDate(today.getDate()+1);
+  if(ymd===localYMD(today))return'Today';
+  if(ymd===localYMD(tom))return'Tomorrow';
+  const[y,mo,d]=ymd.split('-').map(Number);
+  return new Date(y,mo-1,d).toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
+}
+async function calApi(data){
+  if(!CAL_API_URL)throw new Error("Calendar editing isn't connected yet.");
+  const r=await fetch(CAL_API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({},data,{key:CAL_API_KEY}))});
+  const j=await r.json();
+  if(!j.ok)throw new Error(j.error||'Something went wrong.');
+  return j;
+}
+async function loadSchedule(){
+  const box=document.getElementById('sch-list');
+  if(!schEvents.length)box.innerHTML='<div class="sch-msg">Loading…</div>';
+  try{
+    schEvents=(await calApi({action:'list'})).events||[];
+    renderSchedule();
+  }catch(e){box.innerHTML='<div class="sch-msg">Couldn\'t load the schedule.<br>'+esc(e.message)+'<br><br><a href="#" onclick="loadSchedule();return false;" style="color:#8B4513;font-weight:600;">Try again</a></div>';}
+}
+function renderSchedule(){
+  const box=document.getElementById('sch-list');
+  if(!schEvents.length){box.innerHTML='<div class="sch-msg">Nothing on the calendar yet.</div>';return;}
+  let html='',lastDay='';
+  schEvents.forEach((ev,i)=>{
+    if(ev.date!==lastDay){html+='<div class="sch-day">'+esc(dayLabel(ev.date))+'</div>';lastDay=ev.date;}
+    const time=ev.allDay?('All day'+(ev.endDate!==ev.date?'<small>through '+esc(dayLabel(ev.endDate))+'</small>':'')):(fmtTime(ev.start)+'<small>to '+fmtTime(ev.end)+'</small>');
+    const meta=[ev.location?'📍 '+esc(ev.location):'',ev.notes?esc(ev.notes.length>90?ev.notes.slice(0,90)+'…':ev.notes):''].filter(Boolean).join('<br>');
+    html+='<div class="sch-ev" onclick="openEventForm('+i+')"><div class="sch-time">'+time+'</div><div class="sch-body"><div class="sch-title">'+esc(ev.title||'(no title)')+'</div>'+(meta?'<div class="sch-meta">'+meta+'</div>':'')+'</div><div class="sch-edit"><i class="ti ti-pencil"></i></div></div>';
+  });
+  box.innerHTML=html;
+}
+function openEventForm(i){
+  const ev=(typeof i==='number')?schEvents[i]:null;
+  schEditing=ev;schDeleteArmed=false;
+  const $=id=>document.getElementById(id);
+  $('ev-form-title').textContent=ev?'Change appointment or event':'New appointment or event';
+  $('ev-title').value=ev?ev.title:'';
+  $('ev-date').value=ev?ev.date:localYMD(new Date());
+  $('ev-allday').checked=ev?ev.allDay:false;
+  fillTimeSelect($('ev-start'),ev&&!ev.allDay?ev.start:'');
+  fillTimeSelect($('ev-end'),ev&&!ev.allDay?ev.end:'');
+  $('ev-enddate').value=ev&&ev.allDay&&ev.endDate!==ev.date?ev.endDate:'';
+  $('ev-location').value=ev?(ev.location||''):'';
+  $('ev-notes').value=ev?(ev.notes||''):'';
+  $('ev-recurring-note').style.display=ev&&ev.recurring?'block':'none';
+  $('ev-delete').style.display=ev?'block':'none';
+  $('ev-delete').classList.remove('confirm');$('ev-delete').textContent='Delete';
+  $('ev-error').textContent='';
+  toggleAllDay();
+  $('sch-list-view').style.display='none';$('sch-form-view').style.display='block';
+  window.scrollTo(0,0);
+  if(!ev)$('ev-title').focus();
+}
+function closeEventForm(){
+  document.getElementById('sch-form-view').style.display='none';
+  document.getElementById('sch-list-view').style.display='block';
+  schEditing=null;
+}
+function toggleAllDay(){
+  const all=document.getElementById('ev-allday').checked;
+  document.getElementById('ev-times').style.display=all?'none':'grid';
+  document.getElementById('ev-enddate-wrap').style.display=all?'block':'none';
+}
+// Time dropdowns: every 15 minutes from 6:00 AM to 11:45 PM
+function fillTimeSelect(sel,val){
+  const opts=[];
+  for(let m=6*60;m<24*60;m+=15)opts.push(String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'));
+  if(val&&!opts.includes(val)){opts.push(val);opts.sort();}
+  sel.innerHTML='<option value="">Choose a time</option>'+opts.map(v=>'<option value="'+v+'">'+fmtTime(v)+'</option>').join('');
+  sel.value=val||'';
+}
+function startChanged(){
+  const s=document.getElementById('ev-start').value,e=document.getElementById('ev-end');
+  if(!s)return;
+  if(!e.value||e.value<=s){
+    let[h,m]=s.split(':').map(Number);h=(h+1)%24;
+    const v=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+    if(![...e.options].some(o=>o.value===v))fillTimeSelect(e,v);
+    e.value=v;
+  }
+}
+function refreshCalendarEmbeds(){document.querySelectorAll('iframe[src*="calendar.google.com"]').forEach(f=>{f.src=f.src;});}
+async function saveEvent(){
+  const $=id=>document.getElementById(id);
+  const data={
+    action:schEditing?'update':'add',
+    title:$('ev-title').value.trim(),date:$('ev-date').value,allDay:$('ev-allday').checked,
+    start:$('ev-start').value,end:$('ev-end').value,endDate:$('ev-enddate').value,
+    location:$('ev-location').value.trim(),notes:$('ev-notes').value.trim()
+  };
+  if(!data.title){$('ev-error').textContent='Please say what it is.';return;}
+  if(!data.date){$('ev-error').textContent='Please pick a date.';return;}
+  if(!data.allDay&&(!data.start||!data.end)){$('ev-error').textContent='Please pick a start and end time, or tick "All day".';return;}
+  if(schEditing){data.id=schEditing.id;data.origDate=schEditing.date;}
+  const btn=$('ev-save');btn.disabled=true;btn.textContent='Saving…';$('ev-error').textContent='';
+  try{await calApi(data);closeEventForm();await loadSchedule();refreshCalendarEmbeds();}
+  catch(e){$('ev-error').textContent=e.message;}
+  finally{btn.disabled=false;btn.textContent='Save';}
+}
+async function deleteEvent(){
+  const btn=document.getElementById('ev-delete');
+  if(!schDeleteArmed){schDeleteArmed=true;btn.classList.add('confirm');btn.textContent='Tap again to delete';return;}
+  btn.disabled=true;btn.textContent='Deleting…';
+  try{await calApi({action:'delete',id:schEditing.id,origDate:schEditing.date});closeEventForm();await loadSchedule();refreshCalendarEmbeds();}
+  catch(e){document.getElementById('ev-error').textContent=e.message;btn.textContent='Delete';btn.classList.remove('confirm');schDeleteArmed=false;}
+  finally{btn.disabled=false;}
+}
+</script>
+</body>
+</html>
