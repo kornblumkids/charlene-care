@@ -123,10 +123,10 @@ input[type=date],input[type=time]{width:100%;padding:12px;border-radius:10px;bor
 .sch-note{background:#FFF8E6;color:#7A5200;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:14px;}
 .sch-error{color:#A32D2D;font-size:14px;min-height:20px;margin-top:10px;}
 .btn-delete{background:#fff;color:#A32D2D;border:1.5px solid #E8AAAA;}
-.btn-delete.confirm{background:#A32D2D;color:#fff;}
-.add-circle{width:120px;height:120px;border-radius:50%;background:#E00000;color:#FFD60A;border:4px solid #FFD60A;font-size:22px;font-weight:800;line-height:1.05;cursor:pointer;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,0.3);-webkit-tap-highlight-color:transparent;}
-.add-circle span{display:block;font-size:52px;line-height:0.9;}
-.add-circle:active{transform:scale(0.95);}
+.btn-delete.confirm{background:#A32D2D;color:#fff;} .add-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;background:#E00000;color:#FFD60A;border:2px solid #FFD60A;font-family:inherit;font-size:26px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,0.25);-webkit-tap-highlight-color:transparent;}
+.add-btn span{font-size:32px;line-height:1;}
+.add-btn:active{transform:scale(0.96);}
+@media (max-width:500px){.add-btn{font-size:20px;padding:10px 14px;gap:6px;}.add-btn span{font-size:24px;}}
 .home-add-btn{display:flex;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px 16px;background:#E00000;color:#FFD60A;border:4px solid #FFD60A;border-radius:18px;margin-top:14px;font-size:26px;font-weight:800;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,0.25);-webkit-tap-highlight-color:transparent;}
 .home-add-btn span{font-size:40px;line-height:1;}
 @media (max-width:500px){.home-add-btn{font-size:18px;padding:20px 8px;gap:6px;white-space:nowrap;}.home-add-btn span{font-size:30px;}}
@@ -207,7 +207,7 @@ function tryGate(e) {
 <div id="s-schedule" class="screen">
   <div class="page-header">
     <div><h1>📅 Schedule</h1><div class="date">Appointments &amp; events, next 60 days</div></div>
-    <button class="add-circle" onclick="openEventForm()"><span>+</span>ADD</button>
+    <button class="add-btn" onclick="openEventForm()"><span>+</span>Add event</button>
   </div>
   <div id="sch-list-view" style="padding:0 12px;">
     <div id="sch-list"><div class="sch-msg">Loading…</div></div>
@@ -222,8 +222,8 @@ function tryGate(e) {
       <input type="date" id="ev-date">
       <label class="sch-check"><input type="checkbox" id="ev-allday" onchange="toggleAllDay()"> All day</label>
       <div id="ev-times" class="sch-row">
-        <div><div class="sec-label">Starts</div><input type="time" id="ev-start" onchange="startChanged()"></div>
-        <div><div class="sec-label">Ends</div><input type="time" id="ev-end"></div>
+        <div><div class="sec-label">Starts</div><select id="ev-start" onchange="startChanged()"></select></div>
+        <div><div class="sec-label">Ends</div><select id="ev-end"></select></div>
       </div>
       <div id="ev-enddate-wrap" style="display:none;"><div class="sec-label">Last day (if more than one day)</div><input type="date" id="ev-enddate"></div>
       <div class="sec-label">Where (optional)</div>
@@ -748,8 +748,8 @@ function openEventForm(i){
   $('ev-title').value=ev?ev.title:'';
   $('ev-date').value=ev?ev.date:localYMD(new Date());
   $('ev-allday').checked=ev?ev.allDay:false;
-  $('ev-start').value=ev&&!ev.allDay?ev.start:'';
-  $('ev-end').value=ev&&!ev.allDay?ev.end:'';
+  fillTimeSelect($('ev-start'),ev&&!ev.allDay?ev.start:'');
+  fillTimeSelect($('ev-end'),ev&&!ev.allDay?ev.end:'');
   $('ev-enddate').value=ev&&ev.allDay&&ev.endDate!==ev.date?ev.endDate:'';
   $('ev-location').value=ev?(ev.location||''):'';
   $('ev-notes').value=ev?(ev.notes||''):'';
@@ -772,10 +772,23 @@ function toggleAllDay(){
   document.getElementById('ev-times').style.display=all?'none':'grid';
   document.getElementById('ev-enddate-wrap').style.display=all?'block':'none';
 }
+// Time dropdowns: every 15 minutes from 6:00 AM to 11:45 PM
+function fillTimeSelect(sel,val){
+  const opts=[];
+  for(let m=6*60;m<24*60;m+=15)opts.push(String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'));
+  if(val&&!opts.includes(val)){opts.push(val);opts.sort();}
+  sel.innerHTML='<option value="">Choose a time</option>'+opts.map(v=>'<option value="'+v+'">'+fmtTime(v)+'</option>').join('');
+  sel.value=val||'';
+}
 function startChanged(){
   const s=document.getElementById('ev-start').value,e=document.getElementById('ev-end');
   if(!s)return;
-  if(!e.value||e.value<=s){let[h,m]=s.split(':').map(Number);h=(h+1)%24;e.value=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');}
+  if(!e.value||e.value<=s){
+    let[h,m]=s.split(':').map(Number);h=(h+1)%24;
+    const v=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+    if(![...e.options].some(o=>o.value===v))fillTimeSelect(e,v);
+    e.value=v;
+  }
 }
 function refreshCalendarEmbeds(){document.querySelectorAll('iframe[src*="calendar.google.com"]').forEach(f=>{f.src=f.src;});}
 async function saveEvent(){
