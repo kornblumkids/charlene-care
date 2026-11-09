@@ -105,9 +105,63 @@ select:focus{outline:2px solid #8B4513;}
 .splash-cal{flex:1;overflow:hidden;}
 .splash-cal iframe{width:100%;height:100%;border:none;display:block;}
 .splash-footer{padding:16px;background:#fff;border-top:1px solid #e5e5e5;}
+/* SCHEDULE EDITOR */
+input[type=date],input[type=time]{width:100%;padding:12px;border-radius:10px;border:1.5px solid #e5e5e5;background:#fff;font-size:16px;color:#1a1a1a;font-family:inherit;margin-top:4px;min-height:48px;-webkit-appearance:none;appearance:none;}
+.sch-day{font-size:13px;font-weight:700;color:#8B4513;text-transform:uppercase;letter-spacing:0.05em;margin:18px 4px 8px;}
+.sch-ev{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,0.06);display:flex;gap:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.sch-ev:active{background:#f0e8e0;}
+.sch-time{flex:0 0 78px;font-size:14px;font-weight:600;color:#1a1a1a;}
+.sch-time small{display:block;font-weight:400;color:#888;font-size:12px;margin-top:2px;}
+.sch-body{flex:1;min-width:0;}
+.sch-title{font-size:16px;font-weight:600;}
+.sch-meta{font-size:13px;color:#666;margin-top:3px;overflow-wrap:anywhere;}
+.sch-edit{color:#c4a898;font-size:20px;align-self:center;}
+.sch-msg{text-align:center;color:#888;padding:40px 16px;font-size:15px;}
+.sch-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sch-check{display:flex;align-items:center;gap:10px;font-size:16px;margin-top:14px;cursor:pointer;}
+.sch-check input{width:22px;height:22px;accent-color:#8B4513;}
+.sch-note{background:#FFF8E6;color:#7A5200;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:14px;}
+.sch-error{color:#A32D2D;font-size:14px;min-height:20px;margin-top:10px;}
+.btn-delete{background:#fff;color:#A32D2D;border:1.5px solid #E8AAAA;}
+.btn-delete.confirm{background:#A32D2D;color:#fff;}
 </style>
+<!-- PASSWORD GATE -->
+<style>
+html.locked body > *:not(#gate){display:none !important;}
+#gate{display:none;position:fixed;inset:0;background:#f7f3ee;z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;}
+html.locked #gate{display:flex;}
+#gate h1{font-size:22px;color:#8B4513;margin-bottom:6px;}
+#gate p{font-size:14px;color:#888;margin-bottom:20px;}
+#gate input{font-size:20px;padding:14px;border:1.5px solid #c4a898;border-radius:12px;width:100%;max-width:280px;text-align:center;}
+#gate button{margin-top:12px;font-size:17px;font-weight:600;padding:14px;width:100%;max-width:280px;border:none;border-radius:12px;background:#8B4513;color:#fff;}
+#gate-err{color:#A32D2D;font-size:14px;min-height:20px;margin-top:10px;}
+</style>
+<script>
+var SITE_PASSWORD = 'candy'; // change this to whatever you like
+try { if (localStorage.getItem('care4char-pw') !== SITE_PASSWORD) document.documentElement.classList.add('locked'); }
+catch (e) { document.documentElement.classList.add('locked'); }
+function tryGate(e) {
+  e.preventDefault();
+  var v = document.getElementById('gate-pw').value.trim().toLowerCase();
+  if (v === SITE_PASSWORD.toLowerCase()) {
+    try { localStorage.setItem('care4char-pw', SITE_PASSWORD); } catch (err) {}
+    document.documentElement.classList.remove('locked');
+  } else {
+    document.getElementById('gate-err').textContent = 'Wrong password. Try again.';
+  }
+}
+</script>
 </head>
 <body>
+<div id="gate">
+  <h1>Charlene's Caregiving Hub</h1>
+  <p>Enter the password</p>
+  <form onsubmit="tryGate(event)">
+    <input id="gate-pw" type="password" autocomplete="current-password" autofocus><br>
+    <button type="submit">Open</button>
+  </form>
+  <div id="gate-err"></div>
+</div>
 
 <!-- SCHEDULE SPLASH (shown 7am-11am, once per day) -->
 <div class="splash" id="splash" style="display:none;">
@@ -132,13 +186,49 @@ select:focus{outline:2px solid #8B4513;}
   <div class="card">
     <div class="card-title">📅 TODAY'S SCHEDULE</div>
     <iframe allow="same-origin" class="calendar-frame" src="https://calendar.google.com/calendar/u/0/newembed?src=70a0be31a4a53486e1f0fd2674e1d4ccaf9f087fb3244662492f92c52b5130a2%40group.calendar.google.com&ctz=America%2FLos_Angeles&mode=MONTH&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&showTz=0" title="Today's Schedule"></iframe>
-    <a href="https://calendar.google.com/calendar/u/0/newembed?src=70a0be31a4a53486e1f0fd2674e1d4ccaf9f087fb3244662492f92c52b5130a2%40group.calendar.google.com&ctz=America%2FLos_Angeles" target="_blank" style="display:block;text-align:center;padding:14px;background:#2C5F2E;color:white;border-radius:10px;margin-top:10px;font-size:15px;font-weight:600;text-decoration:none;">📅 Open full calendar</a>
+    <a href="#" onclick="goTo('s-schedule');return false;" style="display:block;text-align:center;padding:14px;background:#2C5F2E;color:white;border-radius:10px;margin-top:10px;font-size:15px;font-weight:600;text-decoration:none;">✏️ Add or change appointments</a>
   </div>
   <div class="quick-actions">
     <div class="qa-btn" onclick="goTo('s-meds')"><i class="ti ti-pill"></i><span>Medications</span></div>
     <div class="qa-btn" onclick="goTo('s-carenotes')"><i class="ti ti-notes"></i><span>Care Notes</span></div>
     <div class="qa-btn" onclick="goTo('s-contacts')"><i class="ti ti-phone"></i><span>Contacts</span></div>
-    <div class="qa-btn placeholder"><i class="ti ti-stars"></i><span>Coming soon</span></div>
+    <div class="qa-btn" onclick="goTo('s-schedule')"><i class="ti ti-calendar-event"></i><span>Schedule</span></div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div id="s-schedule" class="screen">
+  <div class="page-header">
+    <div><h1>📅 Schedule</h1><div class="date">Appointments &amp; events, next 60 days</div></div>
+    <button class="header-btn" onclick="openEventForm()">+ Add</button>
+  </div>
+  <div id="sch-list-view" style="padding:0 12px;">
+    <div id="sch-list"><div class="sch-msg">Loading…</div></div>
+    <button class="big-btn btn-brown" onclick="openEventForm()">+ Add appointment or event</button>
+  </div>
+  <div id="sch-form-view" style="display:none;padding:12px;">
+    <div class="card" style="margin:0;">
+      <div class="card-title" id="ev-form-title">New appointment or event</div>
+      <div class="sec-label" style="margin-top:0;">What</div>
+      <input type="text" id="ev-title" placeholder="e.g. Dr. Patel – cardiology, Lunch with Ruth">
+      <div class="sec-label">Date</div>
+      <input type="date" id="ev-date">
+      <label class="sch-check"><input type="checkbox" id="ev-allday" onchange="toggleAllDay()"> All day</label>
+      <div id="ev-times" class="sch-row">
+        <div><div class="sec-label">Starts</div><input type="time" id="ev-start" onchange="startChanged()"></div>
+        <div><div class="sec-label">Ends</div><input type="time" id="ev-end"></div>
+      </div>
+      <div id="ev-enddate-wrap" style="display:none;"><div class="sec-label">Last day (if more than one day)</div><input type="date" id="ev-enddate"></div>
+      <div class="sec-label">Where (optional)</div>
+      <input type="text" id="ev-location" placeholder="Office name or address">
+      <div class="sec-label">Notes (optional)</div>
+      <textarea id="ev-notes" rows="3" placeholder="Who's taking her, what to bring, questions for the doctor…"></textarea>
+      <div id="ev-recurring-note" class="sch-note" style="display:none;">This event repeats. Changes here only affect this one day.</div>
+      <div id="ev-error" class="sch-error"></div>
+      <button class="big-btn btn-brown" id="ev-save" onclick="saveEvent()">Save</button>
+      <button class="big-btn btn-delete" id="ev-delete" onclick="deleteEvent()">Delete</button>
+      <button class="big-btn btn-gray" onclick="closeEventForm()">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -368,6 +458,7 @@ function goTo(id){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const m={'s-home':'nav-home','s-meds':'nav-meds','s-carenotes':'nav-carenotes','s-contacts':'nav-contacts'};
   if(m[id])document.getElementById(m[id]).classList.add('active');
+  if(id==='s-schedule'){closeEventForm();loadSchedule();}
   window.scrollTo(0,0);
 }
 
@@ -599,6 +690,112 @@ function renderCareLog(){
 }
 
 renderMedGrid();renderMedRef();
+
+// ── SCHEDULE EDITOR (reads/writes the CARE4CHAR Google Calendar via apps-script/calendar-api.gs) ──
+const CAL_API_URL='https://script.google.com/macros/s/AKfycbzewEIMeozeE7qzjm63K5yYciPrZC2LQ8Z7feXwWMf33iGueynM_8zaRZXL88darIELcw/exec';            // paste the Apps Script web app URL (ends in /exec) here
+const CAL_API_KEY='c4c-cal-2026'; // must match KEY in the Apps Script
+let schEvents=[],schEditing=null,schDeleteArmed=false;
+
+function esc(t){return String(t||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmtTime(hm){if(!hm)return'';let[h,m]=hm.split(':').map(Number);const ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+String(m).padStart(2,'0')+' '+ap;}
+function localYMD(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function dayLabel(ymd){
+  const today=new Date(),tom=new Date();tom.setDate(today.getDate()+1);
+  if(ymd===localYMD(today))return'Today';
+  if(ymd===localYMD(tom))return'Tomorrow';
+  const[y,mo,d]=ymd.split('-').map(Number);
+  return new Date(y,mo-1,d).toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'});
+}
+async function calApi(data){
+  if(!CAL_API_URL)throw new Error("Calendar editing isn't connected yet.");
+  const r=await fetch(CAL_API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({},data,{key:CAL_API_KEY}))});
+  const j=await r.json();
+  if(!j.ok)throw new Error(j.error||'Something went wrong.');
+  return j;
+}
+async function loadSchedule(){
+  const box=document.getElementById('sch-list');
+  if(!schEvents.length)box.innerHTML='<div class="sch-msg">Loading…</div>';
+  try{
+    schEvents=(await calApi({action:'list'})).events||[];
+    renderSchedule();
+  }catch(e){box.innerHTML='<div class="sch-msg">Couldn\'t load the schedule.<br>'+esc(e.message)+'<br><br><a href="#" onclick="loadSchedule();return false;" style="color:#8B4513;font-weight:600;">Try again</a></div>';}
+}
+function renderSchedule(){
+  const box=document.getElementById('sch-list');
+  if(!schEvents.length){box.innerHTML='<div class="sch-msg">Nothing on the calendar yet.</div>';return;}
+  let html='',lastDay='';
+  schEvents.forEach((ev,i)=>{
+    if(ev.date!==lastDay){html+='<div class="sch-day">'+esc(dayLabel(ev.date))+'</div>';lastDay=ev.date;}
+    const time=ev.allDay?('All day'+(ev.endDate!==ev.date?'<small>through '+esc(dayLabel(ev.endDate))+'</small>':'')):(fmtTime(ev.start)+'<small>to '+fmtTime(ev.end)+'</small>');
+    const meta=[ev.location?'📍 '+esc(ev.location):'',ev.notes?esc(ev.notes.length>90?ev.notes.slice(0,90)+'…':ev.notes):''].filter(Boolean).join('<br>');
+    html+='<div class="sch-ev" onclick="openEventForm('+i+')"><div class="sch-time">'+time+'</div><div class="sch-body"><div class="sch-title">'+esc(ev.title||'(no title)')+'</div>'+(meta?'<div class="sch-meta">'+meta+'</div>':'')+'</div><div class="sch-edit"><i class="ti ti-pencil"></i></div></div>';
+  });
+  box.innerHTML=html;
+}
+function openEventForm(i){
+  const ev=(typeof i==='number')?schEvents[i]:null;
+  schEditing=ev;schDeleteArmed=false;
+  const $=id=>document.getElementById(id);
+  $('ev-form-title').textContent=ev?'Change appointment or event':'New appointment or event';
+  $('ev-title').value=ev?ev.title:'';
+  $('ev-date').value=ev?ev.date:localYMD(new Date());
+  $('ev-allday').checked=ev?ev.allDay:false;
+  $('ev-start').value=ev&&!ev.allDay?ev.start:'';
+  $('ev-end').value=ev&&!ev.allDay?ev.end:'';
+  $('ev-enddate').value=ev&&ev.allDay&&ev.endDate!==ev.date?ev.endDate:'';
+  $('ev-location').value=ev?(ev.location||''):'';
+  $('ev-notes').value=ev?(ev.notes||''):'';
+  $('ev-recurring-note').style.display=ev&&ev.recurring?'block':'none';
+  $('ev-delete').style.display=ev?'block':'none';
+  $('ev-delete').classList.remove('confirm');$('ev-delete').textContent='Delete';
+  $('ev-error').textContent='';
+  toggleAllDay();
+  $('sch-list-view').style.display='none';$('sch-form-view').style.display='block';
+  window.scrollTo(0,0);
+  if(!ev)$('ev-title').focus();
+}
+function closeEventForm(){
+  document.getElementById('sch-form-view').style.display='none';
+  document.getElementById('sch-list-view').style.display='block';
+  schEditing=null;
+}
+function toggleAllDay(){
+  const all=document.getElementById('ev-allday').checked;
+  document.getElementById('ev-times').style.display=all?'none':'grid';
+  document.getElementById('ev-enddate-wrap').style.display=all?'block':'none';
+}
+function startChanged(){
+  const s=document.getElementById('ev-start').value,e=document.getElementById('ev-end');
+  if(!s)return;
+  if(!e.value||e.value<=s){let[h,m]=s.split(':').map(Number);h=(h+1)%24;e.value=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');}
+}
+function refreshCalendarEmbeds(){document.querySelectorAll('iframe[src*="calendar.google.com"]').forEach(f=>{f.src=f.src;});}
+async function saveEvent(){
+  const $=id=>document.getElementById(id);
+  const data={
+    action:schEditing?'update':'add',
+    title:$('ev-title').value.trim(),date:$('ev-date').value,allDay:$('ev-allday').checked,
+    start:$('ev-start').value,end:$('ev-end').value,endDate:$('ev-enddate').value,
+    location:$('ev-location').value.trim(),notes:$('ev-notes').value.trim()
+  };
+  if(!data.title){$('ev-error').textContent='Please say what it is.';return;}
+  if(!data.date){$('ev-error').textContent='Please pick a date.';return;}
+  if(!data.allDay&&(!data.start||!data.end)){$('ev-error').textContent='Please pick a start and end time, or tick "All day".';return;}
+  if(schEditing){data.id=schEditing.id;data.origDate=schEditing.date;}
+  const btn=$('ev-save');btn.disabled=true;btn.textContent='Saving…';$('ev-error').textContent='';
+  try{await calApi(data);closeEventForm();await loadSchedule();refreshCalendarEmbeds();}
+  catch(e){$('ev-error').textContent=e.message;}
+  finally{btn.disabled=false;btn.textContent='Save';}
+}
+async function deleteEvent(){
+  const btn=document.getElementById('ev-delete');
+  if(!schDeleteArmed){schDeleteArmed=true;btn.classList.add('confirm');btn.textContent='Tap again to delete';return;}
+  btn.disabled=true;btn.textContent='Deleting…';
+  try{await calApi({action:'delete',id:schEditing.id,origDate:schEditing.date});closeEventForm();await loadSchedule();refreshCalendarEmbeds();}
+  catch(e){document.getElementById('ev-error').textContent=e.message;btn.textContent='Delete';btn.classList.remove('confirm');schDeleteArmed=false;}
+  finally{btn.disabled=false;}
+}
 </script>
 </body>
 </html>
